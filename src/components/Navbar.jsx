@@ -10,7 +10,7 @@ function Navbar() {
       transition={{ duration: 0.6 }}
     >
       <div className="navbar-inner">
-        <a href="#" className="navbar-logo">DK</a>
+        <a href="#" className="navbar-logo">DK<span>.</span></a>
         <div className="navbar-links">
           <a href="#about" className="nav-link">About</a>
           <a href="#projects" className="nav-link">Projects</a>

@@ -5,9 +5,10 @@
   right: 0;
   z-index: 100;
   padding: 1rem 2rem;
-  background: rgba(10, 10, 15, 0.8);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid #1e293b;
+  background: rgba(6, 6, 12, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 
 .navbar-inner {
@@ -19,11 +20,16 @@
 }
 
 .navbar-logo {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #38bdf8;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #f8fafc;
   text-decoration: none;
-  letter-spacing: 0.05em;
+  letter-spacing: -0.02em;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.navbar-logo span {
+  color: #38bdf8;
 }
 
 .navbar-links {
@@ -33,35 +39,34 @@
 }
 
 .nav-link {
-  font-size: 0.875rem;
-  color: #64748b;
+  font-size: 0.82rem;
+  color: #334155;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
+  letter-spacing: 0.02em;
 }
 
 .nav-link:hover {
-  color: #e2e8f0;
+  color: #94a3b8;
 }
 
 .contact-nav {
-  padding: 0.4rem 1rem;
-  border: 1px solid #38bdf8;
+  padding: 0.4rem 1.1rem;
+  border: 1px solid rgba(56,189,248,0.2);
   border-radius: 6px;
   color: #38bdf8;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .contact-nav:hover {
-  background: #38bdf8;
-  color: #0a0a0f;
+  background: rgba(56,189,248,0.08);
+  border-color: rgba(56,189,248,0.4);
+  color: #38bdf8;
 }
 
 @media (max-width: 480px) {
-  .navbar-links {
-    gap: 1rem;
-  }
-
-  .nav-link {
-    font-size: 0.75rem;
-  }
+  .navbar-links { gap: 1rem; }
+  .nav-link { font-size: 0.75rem; }
 }

@@ -15,45 +15,42 @@ function About() {
         <div className="about-grid">
           <motion.div
             className="about-left"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <span className="section-eyebrow">About</span>
-            <h2 className="section-title">Built for environments where bugs cost real money</h2>
+            <span className="section-eyebrow">About Me</span>
+            <h2 className="section-title">
+              Built for environments where <span className="title-accent">bugs cost real money</span>
+            </h2>
             <p className="about-text">
               I started my career inside Bank of Ceylon — one of Sri Lanka's largest state banks — 
               contributing to core banking features across the full SDLC in a security-compliant 
-              environment handling millions of daily transactions.
+              environment handling millions of daily transactions[cite: 3].
             </p>
             <p className="about-text">
               That experience shaped how I build: every feature needs to work, every edge case 
-              needs a test, and every deployment needs to be predictable. I bring that same 
-              discipline to every project I ship.
+              needs a test, and every deployment needs to be predictable[cite: 3]. I bring that same 
+              discipline to every project I ship[cite: 3].
             </p>
             <p className="about-text">
               Currently targeting enterprise software roles at companies like Sampath IT Solutions, 
-              WSO2, IFS, and Virtusa — where software quality is not optional.
+              WSO2, IFS, and Virtusa — where software quality is not optional[cite: 3].
             </p>
           </motion.div>
 
-          <motion.div
-            className="about-right"
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          <div className="about-right">
             <div className="stats-grid">
               {stats.map((stat, i) => (
                 <motion.div
                   key={i}
                   className="stat-card"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.1 }}
+                  whileHover={{ y: -4, borderColor: 'rgba(56, 189, 248, 0.25)' }}
                 >
                   <span className="stat-value">{stat.value}</span>
                   <span className="stat-label">{stat.label}</span>
@@ -61,7 +58,13 @@ function About() {
               ))}
             </div>
 
-            <div className="experience-block">
+            <motion.div 
+              className="experience-block"
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <div className="exp-item">
                 <span className="exp-period">2026 – Present</span>
                 <div className="exp-details">
@@ -77,8 +80,8 @@ function About() {
                   <span className="exp-company">Bank of Ceylon</span>
                 </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
