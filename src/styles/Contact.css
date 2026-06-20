@@ -1,6 +1,14 @@
+/* ============================================================
+   CONTACT — closing section. Card layout retained from original
+   (right call for a final CTA), rebuilt on the build-log token
+   system. Signature: a terminal prompt closes the page, echoing
+   the boot-sequence feel the Hero opened with — the site
+   bookends itself like a running process.
+   ============================================================ */
+
 .contact {
-  padding: 8rem 2rem;
-  background: #06060c;
+  padding: 10rem 2rem;
+  background: #0a0e14;
   position: relative;
 }
 
@@ -11,27 +19,36 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #1e293b, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(237, 239, 243, 0.08),
+    transparent
+  );
 }
 
 .contact-inner {
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
 }
 
+/* ---------- Card ---------- */
+
 .contact-card {
-  padding: 3.5rem;
-  border: 1px solid #0f172a;
+  padding: 4rem;
+  border: 1px solid rgba(237, 239, 243, 0.07);
   border-radius: 20px;
-  background: linear-gradient(135deg, #0d1117 0%, #0a0f1a 100%);
+  background: rgba(237, 239, 243, 0.015);
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
   position: relative;
   overflow: hidden;
+  transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .contact-card::before {
@@ -41,115 +58,208 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(56,189,248,0.4), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(61, 220, 132, 0.3),
+    transparent
+  );
+}
+
+.contact-card:hover {
+  border-color: rgba(61, 220, 132, 0.25);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5),
+    inset 0 0 14px rgba(61, 220, 132, 0.03);
+}
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  color: #6b7383;
+  font-weight: 500;
+}
+
+.eyebrow-bracket {
+  color: #3ddc84;
 }
 
 .contact-title {
-  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-  font-weight: 800;
-  color: #f8fafc;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 600;
+  color: #edeff3;
+  letter-spacing: -0.025em;
+  line-height: 1.22;
 }
 
 .contact-sub {
-  font-size: 0.92rem;
-  color: #475569;
-  line-height: 1.8;
-  max-width: 460px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: #9aa3b2;
+  line-height: 1.75;
+  max-width: 520px;
 }
+
+/* ---------- Actions ---------- */
 
 .contact-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 0.75rem;
+  margin-top: 1rem;
 }
 
 .contact-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.6rem;
 }
 
 .btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.75rem;
-  background: linear-gradient(135deg, #38bdf8, #818cf8);
-  color: #06060c;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.9rem;
+  padding: 0.85rem 2rem;
+  background: #3ddc84;
+  color: #0a0e14;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
   text-decoration: none;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 0 30px rgba(56,189,248,0.2);
+  box-shadow: 0 4px 20px rgba(61, 220, 132, 0.2);
+  transition: box-shadow 0.3s ease, background-color 0.2s ease,
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-primary:hover {
+  background: #57e89a;
+  box-shadow: 0 6px 28px rgba(61, 220, 132, 0.35);
   transform: translateY(-2px);
-  box-shadow: 0 0 40px rgba(56,189,248,0.35);
 }
 
 .btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.75rem;
-  border: 1px solid #1e293b;
-  color: #64748b;
-  border-radius: 8px;
+  padding: 0.85rem 2rem;
+  border: 1px solid rgba(237, 239, 243, 0.1);
+  color: #c2c8d2;
+  background: rgba(237, 239, 243, 0.025);
+  border-radius: 10px;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   text-decoration: none;
-  transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-ghost:hover {
-  border-color: rgba(56,189,248,0.3);
-  color: #94a3b8;
+  border-color: rgba(61, 220, 132, 0.4);
+  color: #edeff3;
+  background: rgba(61, 220, 132, 0.06);
   transform: translateY(-2px);
 }
+
+/* ---------- Secondary links ---------- */
 
 .contact-links {
   display: flex;
   gap: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #0f172a;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(237, 239, 243, 0.06);
+  margin-top: 0.5rem;
 }
 
 .contact-link {
-  font-size: 0.82rem;
-  color: #334155;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: #6b7383;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s;
-  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+  letter-spacing: 0.01em;
 }
 
 .contact-link:hover {
-  color: #38bdf8;
+  color: #3ddc84;
 }
+
+/* ---------- Closing terminal prompt (signature element) ---------- */
+
+.contact-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1rem 0;
+}
+
+.prompt-glyph {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: #3ddc84;
+}
+
+.prompt-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: #6b7383;
+  letter-spacing: 0.01em;
+}
+
+.prompt-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background: #3ddc84;
+  box-shadow: 0 0 8px rgba(61, 220, 132, 0.6);
+}
+
+/* ---------- Footer ---------- */
 
 .footer-note {
   display: flex;
   justify-content: space-between;
-  font-size: 0.72rem;
-  color: #1e293b;
+  font-size: 0.78rem;
+  color: #4b5263;
   font-family: 'JetBrains Mono', monospace;
-  padding: 0 0.5rem;
+  padding: 0 0.25rem;
 }
 
-@media (max-width: 480px) {
-  .contact-card {
-    padding: 2rem;
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .prompt-cursor {
+    animation: none;
+    opacity: 1;
   }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 768px) {
+  .contact {
+    padding: 6rem 1.5rem;
+  }
+  .contact-card {
+    padding: 2.5rem 2rem;
+  }
+}
+
+@media (max-width: 540px) {
   .contact-actions {
     flex-direction: column;
+    width: 100%;
+  }
+  .btn-primary,
+  .btn-ghost {
+    width: 100%;
   }
   .footer-note {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    align-items: center;
+    text-align: center;
   }
 }

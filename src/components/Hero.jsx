@@ -1,130 +1,262 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
-import { ArrowDown, Mail, Sparkles } from 'lucide-react'
+import { motion, useReducedMotion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
+import { ArrowUpRight, Sparkles, Mail, Terminal } from 'lucide-react'
 import AIAssistant from './AIAssistant'
 import '../styles/Hero.css'
 
-const GithubSVG = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+const GithubIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
   </svg>
 )
 
-const LinkedinSVG = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-    <rect x="2" y="9" width="4" height="12"/>
-    <circle cx="4" cy="4" r="2"/>
+const LinkedinIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect x="2" y="9" width="4" height="12" />
+    <circle cx="4" cy="4" r="2" />
   </svg>
 )
 
-const floatingTags = [
-  { text: 'Spring Boot', x: '10%', y: '18%', delay: 0.1, showOnMobile: true },
-  { text: 'PostgreSQL', x: '82%', y: '15%', delay: 0.3, showOnMobile: true },
-  { text: 'Selenium', x: '78%', y: '68%', delay: 0.5, showOnMobile: false },
-  { text: 'React 18', x: '6%', y: '72%', delay: 0.7, showOnMobile: true },
-  { text: 'ASP.NET', x: '86%', y: '45%', delay: 0.9, showOnMobile: false },
-  { text: 'Docker', x: '14%', y: '48%', delay: 1.1, showOnMobile: false },
+const STACK_LOG = [
+  'java', 'spring-boot', 'csharp', '.net-core', 'postgresql',
+  'selenium', 'nunit', 'react', 'docker', 'aws'
 ]
 
-function Hero() {
-  const heroRef = useRef(null)
-  const [auroraOffset, setAuroraOffset] = useState({ x: 0, y: 0 })
-  const [isAiOpen, setIsAiOpen] = useState(false)
-  const prefersReducedMotion = useReducedMotion()
+// Test-runner status dots — the signature element.
+// Sequence: each dot flashes red -> amber -> settles green, staggered,
+// echoing a real CI test suite finishing up. Loops slowly in the background.
+function TestRunnerBadge({ prefersReducedMotion }) {
+  const dotCount = 5
+  const dots = Array.from({ length: dotCount })
+
+  return (
+    <div className="trb" aria-hidden="true">
+      {dots.map((_, i) => (
+        <motion.span
+          key={i}
+          className="trb-dot"
+          initial={{ backgroundColor: '#FF5D5D' }}
+          animate={
+            prefersReducedMotion
+              ? { backgroundColor: '#3DDC84' }
+              : {
+                  backgroundColor: ['#FF5D5D', '#FF5D5D', '#E8B339', '#3DDC84', '#3DDC84'],
+                }
+          }
+          transition={{
+            duration: 1.6,
+            delay: 0.4 + i * 0.18,
+            times: [0, 0.35, 0.6, 0.8, 1],
+            ease: 'easeOut',
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+// Headline that types itself out character by character, CI-log style,
+// then leaves a blinking cursor on the final word.
+function TypedHeadline({ prefersReducedMotion }) {
+  const fullText = 'Builds the system. Breaks it on purpose. Ships it proven.'
+  const [shown, setShown] = useState(prefersReducedMotion ? fullText.length : 0)
 
   useEffect(() => {
     if (prefersReducedMotion) return
-
-    const handleMouseMove = (e) => {
-      if (!heroRef.current) return
-      const { innerWidth, innerHeight } = window
-      const x = (e.clientX / innerWidth - 0.5) * 2
-      const y = (e.clientY / innerHeight - 0.5) * 2
-      setAuroraOffset({ x: x * 12, y: y * 12 })
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    let i = 0
+    const id = setInterval(() => {
+      i += 1
+      setShown(i)
+      if (i >= fullText.length) clearInterval(id)
+    }, 22)
+    return () => clearInterval(id)
   }, [prefersReducedMotion])
+
+  const visible = fullText.slice(0, shown)
+  const parts = visible.split('. ')
+
+  return (
+    <h1 className="hero-headline">
+      {parts.map((part, idx) => (
+        <span key={idx} className={idx === 1 ? 'headline-accent' : ''}>
+          {part}
+          {idx < parts.length - 1 ? '. ' : ''}
+        </span>
+      ))}
+      <motion.span
+        className="type-cursor"
+        animate={{ opacity: [1, 1, 0, 0] }}
+        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+      />
+    </h1>
+  )
+}
+
+// Infinite-scrolling marquee of the real stack — the "build log" ticker.
+function StackTicker() {
+  const loopItems = [...STACK_LOG, ...STACK_LOG]
+  return (
+    <div className="stack-ticker" aria-hidden="true">
+      <div className="stack-ticker-track">
+        {loopItems.map((item, idx) => (
+          <span className="stack-ticker-item" key={idx}>
+            <span className="stack-ticker-bracket">{'>'}</span>
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function Hero() {
+  const [isAiOpen, setIsAiOpen] = useState(false)
+  const prefersReducedMotion = useReducedMotion()
+  const heroRef = useRef(null)
+
+  // Cursor-reactive glow — desktop-only ambient effect
+  const mvX = useMotionValue(50)
+  const mvY = useMotionValue(20)
+  const glowX = useSpring(mvX, { stiffness: 50, damping: 20 })
+  const glowY = useSpring(mvY, { stiffness: 50, damping: 20 })
+
+  useEffect(() => {
+    if (prefersReducedMotion) return
+    const node = heroRef.current
+    if (!node) return
+    const handleMove = (e) => {
+      const rect = node.getBoundingClientRect()
+      mvX.set(((e.clientX - rect.left) / rect.width) * 100)
+      mvY.set(((e.clientY - rect.top) / rect.height) * 100)
+    }
+    node.addEventListener('mousemove', handleMove)
+    return () => node.removeEventListener('mousemove', handleMove)
+  }, [prefersReducedMotion, mvX, mvY])
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.6, staggerChildren: 0.09, delayChildren: 0.1 },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 14 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+    },
+  }
 
   return (
     <section className="hero" ref={heroRef}>
-      <div className="hero-bg">
-        <div className="aurora aurora-1" style={{ transform: `translate(${auroraOffset.x}px, ${auroraOffset.y}px)` }} />
-        <div className="aurora aurora-2" style={{ transform: `translate(${-auroraOffset.x * 0.7}px, ${auroraOffset.y * 0.7}px)` }} />
-        <div className="aurora aurora-3" style={{ transform: `translate(${auroraOffset.x * 0.5}px, ${-auroraOffset.y * 0.5}px)` }} />
-        <div className="noise-overlay" />
+      <div className="hero-backdrop">
+        <div className="hero-grid" />
+        <motion.div
+          className="hero-cursor-glow"
+          style={
+            prefersReducedMotion
+              ? { left: '50%', top: '15%' }
+              : { left: glowX, top: glowY }
+          }
+        />
+        <div className="hero-vignette" />
+        <div className="hero-noise" />
       </div>
 
-      {floatingTags.map((tag, i) => (
-        <motion.div
-          key={i}
-          className={`floating-tag ${tag.showOnMobile ? '' : 'mobile-hidden'}`}
-          style={{ left: tag.x, top: tag.y }}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          whileHover={{ scale: 1.08, borderColor: 'rgba(56, 189, 248, 0.4)', color: '#f8fafc' }}
-          transition={{ delay: tag.delay, duration: 0.6 }}
-        >
-          {tag.text}
+      <motion.div
+        className="hero-frame"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div className="hero-status-row" variants={itemVariants}>
+          <div className="hero-status-pill">
+            <Terminal size={13} className="status-pill-icon" />
+            <span className="status-pill-text">
+              run --target=hiring · colombo, lk
+            </span>
+          </div>
+          <TestRunnerBadge prefersReducedMotion={prefersReducedMotion} />
         </motion.div>
-      ))}
+
+        <motion.div variants={itemVariants}>
+          <TypedHeadline prefersReducedMotion={prefersReducedMotion} />
+        </motion.div>
+
+        <motion.p className="hero-editorial-body" variants={itemVariants}>
+          Full-stack engineer with banking-grade discipline. I architect
+          high-throughput backends in Java, Spring Boot, and .NET Core, then
+          hold them accountable with the same QA automation rigor a bank's
+          release process demands.
+        </motion.p>
+
+        <motion.div className="hero-action-cluster" variants={itemVariants}>
+          <motion.a
+            href="#projects"
+            className="action-btn-primary"
+            whileHover={prefersReducedMotion ? {} : { y: -2 }}
+            whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+          >
+            <span>Explore Systems</span>
+            <ArrowUpRight size={16} className="action-btn-arrow" />
+          </motion.a>
+
+          <motion.button
+            className="action-btn-secondary"
+            onClick={() => setIsAiOpen(true)}
+            whileHover={prefersReducedMotion ? {} : { y: -2 }}
+            whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+          >
+            <Sparkles size={15} className="sparkles-icon" />
+            <span>Ask the Assistant</span>
+          </motion.button>
+        </motion.div>
+
+        <motion.div className="hero-utility-nav" variants={itemVariants}>
+          <a
+            href="https://github.com/Dilshan-Kumarasingha"
+            target="_blank"
+            rel="noreferrer"
+            className="nav-item"
+          >
+            <GithubIcon />
+            <span>GitHub</span>
+          </a>
+          <a
+            href="https://linkedin.com/in/dilshan-kumarasingha"
+            target="_blank"
+            rel="noreferrer"
+            className="nav-item"
+          >
+            <LinkedinIcon />
+            <span>LinkedIn</span>
+          </a>
+          <a href="mailto:dilshan.jkumarasingha@gmail.com" className="nav-item">
+            <Mail size={16} />
+            <span>Email</span>
+          </a>
+        </motion.div>
+      </motion.div>
 
       <motion.div
-        className="hero-content"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="hero-scroll-cue"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.6 }}
       >
-        <motion.div className="hero-badge" whileHover={{ scale: 1.03 }}>
-          <span className="badge-dot" />
-          Available for hire · Colombo, Sri Lanka
-        </motion.div>
-
-        <h1 className="hero-title">
-          Full-Stack Engineer
-          <br />
-          <span className="hero-accent">who tests what</span>
-          <br />
-          <span className="hero-accent-dim">he ships.</span>
-        </h1>
-
-        <p className="hero-sub">
-          Banking-grade discipline. Java · Spring Boot · React · .NET · PostgreSQL —
-          with Selenium test suites that catch regressions before production does.
-        </p>
-
-        <div className="hero-actions">
-          <motion.a href="#projects" className="btn-primary" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-            <span>See My Work</span>
-            <span className="btn-arrow">→</span>
-          </motion.a>
-          <motion.button className="btn-ai" onClick={() => setIsAiOpen(true)} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-            <Sparkles size={16} />
-            <span>Ask My AI Assistant</span>
-          </motion.button>
-        </div>
-
-        <div className="hero-links">
-          <a href="https://github.com/Dilshan-Kumarasingha" target="_blank" rel="noreferrer" className="social-link">
-            <GithubSVG /><span>GitHub</span>
-          </a>
-          <div className="social-divider" />
-          <a href="https://linkedin.com/in/dilshan-kumarasingha" target="_blank" rel="noreferrer" className="social-link">
-            <LinkedinSVG /><span>LinkedIn</span>
-          </a>
-          <div className="social-divider" />
-          <a href="mailto:dilshan.jkumarasingha@gmail.com" className="social-link">
-            <Mail size={19} /><span>Email</span>
-          </a>
-        </div>
-      </motion.div>
-
-      <motion.div className="hero-scroll" animate={prefersReducedMotion ? {} : { y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.8 }}>
-        <ArrowDown size={16} />
         <span>scroll</span>
+        <motion.span
+          className="hero-scroll-line"
+          animate={prefersReducedMotion ? {} : { scaleY: [0.3, 1, 0.3] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+        />
       </motion.div>
+
+      <StackTicker />
 
       <AnimatePresence>
         {isAiOpen && <AIAssistant onClose={() => setIsAiOpen(false)} />}

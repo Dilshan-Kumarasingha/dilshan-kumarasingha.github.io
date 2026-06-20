@@ -1,6 +1,12 @@
+/* ============================================================
+   ABOUT — continues the Hero's "build log" token system,
+   but quieter: this section's job is to be trusted and read,
+   not to perform. Signature device: timeline as a git log.
+   ============================================================ */
+
 .about {
-  padding: 10rem 2rem;
-  background: #030307; /* Kept seamlessly aligned with our updated darker Hero background */
+  padding: 9rem 2rem;
+  background: #0a0e14;
   position: relative;
 }
 
@@ -11,11 +17,16 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(237, 239, 243, 0.08),
+    transparent
+  );
 }
 
 .about-inner {
-  max-width: 1050px;
+  max-width: 1080px;
   margin: 0 auto;
 }
 
@@ -24,8 +35,9 @@
   grid-template-columns: 1.1fr 0.9fr;
   gap: 5rem;
   align-items: start;
-  margin-top: 2.5rem;
 }
+
+/* ---------- Left: narrative ---------- */
 
 .about-left {
   display: flex;
@@ -34,32 +46,50 @@
 }
 
 .section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: #818cf8;
-  font-weight: 600;
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  color: #6b7383;
+  font-weight: 500;
+}
+
+.eyebrow-bracket {
+  color: #3ddc84;
 }
 
 .section-title {
-  font-size: clamp(2rem, 4vw, 2.75rem);
-  font-weight: 800;
-  color: #f8fafc;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.9rem, 3.8vw, 2.6rem);
+  font-weight: 600;
+  color: #edeff3;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
 }
 
-.title-accent {
-  background: linear-gradient(135deg, #38bdf8, #818cf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.headline-accent {
+  color: #3ddc84;
+}
+
+.about-text-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-top: 0.5rem;
 }
 
 .about-text {
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
-  color: #94a3b8; /* Significantly improved contrast over old #64748b */
+  color: #9aa3b2;
   line-height: 1.8;
+  max-width: 540px;
 }
+
+/* ---------- Right: proof ---------- */
 
 .about-right {
   display: flex;
@@ -67,115 +97,155 @@
   gap: 1.5rem;
 }
 
-.stats-grid {
+.stats-monolithic-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
-.stat-card {
-  padding: 1.75rem 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.02);
+.stat-metric-block {
+  padding: 1.6rem 1.4rem;
+  border: 1px solid rgba(237, 239, 243, 0.07);
+  border-radius: 10px;
+  background: rgba(237, 239, 243, 0.025);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(8px);
-  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s;
+  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.stat-card::before {
+.stat-metric-block::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 3px;
+  width: 2px;
   height: 100%;
-  background: linear-gradient(180deg, #38bdf8, #818cf8);
+  background: #3ddc84;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s ease;
 }
 
-.stat-card:hover {
-  background: rgba(255, 255, 255, 0.04);
+.stat-metric-block:hover {
+  background: rgba(237, 239, 243, 0.045);
+  border-color: rgba(237, 239, 243, 0.14);
+  transform: translateY(-2px);
 }
 
-.stat-card:hover::before {
+.stat-metric-block:hover::before {
   opacity: 1;
 }
 
 .stat-value {
-  font-size: 2.4rem;
-  font-weight: 800;
-  color: #f8fafc;
-  letter-spacing: -0.03em;
   font-family: 'JetBrains Mono', monospace;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #edeff3;
+  letter-spacing: -0.02em;
 }
 
 .stat-label {
+  font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
-  color: #64748b; /* Upgraded from illegible #334155 dark grey */
+  color: #6b7383;
   line-height: 1.5;
   font-weight: 500;
 }
 
-.experience-block {
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.02);
-  padding: 1.75rem 1.5rem;
+/* ---------- Experience ledger (git-log motif) ---------- */
+
+.experience-ledger {
+  border: 1px solid rgba(237, 239, 243, 0.07);
+  border-radius: 10px;
+  background: rgba(237, 239, 243, 0.025);
+  padding: 1.6rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  backdrop-filter: blur(8px);
+  gap: 1.4rem;
 }
 
-.exp-item {
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
-}
-
-.exp-period {
-  font-size: 0.75rem;
-  color: #38bdf8;
-  font-weight: 600;
-  white-space: nowrap;
-  padding: 0.2rem 0.6rem;
-  background: rgba(56, 189, 248, 0.08);
-  border: 1px solid rgba(56, 189, 248, 0.15);
-  border-radius: 6px;
-  min-width: 105px;
-  text-align: center;
+.ledger-header {
   font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: #6b7383;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.exp-details {
+.ledger-header-icon {
+  color: #3ddc84;
+}
+
+.ledger-track {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 1.5rem;
+  padding-left: 0.3rem;
 }
 
-.exp-role {
+.ledger-track::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: rgba(237, 239, 243, 0.1);
+}
+
+.ledger-row {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-left: 1.5rem;
+}
+
+.ledger-node {
+  position: absolute;
+  left: -1px;
+  top: 5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3ddc84;
+  box-shadow: 0 0 0 3px rgba(10, 14, 20, 1), 0 0 8px rgba(61, 220, 132, 0.6);
+}
+
+.ledger-year {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: #3ddc84;
+  font-weight: 500;
+}
+
+.ledger-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ledger-role {
+  font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
-  color: #cbd5e1;
+  color: #d6dae2;
   font-weight: 600;
 }
 
-.exp-company {
+.ledger-company {
+  font-family: 'Inter', sans-serif;
   font-size: 0.82rem;
-  color: #64748b; /* Improved contrast */
+  color: #6b7383;
 }
 
-.exp-divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.05);
-}
+/* ---------- Responsive ---------- */
 
-/* Tablet and Mobile Optimization */
 @media (max-width: 900px) {
   .about-grid {
     grid-template-columns: 1fr;
@@ -187,14 +257,7 @@
 }
 
 @media (max-width: 480px) {
-  .stats-grid {
-    grid-template-columns: 1fr; /* Stack single column on tiny screens */
-  }
-  .exp-item {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .exp-period {
-    min-width: auto;
+  .stats-monolithic-grid {
+    grid-template-columns: 1fr;
   }
 }

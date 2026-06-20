@@ -1,0 +1,263 @@
+/* ============================================================
+   AI ASSISTANT — modal chat widget. No original CSS existed for
+   this component; built from scratch on the same token system
+   as the rest of the site (dark base, signal-green accent,
+   mono for system labels, Inter for conversational text).
+   ============================================================ */
+
+.ai-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(10, 14, 20, 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.ai-card {
+  width: 100%;
+  max-width: 460px;
+  max-height: min(640px, 86vh);
+  display: flex;
+  flex-direction: column;
+  background: #11161f;
+  border: 1px solid rgba(237, 239, 243, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+/* ---------- Header ---------- */
+
+.ai-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(237, 239, 243, 0.07);
+  flex: 0 0 auto;
+}
+
+.ai-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.ai-title h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #edeff3;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.ai-glow-icon {
+  color: #3ddc84;
+}
+
+.ai-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #6b7383;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.ai-close-btn:hover {
+  background: rgba(237, 239, 243, 0.06);
+  color: #edeff3;
+}
+
+/* ---------- Chat body ---------- */
+
+.ai-chat-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(237, 239, 243, 0.15) transparent;
+}
+
+.ai-chat-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ai-chat-body::-webkit-scrollbar-thumb {
+  background: rgba(237, 239, 243, 0.12);
+  border-radius: 3px;
+}
+
+.chat-bubble-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  max-width: 88%;
+}
+
+.chat-bubble-container.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.1rem;
+}
+
+.chat-bubble-container.bot .avatar {
+  background: rgba(61, 220, 132, 0.12);
+  color: #3ddc84;
+}
+
+.chat-bubble-container.user .avatar {
+  background: rgba(237, 239, 243, 0.08);
+  color: #c2c8d2;
+}
+
+.chat-bubble {
+  padding: 0.7rem 0.95rem;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.chat-bubble-container.bot .chat-bubble {
+  background: rgba(237, 239, 243, 0.04);
+  border: 1px solid rgba(237, 239, 243, 0.07);
+  color: #c2c8d2;
+  border-top-left-radius: 4px;
+}
+
+.chat-bubble-container.user .chat-bubble {
+  background: rgba(61, 220, 132, 0.12);
+  border: 1px solid rgba(61, 220, 132, 0.2);
+  color: #edeff3;
+  border-top-right-radius: 4px;
+}
+
+.chat-bubble p {
+  margin: 0;
+}
+
+.chat-bubble p + p {
+  margin-top: 0.3rem;
+}
+
+/* ---------- Suggestions ---------- */
+
+.ai-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0 1.25rem 1rem;
+  flex: 0 0 auto;
+}
+
+.suggestion-chip {
+  padding: 0.45rem 0.85rem;
+  background: rgba(237, 239, 243, 0.03);
+  border: 1px solid rgba(237, 239, 243, 0.09);
+  border-radius: 20px;
+  color: #9aa3b2;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.suggestion-chip:hover {
+  border-color: rgba(61, 220, 132, 0.4);
+  color: #3ddc84;
+  background: rgba(61, 220, 132, 0.06);
+}
+
+/* ---------- Input form ---------- */
+
+.ai-input-form {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid rgba(237, 239, 243, 0.07);
+  flex: 0 0 auto;
+}
+
+.ai-input-form input {
+  flex: 1 1 auto;
+  background: rgba(237, 239, 243, 0.04);
+  border: 1px solid rgba(237, 239, 243, 0.1);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  color: #edeff3;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.ai-input-form input::placeholder {
+  color: #4b5263;
+}
+
+.ai-input-form input:focus {
+  border-color: rgba(61, 220, 132, 0.5);
+}
+
+.ai-send-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  background: #3ddc84;
+  color: #0a0e14;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.ai-send-btn:hover {
+  background: #57e89a;
+}
+
+.ai-send-btn:active {
+  transform: scale(0.94);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 480px) {
+  .ai-modal-overlay {
+    padding: 0.75rem;
+    align-items: flex-end;
+  }
+  .ai-card {
+    max-height: 80vh;
+    border-radius: 16px 16px 12px 12px;
+  }
+}

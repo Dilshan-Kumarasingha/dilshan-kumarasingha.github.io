@@ -34,14 +34,21 @@ function Skills() {
       <div className="skills-inner">
         <motion.div
           className="section-header"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          <span className="section-eyebrow">Capabilities</span>
-          <h2 className="section-title">What I work with</h2>
-          <p className="section-sub">Proven across banking systems, real-time platforms, and full QA automation pipelines.</p>
+          <span className="section-eyebrow">
+            <span className="eyebrow-bracket">{'//'}</span> Capabilities
+          </span>
+          <h2 className="section-title">
+            What I <span className="title-accent">work with</span>
+          </h2>
+          <p className="section-sub">
+            Proven across banking systems, real-time platforms, and full QA
+            automation pipelines.
+          </p>
         </motion.div>
 
         <div className="skills-grid">
@@ -49,15 +56,26 @@ function Skills() {
             <motion.div
               key={group.category}
               className="skill-group"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{
+                type: 'spring',
+                stiffness: 100,
+                damping: 15,
+                delay: i * 0.05,
+              }}
+              whileHover={{ y: -4 }}
             >
-              <h3 className="skill-category">{group.category}</h3>
+              <div className="skill-category-row">
+                <h3 className="skill-category">{group.category}</h3>
+                <span className="skill-count">[{group.skills.length}]</span>
+              </div>
               <div className="skill-tags">
                 {group.skills.map((skill) => (
-                  <span key={skill} className="skill-tag">{skill}</span>
+                  <span key={skill} className="skill-tag">
+                    {skill}
+                  </span>
                 ))}
               </div>
             </motion.div>
