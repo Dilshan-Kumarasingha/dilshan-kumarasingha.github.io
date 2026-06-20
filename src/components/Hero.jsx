@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useReducedMotion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
 import { ArrowUpRight, Sparkles, Mail, Terminal } from 'lucide-react'
 import AIAssistant from './AIAssistant'
+import profilePhoto from '../assets/Profile 2.jpeg'
 import '../styles/Hero.css'
 
 const GithubIcon = () => (
@@ -173,73 +174,97 @@ function Hero() {
         initial="hidden"
         animate="visible"
       >
-        <motion.div className="hero-status-row" variants={itemVariants}>
-          <div className="hero-status-pill">
-            <Terminal size={13} className="status-pill-icon" />
-            <span className="status-pill-text">
-              run --target=hiring · colombo, lk
-            </span>
+        <div className="hero-columns">
+          <div className="hero-text-col">
+            <motion.div className="hero-status-row" variants={itemVariants}>
+              <div className="hero-status-pill">
+                <Terminal size={13} className="status-pill-icon" />
+                <span className="status-pill-text">
+                  run --target=hiring · colombo, lk
+                </span>
+              </div>
+              <TestRunnerBadge prefersReducedMotion={prefersReducedMotion} />
+            </motion.div>
+
+            <motion.div variants={itemVariants}>
+              <TypedHeadline prefersReducedMotion={prefersReducedMotion} />
+            </motion.div>
+
+            <motion.p className="hero-editorial-body" variants={itemVariants}>
+              Full-stack engineer with banking-grade discipline. I architect
+              high-throughput backends in Java, Spring Boot, and .NET Core,
+              then hold them accountable with the same QA automation rigor a
+              bank's release process demands.
+            </motion.p>
+
+            <motion.div className="hero-action-cluster" variants={itemVariants}>
+              <motion.a
+                href="#projects"
+                className="action-btn-primary"
+                whileHover={prefersReducedMotion ? {} : { y: -2 }}
+                whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+              >
+                <span>Explore Systems</span>
+                <ArrowUpRight size={16} className="action-btn-arrow" />
+              </motion.a>
+
+              <motion.button
+                className="action-btn-secondary"
+                onClick={() => setIsAiOpen(true)}
+                whileHover={prefersReducedMotion ? {} : { y: -2 }}
+                whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+              >
+                <Sparkles size={15} className="sparkles-icon" />
+                <span>Ask the Assistant</span>
+              </motion.button>
+            </motion.div>
+
+            <motion.div className="hero-utility-nav" variants={itemVariants}>
+              <a
+                href="https://github.com/Dilshan-Kumarasingha"
+                target="_blank"
+                rel="noreferrer"
+                className="nav-item"
+              >
+                <GithubIcon />
+                <span>GitHub</span>
+              </a>
+              <a
+                href="https://linkedin.com/in/dilshan-kumarasingha"
+                target="_blank"
+                rel="noreferrer"
+                className="nav-item"
+              >
+                <LinkedinIcon />
+                <span>LinkedIn</span>
+              </a>
+              <a href="mailto:dilshan.jkumarasingha@gmail.com" className="nav-item">
+                <Mail size={16} />
+                <span>Email</span>
+              </a>
+            </motion.div>
           </div>
-          <TestRunnerBadge prefersReducedMotion={prefersReducedMotion} />
-        </motion.div>
 
-        <motion.div variants={itemVariants}>
-          <TypedHeadline prefersReducedMotion={prefersReducedMotion} />
-        </motion.div>
-
-        <motion.p className="hero-editorial-body" variants={itemVariants}>
-          Full-stack engineer with banking-grade discipline. I architect
-          high-throughput backends in Java, Spring Boot, and .NET Core, then
-          hold them accountable with the same QA automation rigor a bank's
-          release process demands.
-        </motion.p>
-
-        <motion.div className="hero-action-cluster" variants={itemVariants}>
-          <motion.a
-            href="#projects"
-            className="action-btn-primary"
-            whileHover={prefersReducedMotion ? {} : { y: -2 }}
-            whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
-          >
-            <span>Explore Systems</span>
-            <ArrowUpRight size={16} className="action-btn-arrow" />
-          </motion.a>
-
-          <motion.button
-            className="action-btn-secondary"
-            onClick={() => setIsAiOpen(true)}
-            whileHover={prefersReducedMotion ? {} : { y: -2 }}
-            whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
-          >
-            <Sparkles size={15} className="sparkles-icon" />
-            <span>Ask the Assistant</span>
-          </motion.button>
-        </motion.div>
-
-        <motion.div className="hero-utility-nav" variants={itemVariants}>
-          <a
-            href="https://github.com/Dilshan-Kumarasingha"
-            target="_blank"
-            rel="noreferrer"
-            className="nav-item"
-          >
-            <GithubIcon />
-            <span>GitHub</span>
-          </a>
-          <a
-            href="https://linkedin.com/in/dilshan-kumarasingha"
-            target="_blank"
-            rel="noreferrer"
-            className="nav-item"
-          >
-            <LinkedinIcon />
-            <span>LinkedIn</span>
-          </a>
-          <a href="mailto:dilshan.jkumarasingha@gmail.com" className="nav-item">
-            <Mail size={16} />
-            <span>Email</span>
-          </a>
-        </motion.div>
+          <motion.div className="hero-photo-col" variants={itemVariants}>
+            <div className="photo-terminal-frame">
+              <div className="photo-terminal-titlebar">
+                <span className="photo-terminal-dot dot-red" />
+                <span className="photo-terminal-dot dot-amber" />
+                <span className="photo-terminal-dot dot-green" />
+                <span className="photo-terminal-filename">
+                  dilshan.jpeg
+                </span>
+              </div>
+              <div className="photo-terminal-body">
+                <img
+                  src={profilePhoto}
+                  alt="Dilshan Kumarasingha"
+                  className="hero-photo-img"
+                />
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </motion.div>
 
       <motion.div

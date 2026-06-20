@@ -66,11 +66,25 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 840px;
+  max-width: 1080px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
+}
+
+.hero-columns {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 4rem;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* ---------- Status row + test-runner badge (signature element) ---------- */
@@ -157,6 +171,76 @@
   max-width: 640px;
   letter-spacing: -0.005em;
   margin-bottom: 2.75rem;
+}
+
+/* ---------- Photo column: framed like a terminal window ---------- */
+
+.hero-photo-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.photo-terminal-frame {
+  width: 100%;
+  max-width: 340px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #11161f;
+  border: 1px solid rgba(237, 239, 243, 0.1);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55),
+    0 0 60px rgba(61, 220, 132, 0.06);
+}
+
+.photo-terminal-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  background: rgba(237, 239, 243, 0.03);
+  border-bottom: 1px solid rgba(237, 239, 243, 0.07);
+}
+
+.photo-terminal-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.dot-red {
+  background: #ff5d5d;
+}
+
+.dot-amber {
+  background: #e8b339;
+}
+
+.dot-green {
+  background: #3ddc84;
+}
+
+.photo-terminal-filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: #6b7383;
+  margin-left: 0.4rem;
+}
+
+.photo-terminal-body {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #0a0e14;
+}
+
+.hero-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.92) contrast(1.04);
 }
 
 /* ---------- Actions ---------- */
@@ -336,6 +420,24 @@
   .hero {
     padding: 6rem 1.5rem 5.5rem;
     justify-content: flex-start;
+  }
+
+  .hero-columns {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .hero-text-col {
+    order: 1;
+  }
+
+  .hero-photo-col {
+    order: 2;
+  }
+
+  .photo-terminal-frame {
+    max-width: 280px;
+    margin: 0 auto;
   }
 
   .hero-status-row {
