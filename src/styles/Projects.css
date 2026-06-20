@@ -1,8 +1,9 @@
 /* ============================================================
-   PROJECTS — table/ledger layout retained from original draft
-   (it was the right structural idea), rebuilt on the build-log
-   token system. Signature: highlights render as a passing test
-   suite readout, animated check-by-check on scroll.
+   PROJECTS — table/ledger layout retained (it was the right
+   structural idea), now scroll-driven to match the About section's
+   mechanism: each row reads its own scroll progress and every
+   element inside responds to that, instead of firing on a timer.
+   Signature: highlights render as annotated source comments.
    ============================================================ */
 
 .portfolio-projects-section {
@@ -102,13 +103,13 @@
   width: 100%;
   box-sizing: border-box;
   align-items: start;
-  transition: background-color 0.3s ease;
 }
 
 .project-primary-details-panel {
   display: flex;
   flex-direction: column;
   text-align: left;
+  will-change: transform, opacity;
 }
 
 .project-classification-meta {
@@ -163,51 +164,51 @@
   max-width: 560px;
 }
 
-/* ---------- Test suite readout (signature element) ---------- */
+/* ---------- Annotated block (highlights, redesigned) ----------
+   Reads as a source comment block rather than a test-result panel:
+   a "key decisions" label followed by slash-slash prefixed lines ---------- */
 
-.project-test-suite-readout {
+.project-annotated-block {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.6rem;
   margin: 1.85rem 0;
   padding: 1.1rem 1.2rem;
   background: rgba(237, 239, 243, 0.02);
-  border: 1px solid rgba(237, 239, 243, 0.07);
-  border-radius: 8px;
+  border-left: 2px solid rgba(61, 220, 132, 0.3);
+  border-radius: 0 8px 8px 0;
 }
 
-.test-suite-label {
+.annotated-block-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   color: #4b5263;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.35rem;
 }
 
-.test-suite-line {
+.annotated-block-bracket {
+  color: #3a4150;
+}
+
+.annotated-line {
   display: flex;
   align-items: flex-start;
-  gap: 0.7rem;
-  font-size: 0.92rem;
-  color: #9aa3b2;
-  line-height: 1.5;
+  gap: 0.65rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  will-change: transform, opacity;
 }
 
-.test-suite-check {
+.annotated-line-marker {
   flex: 0 0 auto;
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-  background: rgba(61, 220, 132, 0.12);
   color: #3ddc84;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.15rem;
+  opacity: 0.7;
 }
 
-.test-suite-text {
+.annotated-line-text {
+  font-family: 'Inter', sans-serif;
   color: #9aa3b2;
   text-align: left;
 }
@@ -242,6 +243,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  will-change: transform, opacity;
 }
 
 .ecosystem-sidebar-heading {
@@ -275,6 +277,7 @@
   font-family: 'JetBrains Mono', monospace;
   white-space: nowrap;
   transition: border-color 0.2s ease, color 0.2s ease;
+  will-change: transform, opacity;
 }
 
 .ecosystem-badge-token:hover {
