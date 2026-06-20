@@ -1,9 +1,8 @@
 /* ============================================================
    SKILLS — category cards retained from original (good bones),
-   rebuilt on the build-log token system. Signature: each card
-   header carries a mono "coverage count" like an array length,
-   a small wink that this is a developer's own taxonomy of
-   their tools, not a generic tag cloud.
+   rebuilt on the build-log token system. Each technology inside
+   a category now carries its own animated proficiency bar, fill
+   color scaling from dim to bright accent green with the level.
    ============================================================ */
 
 .skills {
@@ -109,7 +108,7 @@
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.5rem;
 }
 
 .skill-category {
@@ -134,34 +133,53 @@
   color: #6b7383;
 }
 
-.skill-tags {
+/* ---------- Skill bars ---------- */
+
+.skill-bars {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.skill-tag {
-  padding: 0.35rem 0.75rem;
-  background: rgba(237, 239, 243, 0.02);
-  border: 1px solid rgba(237, 239, 243, 0.07);
-  border-radius: 6px;
+.skill-bar-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.skill-bar-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.skill-bar-name {
   font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  color: #c2c8d2;
+  font-size: 0.82rem;
   font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #c2c8d2;
 }
 
-.skill-group:hover .skill-tag {
-  color: #9aa3b2;
-  border-color: rgba(237, 239, 243, 0.05);
+.skill-bar-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  flex: 0 0 auto;
 }
 
-.skill-group .skill-tag:hover {
-  color: #edeff3 !important;
-  background: rgba(61, 220, 132, 0.1);
-  border-color: rgba(61, 220, 132, 0.35);
-  transform: translateY(-1px);
+.skill-bar-track {
+  position: relative;
+  width: 100%;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(237, 239, 243, 0.06);
+  overflow: hidden;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  border-radius: 3px;
 }
 
 /* ---------- Responsive ---------- */

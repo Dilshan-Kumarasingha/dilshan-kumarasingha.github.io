@@ -54,7 +54,8 @@ function TestRunnerBadge({ prefersReducedMotion }) {
   )
 }
 
-
+// Headline that types itself out character by character, CI-log style,
+// then leaves a blinking cursor on the final word.
 function TypedHeadline({ prefersReducedMotion }) {
   const fullText = 'Builds the system. Breaks it on purpose. Ships it proven.'
   const [shown, setShown] = useState(prefersReducedMotion ? fullText.length : 0)
