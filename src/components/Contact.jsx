@@ -1,10 +1,9 @@
-import { useRef } from 'react'
-import { motion, useReducedMotion, useInView, useMotionValue, useSpring } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { motion, useReducedMotion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import { Mail } from 'lucide-react'
 import '../styles/Contact.css'
 
-// Inline SVG keeps this independent of whatever lucide-react version is installed.
-const LinkedinIcon = ({ size = 18 }) => (
+const LinkedinIcon = ({ size = 14 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -12,7 +11,7 @@ const LinkedinIcon = ({ size = 18 }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
+    strokeWidth="2.5"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
@@ -22,7 +21,7 @@ const LinkedinIcon = ({ size = 18 }) => (
   </svg>
 )
 
-const GithubIcon = ({ size = 16 }) => (
+const GithubIcon = ({ size = 13 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -30,7 +29,7 @@ const GithubIcon = ({ size = 16 }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
+    strokeWidth="2.5"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
@@ -39,227 +38,195 @@ const GithubIcon = ({ size = 16 }) => (
   </svg>
 )
 
-// The deploy log script. Each line carries its own delay (seconds from
-// sequence start) and a "kind" that controls styling: plain run lines,
-// pass checks, and the final ready state.
-const DEPLOY_LOG = [
-  { text: 'Running final checks…', kind: 'run', delay: 0 },
-  { text: 'All tests passed', kind: 'pass', delay: 0.55 },
-  { text: 'Build verified', kind: 'pass', delay: 0.95 },
-  { text: 'Deploying contact channel…', kind: 'run', delay: 1.4 },
-  { text: 'Ready to receive', kind: 'ready', delay: 2.0 },
-]
+export function Contact() {
+  const prefersReducedMotion = useReducedMotion()
+  const cardRef = useRef(null)
+  
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
 
-const TOTAL_SEQUENCE_S = 2.0
+  const springConfig = { damping: 45, stiffness: 280, mass: 0.5 }
+  const glowX = useSpring(mouseX, springConfig)
+  const glowY = useSpring(mouseY, springConfig)
 
-function LogLine({ line, started }) {
-  const icon = line.kind === 'pass' || line.kind === 'ready' ? '✓' : '›'
-  return (
-    <motion.div
-      className={`log-line log-line-${line.kind}`}
-      initial={{ opacity: 0, x: -6 }}
-      animate={started ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.35, delay: line.delay, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <span className="log-line-icon">{icon}</span>
-      <span className="log-line-text">{line.text}</span>
-    </motion.div>
-  )
-}
-
-// Terminal panel: plays the deploy log once when scrolled into view,
-// then settles into a steady "ready" state with a live pulse rather
-// than a blinking placeholder cursor.
-function DeployTerminal({ prefersReducedMotion }) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-80px' })
-  const started = prefersReducedMotion || isInView
-  const settledDelay = prefersReducedMotion ? 0 : TOTAL_SEQUENCE_S
-
-  return (
-    <div className="deploy-terminal" ref={ref}>
-      <div className="deploy-terminal-titlebar">
-        <span className="deploy-dot dot-red" />
-        <span className="deploy-dot dot-amber" />
-        <span className="deploy-dot dot-green" />
-        <span className="deploy-terminal-filename">deploy.log</span>
-      </div>
-      <div className="deploy-terminal-body">
-        {DEPLOY_LOG.map((line) => (
-          <LogLine key={line.text} line={line} started={started} />
-        ))}
-
-        <motion.div
-          className="deploy-status-row"
-          initial={{ opacity: 0 }}
-          animate={started ? { opacity: 1 } : {}}
-          transition={{ delay: settledDelay + 0.3, duration: 0.5 }}
-        >
-          <span className="deploy-status-pulse" aria-hidden="true">
-            <motion.span
-              className="deploy-status-pulse-core"
-              animate={prefersReducedMotion ? {} : { opacity: [1, 0.5, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            />
-          </span>
-          <span className="deploy-status-text">open to opportunities</span>
-        </motion.div>
-      </div>
-    </div>
-  )
-}
-
-// Magnetic wrapper for the primary CTA — gently pulls toward the
-// cursor within a small radius, springs back on mouse leave. Echoes
-// the same device used on the Hero's primary button, tying the page
-// together at open and close.
-function MagneticLink({ children, prefersReducedMotion, className, ...props }) {
-  const ref = useRef(null)
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const springX = useSpring(x, { stiffness: 200, damping: 18 })
-  const springY = useSpring(y, { stiffness: 200, damping: 18 })
+  const rotateX = useTransform(mouseY, [-250, 250], [3.5, -3.5])
+  const rotateY = useTransform(mouseX, [-450, 450], [-4, 4])
+  
+  const springRotateX = useSpring(rotateX, springConfig)
+  const springRotateY = useSpring(rotateY, springConfig)
 
   const handleMouseMove = (e) => {
-    if (prefersReducedMotion || !ref.current) return
-    const rect = ref.current.getBoundingClientRect()
-    x.set((e.clientX - (rect.left + rect.width / 2)) * 0.25)
-    y.set((e.clientY - (rect.top + rect.height / 2)) * 0.25)
+    if (!cardRef.current || prefersReducedMotion) return
+    const rect = cardRef.current.getBoundingClientRect()
+    mouseX.set(e.clientX - (rect.left + rect.width / 2))
+    mouseY.set(e.clientY - (rect.top + rect.height / 2))
   }
 
   const handleMouseLeave = () => {
-    x.set(0)
-    y.set(0)
+    mouseX.set(0)
+    mouseY.set(0)
   }
 
   return (
-    <motion.a
-      ref={ref}
-      className={className}
-      style={prefersReducedMotion ? undefined : { x: springX, y: springY }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      {...props}
-    >
-      {children}
-    </motion.a>
-  )
-}
-
-function Contact() {
-  const prefersReducedMotion = useReducedMotion()
-
-  // Contact actions reveal slightly after the deploy log starts
-  // resolving, so the card reads as output from the sequence rather
-  // than an independent block animating in parallel.
-  const revealDelay = prefersReducedMotion ? 0 : TOTAL_SEQUENCE_S * 0.55
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 18 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, delay: revealDelay, ease: [0.16, 1, 0.3, 1] },
-    },
-  }
-
-  const actionVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 12 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        delay: revealDelay + 0.15 + i * 0.08,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    }),
-  }
-
-  return (
-    <section className="contact" id="contact">
-      <div className="contact-inner">
-        <span className="section-eyebrow">
-          <span className="eyebrow-bracket">{'//'}</span> Contact
-        </span>
-
-        <div className="contact-split">
-          <DeployTerminal prefersReducedMotion={prefersReducedMotion} />
-
+    <section className="apple-contact-section" id="contact">
+      <div className="apple-contact-container">
+        <span className="apple-contact-eyebrow">Connection Workspace</span>
+        
+        <div className="apple-contact-split">
+          
+          {/* macOS Window Frame Card */}
           <motion.div
-            className="contact-card"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-            variants={cardVariants}
+            ref={cardRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{
+              rotateX: springRotateX,
+              rotateY: springRotateY,
+              transformStyle: 'preserve-3d',
+            }}
+            className="apple-diagnostics-window"
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="contact-title">Let's build something that holds.</h2>
-            <p className="contact-sub">
-              Open to full-stack and QA engineering roles at enterprise
-              software companies. Based in Colombo — available immediately.
-            </p>
+            {!prefersReducedMotion && (
+              <motion.div 
+                className="apple-window-specular-pass"
+                style={{
+                  background: useTransform(
+                    [glowX, glowY],
+                    ([latestX, latestY]) => `radial-gradient(380px circle at ${latestX + 240}px ${latestY + 180}px, rgba(255, 255, 255, 0.06), transparent 70%)`
+                  )
+                }}
+              />
+            )}
 
-            <div className="contact-actions">
-              <motion.div
-                custom={0}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-80px' }}
-                variants={actionVariants}
-              >
-                <MagneticLink
-                  href="mailto:dilshan.jkumarasingha@gmail.com"
-                  className="btn-primary contact-btn"
-                  prefersReducedMotion={prefersReducedMotion}
-                >
-                  <Mail size={18} />
-                  dilshan.jkumarasingha@gmail.com
-                </MagneticLink>
-              </motion.div>
+            <div className="window-header-ui">
+              <div className="window-controls-dot">
+                <span className="dot dot-close" />
+                <span className="dot dot-minimize" />
+                <span className="dot dot-expand" />
+              </div>
+              <span className="window-system-title">terminal — diagnostics.sh</span>
+            </div>
 
-              <motion.div
-                custom={1}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-80px' }}
-                variants={actionVariants}
-              >
+            <div className="window-terminal-body">
+              <div className="terminal-shell-line">
+                <span className="shell-prompt">guest@portfolio ~ %</span>
+                <span className="shell-command"> ./get_network_coordinates.sh</span>
+              </div>
+              
+              <div className="terminal-payload-output">
+                <p className="payload-title">// PERSISTENT COMMS MATRIX</p>
+                <div className="payload-row">
+                  <span className="payload-key">LOC:</span>
+                  <span className="payload-val">Colombo, LK (UTC +05:30)</span>
+                </div>
+                <div className="payload-row">
+                  <span className="payload-key">AVAILABILITY:</span>
+                  <span className="payload-val token-success">Active // Remote Ops</span>
+                </div>
+                <div className="payload-row">
+                  <span className="payload-key">ROLES:</span>
+                  <span className="payload-val">Full-Stack Dev / QA Automation</span>
+                </div>
+              </div>
+
+              <div className="terminal-system-status">
+                <div className="status-ping-beacon">
+                  <span className="beacon-core" />
+                  <span className="beacon-wave" />
+                </div>
+                <span className="status-message">Listening for webhooks...</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Form Card */}
+          <motion.div
+            className="apple-dispatch-card"
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="dispatch-header-group">
+              <h3 className="dispatch-card-heading">Initiate Transmission</h3>
+              <p className="dispatch-card-description">
+                Drop an architectural query below to push a record into my workspace logs.
+              </p>
+            </div>
+
+            <form className="apple-dispatch-form" onSubmit={(e) => e.preventDefault()}>
+              <div className="form-input-container">
+                <input 
+                  type="text" 
+                  id="sender-identity" 
+                  required 
+                  placeholder=" "
+                  className="apple-form-field"
+                />
+                <label htmlFor="sender-identity" className="apple-form-label">Your Name</label>
+              </div>
+
+              <div className="form-input-container">
+                <input 
+                  type="email" 
+                  id="sender-endpoint" 
+                  required 
+                  placeholder=" "
+                  className="apple-form-field"
+                />
+                <label htmlFor="sender-endpoint" className="apple-form-label">Email Endpoint</label>
+              </div>
+
+              <div className="form-input-container">
+                <textarea 
+                  id="transmission-body" 
+                  rows={3} 
+                  required 
+                  placeholder=" "
+                  className="apple-form-field field-textarea"
+                />
+                <label htmlFor="transmission-body" className="apple-form-label">Message String</label>
+              </div>
+
+              <div className="form-actions-row">
+                <button type="submit" className="apple-action-btn-primary">
+                  <Mail size={14} />
+                  <span>Send Transmission</span>
+                </button>
+
                 <a
                   href="https://linkedin.com/in/dilshan-kumarasingha"
                   target="_blank"
                   rel="noreferrer"
-                  className="btn-ghost contact-btn"
+                  className="apple-action-btn-secondary"
                 >
-                  <LinkedinIcon size={18} />
-                  <span>LinkedIn Profile</span>
+                  <LinkedinIcon size={14} />
+                  <span>LinkedIn Link</span>
                 </a>
-              </motion.div>
-            </div>
+              </div>
+            </form>
 
-            <motion.div
-              className="contact-links"
-              custom={2}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-80px' }}
-              variants={actionVariants}
-            >
+            <div className="apple-alternative-routes">
               <a
                 href="https://github.com/Dilshan-Kumarasingha"
                 target="_blank"
                 rel="noreferrer"
-                className="contact-link"
+                className="apple-sub-archival-link"
               >
-                <GithubIcon size={15} />
-                <span>GitHub</span>
+                <GithubIcon size={13} />
+                <span>Repository Archive</span>
               </a>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
 
-        <div className="footer-note">
-          <span>Dilshan Kumarasingha</span>
-          <span>Built with React and Framer Motion</span>
+        <div className="apple-footer-metadata">
+          <span className="metadata-copyright">&copy; 2026 Dilshan Kumarasingha. All rights reserved.</span>
+          <span className="metadata-spec">Engineered via Core React Ecosystem &bull; Framework Architecture</span>
         </div>
       </div>
     </section>

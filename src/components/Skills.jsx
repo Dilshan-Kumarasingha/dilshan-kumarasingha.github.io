@@ -2,11 +2,6 @@ import { useState, useMemo } from 'react'
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
 import '../styles/Skills.css'
 
-// Source data kept as raw 0-100 working estimates — same honest
-// self-assessment as before — but the UI never shows the number.
-// Instead each skill is bucketed into one of three defensible tiers.
-// Thresholds: Core = what I'd lead with, Working = solid and
-// shippable, Familiar = real exposure, not deep expertise.
 const RAW_SKILLS = {
   Backend: [
     { name: 'C#', level: 72 },
@@ -62,9 +57,6 @@ function tierFor(level) {
   return 'familiar'
 }
 
-// Flatten into a single list of { name, category, tier } and group
-// by category for rendering, with skills sorted by tier rank inside
-// each category so the strongest skills surface first.
 const SKILLS = Object.entries(RAW_SKILLS).flatMap(([category, list]) =>
   list.map((s) => ({ ...s, category, tier: tierFor(s.level) }))
 )
@@ -83,50 +75,59 @@ function groupAndSort(skills) {
   return byCategory
 }
 
-// Three-dot tier indicator. Filled dot count = tier rank. Replaces
-// the percentage bar — communicates relative strength without
-// claiming a precision that was never real to begin with.
-function TierDots({ tier }) {
+function VisualTierIndicator({ tier }) {
   const rank = TIERS[tier].rank
   return (
-    <span className={`tier-dots tier-dots-${tier}`} aria-hidden="true">
-      {[1, 2, 3].map((i) => (
-        <span key={i} className={`tier-dot ${i <= rank ? 'tier-dot-filled' : ''}`} />
+    <div className="apple-tier-indicator-bar-wrap" aria-hidden="true">
+      {[1, 2, 3].map((step) => (
+        <span 
+          key={step} 
+          className={`apple-indicator-step ${step <= rank ? `step-active-${tier}` : ''}`} 
+        />
       ))}
-    </span>
+    </div>
   )
 }
 
 function SkillRow({ skill, index, prefersReducedMotion }) {
   return (
     <motion.div
-      className="skill-row"
-      layout
-      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 6 }}
+      className="apple-skill-row"
+      layout="position"
+      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 12 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -6 }}
-      transition={{ duration: 0.3, delay: prefersReducedMotion ? 0 : index * 0.025, ease: [0.16, 1, 0.3, 1] }}
+      exit={{ opacity: 0, scale: 0.98 }}
+      transition={{ 
+        type: 'spring',
+        stiffness: 400,
+        damping: 38,
+        delay: prefersReducedMotion ? 0 : index * 0.012 
+      }}
     >
-      <span className="skill-row-name">{skill.name}</span>
-      <span className="skill-row-meta">
-        <span className={`skill-row-tier-label tier-text-${skill.tier}`}>
+      <span className="apple-skill-name">{skill.name}</span>
+      <div className="apple-skill-meta">
+        <span className={`apple-skill-badge label-tier-${skill.tier}`}>
           {TIERS[skill.tier].label}
         </span>
-        <TierDots tier={skill.tier} />
-      </span>
+        <VisualTierIndicator tier={skill.tier} />
+      </div>
     </motion.div>
   )
 }
 
-function CategoryBlock({ category, skills, prefersReducedMotion }) {
+function CategoryBlock({ category, skills, prefersReducedMotion, isSolo }) {
   return (
-    <div className="category-block">
-      <div className="category-block-header">
-        <h3 className="category-block-title">{category}</h3>
-        <span className="category-block-count">[{skills.length}]</span>
+    <motion.div 
+      layout
+      transition={{ type: 'spring', stiffness: 350, damping: 34 }}
+      className={`apple-category-card ${isSolo ? 'card-solo-focus' : ''}`}
+    >
+      <div className="apple-category-header">
+        <h3 className="apple-category-title">{category}</h3>
+        <span className="apple-category-count">{skills.length}</span>
       </div>
-      <div className="category-block-rows">
-        <AnimatePresence mode="popLayout">
+      <div className="apple-category-rows-container">
+        <AnimatePresence mode="popLayout" initial={false}>
           {skills.map((skill, idx) => (
             <SkillRow
               key={skill.name}
@@ -137,7 +138,7 @@ function CategoryBlock({ category, skills, prefersReducedMotion }) {
           ))}
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -156,88 +157,84 @@ function Skills() {
   const grouped = useMemo(() => groupAndSort(visibleSkills), [visibleSkills])
   const categoryOrder =
     activeCategory === 'All' ? Object.keys(RAW_SKILLS) : [activeCategory]
+  
+  const isSoloActive = activeCategory !== 'All'
 
   return (
-    <section className="skills" id="skills">
-      <div className="skills-inner">
+    <section className="apple-skills-section" id="skills">
+      <div className="apple-skills-container">
         <motion.div
-          className="section-header"
-          initial={{ opacity: 0, y: 15 }}
+          className="apple-skills-header-block"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="section-eyebrow">
-            <span className="eyebrow-bracket">{'//'}</span> Capabilities
-          </span>
-          <h2 className="section-title">
-            What I <span className="title-accent">work with</span>
+          <span className="apple-skills-eyebrow">Technical Competencies</span>
+          <h2 className="apple-skills-title">
+            Engineered Toolkit. <span className="text-muted-grey">Calibrated for scale.</span>
           </h2>
-          <p className="section-sub">
-            Primary stack is C# / ASP.NET Core with React on the frontend,
-            proven across real-time platforms and automated SLA engines.
-            Tiers reflect honest working proficiency — Core is what I'd
-            lead with, Familiar is real exposure without deep mastery.
+          <p className="apple-skills-subhead">
+            Primary specialization centered around high-integrity enterprise ecosystems built with C# and ASP.NET Core, complemented by performant React client interfaces.
           </p>
         </motion.div>
 
-        <motion.div
-          className="tier-legend"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          {Object.entries(TIERS)
-            .sort((a, b) => b[1].rank - a[1].rank)
-            .map(([key, tier]) => (
-              <span className="tier-legend-item" key={key}>
-                <TierDots tier={key} />
-                <span className={`tier-legend-label tier-text-${key}`}>{tier.label}</span>
-              </span>
-            ))}
-        </motion.div>
+        {/* Native macOS/iOS Segments Track */}
+        <div className="apple-segmented-outer-wrapper">
+          <motion.div
+            className="apple-segmented-controls-container"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="apple-segmented-track" role="tablist" aria-label="Filter skill matrix">
+              {CATEGORIES.map((cat) => {
+                const isActive = activeCategory === cat
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    className={`apple-segmented-item ${isActive ? 'item-active' : ''}`}
+                    onClick={() => setActiveCategory(cat)}
+                  >
+                    <span className="apple-segmented-label-text">{cat}</span>
+                    {isActive && !prefersReducedMotion && (
+                      <motion.div 
+                        className="apple-segmented-active-thumb" 
+                        layoutId="activeSegmentIndicator"
+                        transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                      />
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </motion.div>
+        </div>
 
+        {/* Re-engineered Canvas Layout Container */}
         <motion.div
-          className="category-filter-row"
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-          role="tablist"
-          aria-label="Filter skills by category"
+          layout
+          className={`apple-skills-layout-wrapper ${
+            isSoloActive ? 'solo-active-layout' : 'multi-columns-masonry'
+          }`}
         >
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              type="button"
-              role="tab"
-              aria-selected={activeCategory === cat}
-              className={`category-filter-btn ${activeCategory === cat ? 'category-filter-btn-active' : ''}`}
-              onClick={() => setActiveCategory(cat)}
-            >
-              {cat}
-            </button>
-          ))}
-        </motion.div>
-
-        <motion.div
-          className="skills-spec-sheet"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        >
-          {categoryOrder.map((category) =>
-            grouped[category] ? (
-              <CategoryBlock
-                key={category}
-                category={category}
-                skills={grouped[category]}
-                prefersReducedMotion={prefersReducedMotion}
-              />
-            ) : null
-          )}
+          <AnimatePresence mode="popLayout" initial={false}>
+            {categoryOrder.map((category) =>
+              grouped[category] ? (
+                <CategoryBlock
+                  key={category}
+                  category={category}
+                  skills={grouped[category]}
+                  prefersReducedMotion={prefersReducedMotion}
+                  isSolo={isSoloActive}
+                />
+              ) : null
+            )}
+          </AnimatePresence>
         </motion.div>
       </div>
     </section>

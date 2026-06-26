@@ -17,7 +17,7 @@ function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 24)
+      setIsScrolled(window.scrollY > 20)
     }
     handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -35,8 +35,7 @@ function Navbar() {
       (entries) => {
         const visible = entries.filter((entry) => entry.isIntersecting)
         if (visible.length === 0) return
-        // If multiple sections intersect in the same batch, prefer the one
-        // closest to the top of the viewport for a deterministic result.
+        
         const topMost = visible.reduce((best, entry) =>
           entry.boundingClientRect.top < best.boundingClientRect.top
             ? entry
@@ -44,15 +43,13 @@ function Navbar() {
         )
         setActiveSection(topMost.target.id)
       },
-      { rootMargin: '-40% 0px -50% 0px', threshold: 0 }
+      { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
     )
 
     sections.forEach((section) => observer.observe(section))
     return () => observer.disconnect()
   }, [])
 
-  // Lock body scroll while the mobile panel is open, restore on close
-  // or unmount so we never leave the page stuck.
   useEffect(() => {
     if (isMenuOpen) {
       const previousOverflow = document.body.style.overflow
@@ -63,7 +60,6 @@ function Navbar() {
     }
   }, [isMenuOpen])
 
-  // Close on Escape, return focus to the toggle button for keyboard users.
   useEffect(() => {
     if (!isMenuOpen) return
     const handleKeyDown = (e) => {
@@ -78,71 +74,82 @@ function Navbar() {
 
   const closeMenu = () => setIsMenuOpen(false)
 
+  // Fluid transition adapter to close the mobile modal before navigating
+  const handleMobileLinkClick = (e, targetId) => {
+    e.preventDefault()
+    closeMenu()
+    
+    // Smooth scroll execution following frame close
+    setTimeout(() => {
+      const targetElement = document.getElementById(targetId)
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' })
+      }
+    }, 50)
+  }
+
   return (
     <motion.nav
-      className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}
-      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : -20 }}
+      className={`apple-navbar ${isScrolled ? 'apple-navbar-scrolled' : ''}`}
+      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : -10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
     >
-      <div className="navbar-inner">
-        <a href="#" className="navbar-logo" onClick={closeMenu}>
-          <span className="logo-bracket">{'<'}</span>
-          DK
-          <span className="logo-bracket">{'/>'}</span>
+      <div className="apple-navbar-inner">
+        <a href="#" className="apple-navbar-logo" onClick={closeMenu}>
+          Dilshan K.
         </a>
 
-        {/* ---------- Desktop links ---------- */}
-        <div className="navbar-links">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className={`nav-link ${
-                activeSection === item.id ? 'nav-link-active' : ''
-              }`}
-            >
-              {activeSection === item.id && (
-                <motion.span
-                  className="nav-link-dot"
-                  layoutId="nav-active-dot"
-                  aria-hidden="true"
-                  transition={
-                    prefersReducedMotion
-                      ? { duration: 0 }
-                      : { type: 'spring', stiffness: 380, damping: 32 }
-                  }
-                />
-              )}
-              {item.label}
-            </a>
-          ))}
-          <a href="#contact" className="nav-link contact-nav">
+        {/* ---------- Desktop Stack Navigation Links ---------- */}
+        <div className="apple-navbar-links">
+          <div className="apple-nav-pill-track">
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeSection === item.id
+              return (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`apple-nav-link ${isActive ? 'apple-nav-link-active' : ''}`}
+                >
+                  <span className="apple-nav-label-text">{item.label}</span>
+                  {isActive && !prefersReducedMotion && (
+                    <motion.span
+                      className="apple-nav-active-pill"
+                      layoutId="navActivePillIndicator"
+                      aria-hidden="true"
+                      transition={{ type: 'spring', stiffness: 380, damping: 35 }}
+                    />
+                  )}
+                </a>
+              )
+            })}
+          </div>
+          <a href="#contact" className="apple-contact-nav-btn">
             Hire Me
           </a>
         </div>
 
-        {/* ---------- Mobile menu toggle ---------- */}
+        {/* ---------- Mobile Menu System Toggle ---------- */}
         <button
           type="button"
           ref={menuButtonRef}
-          className={`menu-toggle ${isMenuOpen ? 'menu-toggle-open' : ''}`}
+          className={`apple-menu-toggle ${isMenuOpen ? 'apple-menu-toggle-open' : ''}`}
           onClick={() => setIsMenuOpen((open) => !open)}
           aria-expanded={isMenuOpen}
-          aria-controls="mobile-nav-panel"
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-controls="apple-mobile-nav-panel"
+          aria-label={isMenuOpen ? 'Close system menu' : 'Open system menu'}
         >
-          <span className="menu-toggle-bar" />
-          <span className="menu-toggle-bar" />
+          <span className="apple-toggle-bar" />
+          <span className="apple-toggle-bar" />
         </button>
       </div>
 
-      {/* ---------- Mobile slide-out panel ---------- */}
+      {/* ---------- iOS Style Push Overlay Sheet ---------- */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
             <motion.div
-              className="mobile-nav-backdrop"
+              className="apple-mobile-backdrop"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -151,46 +158,41 @@ function Navbar() {
               aria-hidden="true"
             />
             <motion.div
-              className="mobile-nav-panel"
-              id="mobile-nav-panel"
+              className="apple-mobile-panel"
+              id="apple-mobile-nav-panel"
               role="dialog"
               aria-modal="true"
-              aria-label="Site navigation"
-              initial={{ x: prefersReducedMotion ? 0 : '100%', opacity: prefersReducedMotion ? 0 : 1 }}
+              aria-label="Site navigation matrix"
+              initial={{ x: prefersReducedMotion ? 0 : '100%', opacity: prefersReducedMotion ? 1 : 0.95 }}
               animate={{ x: 0, opacity: 1 }}
-              exit={{ x: prefersReducedMotion ? 0 : '100%', opacity: prefersReducedMotion ? 0 : 1 }}
-              transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+              exit={{ x: prefersReducedMotion ? 0 : '100%', opacity: prefersReducedMotion ? 1 : 0.95 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
-              <span className="mobile-nav-eyebrow">
-                <span className="logo-bracket">{'//'}</span> navigate
-              </span>
-              <div className="mobile-nav-links">
+              <span className="apple-mobile-eyebrow">Navigation</span>
+              <div className="apple-mobile-links">
                 {NAV_ITEMS.map((item, idx) => (
                   <motion.a
                     key={item.id}
                     href={`#${item.id}`}
-                    className={`mobile-nav-link ${
-                      activeSection === item.id ? 'mobile-nav-link-active' : ''
+                    className={`apple-mobile-link ${
+                      activeSection === item.id ? 'apple-mobile-link-active' : ''
                     }`}
-                    onClick={closeMenu}
-                    initial={{ opacity: 0, x: prefersReducedMotion ? 0 : 16 }}
+                    onClick={(e) => handleMobileLinkClick(e, item.id)}
+                    initial={{ opacity: 0, x: prefersReducedMotion ? 0 : 12 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: prefersReducedMotion ? 0 : 0.1 + idx * 0.06, duration: 0.3 }}
+                    transition={{ delay: prefersReducedMotion ? 0 : 0.04 + idx * 0.04, duration: 0.3 }}
                   >
-                    <span className="mobile-nav-link-index">
-                      0{idx + 1}
-                    </span>
                     {item.label}
                   </motion.a>
                 ))}
               </div>
               <motion.a
                 href="#contact"
-                className="mobile-nav-cta"
-                onClick={closeMenu}
-                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 12 }}
+                className="apple-mobile-cta"
+                onClick={(e) => handleMobileLinkClick(e, 'contact')}
+                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: prefersReducedMotion ? 0 : 0.32, duration: 0.3 }}
+                transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: 0.3 }}
               >
                 Hire Me
               </motion.a>
