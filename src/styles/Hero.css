@@ -1,8 +1,8 @@
 /* ============================================================
-   HERO — Apple Split Side-by-Side Application Specification
+   HERO — Dashboard / Status Panel Application Specification
    ============================================================ */
 
-.apple-hero {
+.dash-hero {
   position: relative;
   min-height: 100vh;
   display: flex;
@@ -10,22 +10,34 @@
   align-items: center;
   justify-content: center;
   padding: 8rem 2rem 4rem;
-  background: #fbfbfd;
+  background: #0B0E14;
   overflow: hidden;
   box-sizing: border-box;
 }
 
-.apple-hero-frame {
+.dash-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 30% 40%, black 0%, transparent 70%);
+  mask-image: radial-gradient(ellipse 80% 60% at 30% 40%, black 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.dash-hero-frame {
   position: relative;
   width: 100%;
-  max-width: 1140px;
+  max-width: 1180px;
   margin: 0 auto;
   z-index: 2;
   will-change: transform, opacity;
 }
 
-/* ---------- Overflow Mask Reveal Utility ---------- */
-.apple-mask-overflow {
+.dash-mask-overflow {
   overflow: hidden;
   width: 100%;
   display: flex;
@@ -33,282 +45,389 @@
 }
 
 /* ---------- Split Grid Layout Structure ---------- */
-.apple-hero-split-container {
+.dash-hero-split-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 5rem;
+  gap: 4rem;
   width: 100%;
 }
 
-.apple-hero-left {
-  flex: 1.2;
-  max-width: 640px;
+.dash-hero-left {
+  flex: 1.15;
+  max-width: 620px;
   text-align: left;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.apple-hero-right {
-  flex: 0.8;
-  max-width: 440px;
+.dash-hero-right {
+  flex: 0.85;
+  max-width: 380px;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
-/* ---------- Left Column Typography Alignment ---------- */
-.apple-hero-eyebrow {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #86868b !important;
-  letter-spacing: 0.01em;
-  margin-bottom: 1.25rem;
-}
-
-.apple-hero-headline {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  color: #1d1d1f !important;
-  margin: 0 0 1.75rem 0;
-  text-align: left;
-}
-
-.apple-headline-word {
-  display: inline-block;
-}
-
-.apple-text-accent {
-  color: #86868b !important;
-  background: linear-gradient(180deg, #1d1d1f 0%, #86868b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.apple-hero-subhead {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: clamp(1.1rem, 1.5vw, 1.25rem);
-  font-weight: 400;
-  line-height: 1.47059;
-  color: #515154 !important;
-  max-width: 540px;
-  letter-spacing: -0.022em;
-  margin-bottom: 2.5rem;
-  text-align: left;
-}
-
-/* ---------- Left Column Actions & Social Anchors ---------- */
-.apple-hero-actions {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  margin-bottom: 2.5rem;
-}
-
-.apple-btn-primary {
+/* ---------- Status eyebrow (signature element) ---------- */
+.dash-status-line {
   display: inline-flex;
   align-items: center;
-  padding: 0.75rem 1.5rem;
-  background: #0071e3;
-  color: #ffffff !important;
-  border-radius: 980px;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  gap: 10px;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: #7C8694 !important;
+  background: #161B24;
+  border: 1px solid #232A36;
+  padding: 6px 14px 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+}
+
+.dash-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3DD68C;
+  box-shadow: 0 0 0 3px rgba(61, 214, 140, 0.15);
+  animation: dash-pulse 2.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes dash-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+.dash-status-line strong {
+  color: #3DD68C !important;
+  font-weight: 500;
+}
+
+.dash-status-sep {
+  color: #3A4150 !important;
+}
+
+/* ---------- Headline & subhead ---------- */
+.dash-hero-headline {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: #F2F3F5 !important;
+  margin: 0 0 1.6rem 0;
+  text-align: left;
+}
+
+.dash-headline-dim {
+  color: #4B5362 !important;
+}
+
+.dash-hero-subhead {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-size: 1.08rem;
   font-weight: 400;
-  font-size: 0.95rem;
+  line-height: 1.62;
+  color: #9AA3B0 !important;
+  max-width: 520px;
+  letter-spacing: -0.005em;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.dash-hero-subhead code {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.92em;
+  color: #C7CDD6 !important;
+  background: #161B24;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid #232A36;
+}
+
+/* ---------- Metric strip (real content, not decoration) ---------- */
+.dash-metric-strip {
+  display: flex;
+  gap: 2.2rem;
+  margin-bottom: 2.4rem;
+  padding-bottom: 2rem;
+  width: 100%;
+  border-bottom: 1px solid #1B212C;
+}
+
+.dash-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dash-metric-val {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #E8EAED !important;
+}
+
+.dash-metric-label {
+  font-size: 0.74rem;
+  color: #5C6573 !important;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Actions & social links ---------- */
+.dash-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.2rem;
+}
+
+.dash-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.8rem 1.5rem;
+  background: #3DD68C;
+  color: #07140E !important;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.92rem;
   text-decoration: none;
-  letter-spacing: -0.01em;
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.15);
+  letter-spacing: -0.005em;
   will-change: transform;
+  transition: background-color 0.2s ease;
 }
 
-.apple-chevron {
-  display: inline-block;
-  margin-left: 6px;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+.dash-btn-primary:hover {
+  background: #4FE89C;
 }
 
-.apple-btn-primary:hover .apple-chevron {
-  transform: translateX(3px);
+.dash-btn-primary svg {
+  flex-shrink: 0;
 }
 
-.apple-btn-secondary {
-  background: rgba(255, 255, 255, 0.8);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  border: 1px solid #d2d2d7;
-  color: #1d1d1f;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-weight: 400;
-  font-size: 0.95rem;
-  letter-spacing: -0.01em;
+.dash-btn-secondary {
+  background: transparent;
+  border: 1px solid #2A3140;
+  color: #C7CDD6 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.92rem;
+  letter-spacing: -0.005em;
   cursor: pointer;
-  padding: 0.75rem 1.5rem;
-  border-radius: 980px;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
   will-change: transform;
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.apple-btn-secondary:hover {
-  background: #ffffff;
-  border-color: #86868b;
+.dash-btn-secondary:hover {
+  border-color: #4B5362;
+  background: #131720;
 }
 
-.apple-hero-links {
+.dash-hero-links {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.6rem;
 }
 
-.apple-hero-social-link {
+.dash-hero-social-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  color: #0071e3;
+  gap: 6px;
+  color: #6E7787 !important;
   text-decoration: none;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 0.95rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-size: 0.88rem;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
+  transition: color 0.2s ease;
 }
 
-.apple-hero-social-link span {
-  position: relative;
+.dash-hero-social-link:hover {
+  color: #C7CDD6 !important;
 }
 
-.apple-hero-social-link span::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 1px;
-  bottom: 0;
-  left: 0;
-  background-color: #0071e3;
-  transform-origin: bottom right;
+.dash-hero-social-link svg {
+  stroke: currentColor;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.apple-hero-social-link:hover span::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
-
-.apple-hero-social-link svg {
-  stroke: #0071e3;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.apple-hero-social-link:hover svg {
+.dash-hero-social-link:hover svg {
   transform: translateY(-1px);
 }
 
-/* ---------- Right Column Hardware Photo Container ---------- */
-.apple-hero-photo-wrap {
+/* ---------- Right column: dashboard panel ---------- */
+.dash-panel {
   width: 100%;
-  display: flex;
-  justify-content: center;
+  background: #11151D;
+  border: 1px solid #1F2530;
+  border-radius: 14px;
+  overflow: hidden;
   will-change: transform, opacity;
 }
 
-.apple-hero-photo-frame {
-  width: 100%;
-  max-width: 380px;
-  border-radius: 28px;
+.dash-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #1F2530;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.72rem;
+  color: #5C6573 !important;
+}
+
+.dash-panel-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #3DD68C !important;
+}
+
+.dash-panel-live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #3DD68C;
+}
+
+.dash-photo-frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.03);
   will-change: transform;
 }
 
-.apple-hero-photo-img {
+.dash-photo-img {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
   display: block;
+  filter: grayscale(0.55) contrast(1.05) brightness(0.92);
 }
 
-/* ---------- Interface Scroll Marker ---------- */
-.apple-hero-scroll-cue {
+.dash-photo-frame::after {
+  content: '';
   position: absolute;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  z-index: 1;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 14, 20, 0) 55%, rgba(11, 14, 20, 0.85) 100%);
+  pointer-events: none;
 }
 
-.apple-hero-scroll-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #86868b;
+.dash-photo-caption {
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  right: 16px;
+  z-index: 2;
 }
 
-/* ---------- Responsive View Adapters ---------- */
+.dash-photo-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #F2F3F5 !important;
+}
+
+.dash-photo-role {
+  font-size: 0.76rem;
+  color: #9AA3B0 !important;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+}
+
+.dash-panel-foot {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.dash-panel-cell {
+  padding: 12px 16px;
+  border-top: 1px solid #1F2530;
+}
+
+.dash-panel-cell:first-child {
+  border-right: 1px solid #1F2530;
+}
+
+.dash-panel-k {
+  font-size: 0.68rem;
+  color: #5C6573 !important;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  margin-bottom: 3px;
+}
+
+.dash-panel-v {
+  font-size: 0.85rem;
+  color: #C7CDD6 !important;
+  font-weight: 500;
+}
+
+/* ---------- Responsive ---------- */
 @media (max-width: 960px) {
-  .apple-hero-split-container {
+  .dash-hero-split-container {
     gap: 3rem;
   }
 }
 
 @media (max-width: 768px) {
-  .apple-hero {
+  .dash-hero {
     padding: 7rem 1.5rem 4rem;
   }
 
-  .apple-mask-overflow {
+  .dash-mask-overflow {
     justify-content: center;
   }
 
-  .apple-hero-split-container {
+  .dash-hero-split-container {
     flex-direction: column;
-    gap: 4rem;
+    gap: 3rem;
     text-align: center;
   }
 
-  .apple-hero-left {
+  .dash-hero-left {
     max-width: 100%;
     align-items: center;
     text-align: center;
   }
 
-  .apple-hero-headline {
+  .dash-hero-headline {
     text-align: center;
-    font-size: clamp(2.2rem, 8vw, 3.2rem);
+    font-size: clamp(2.1rem, 8vw, 3rem);
   }
 
-  .apple-hero-subhead {
+  .dash-hero-subhead {
     text-align: center;
+    max-width: 100%;
   }
 
-  .apple-hero-actions {
+  .dash-metric-strip {
+    justify-content: center;
+    gap: 1.6rem;
+  }
+
+  .dash-hero-actions {
     flex-direction: column;
     gap: 0.85rem;
     width: 100%;
     max-width: 290px;
   }
 
-  .apple-btn-primary, 
-  .apple-btn-secondary {
+  .dash-btn-primary,
+  .dash-btn-secondary {
     width: 100%;
     justify-content: center;
     box-sizing: border-box;
     padding: 0.8rem 1.5rem;
   }
 
-  .apple-hero-right {
-    max-width: 320px;
+  .dash-hero-right {
+    max-width: 340px;
     width: 100%;
-  }
-  
-  .apple-hero-photo-frame {
-    border-radius: 20px;
   }
 }

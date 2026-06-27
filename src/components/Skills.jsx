@@ -75,41 +75,35 @@ function groupAndSort(skills) {
   return byCategory
 }
 
-function VisualTierIndicator({ tier }) {
-  const rank = TIERS[tier].rank
-  return (
-    <div className="apple-tier-indicator-bar-wrap" aria-hidden="true">
-      {[1, 2, 3].map((step) => (
-        <span 
-          key={step} 
-          className={`apple-indicator-step ${step <= rank ? `step-active-${tier}` : ''}`} 
-        />
-      ))}
-    </div>
-  )
-}
-
 function SkillRow({ skill, index, prefersReducedMotion }) {
   return (
     <motion.div
-      className="apple-skill-row"
+      className="dash-skill-row"
       layout="position"
-      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.98 }}
-      transition={{ 
-        type: 'spring',
-        stiffness: 400,
-        damping: 38,
-        delay: prefersReducedMotion ? 0 : index * 0.012 
+      initial={{ opacity: 0, clipPath: prefersReducedMotion ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)' }}
+      animate={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: prefersReducedMotion ? 0.2 : 0.5,
+        ease: [0.16, 1, 0.3, 1],
+        delay: prefersReducedMotion ? 0 : index * 0.05,
       }}
     >
-      <span className="apple-skill-name">{skill.name}</span>
-      <div className="apple-skill-meta">
-        <span className={`apple-skill-badge label-tier-${skill.tier}`}>
-          {TIERS[skill.tier].label}
-        </span>
-        <VisualTierIndicator tier={skill.tier} />
+      <div className="dash-skill-row-top">
+        <span className="dash-skill-name">{skill.name}</span>
+        <span className={`dash-skill-pct dash-pct-tier-${skill.tier}`}>{skill.level}%</span>
+      </div>
+      <div className="dash-bar-track">
+        <motion.div
+          className={`dash-bar-fill dash-bar-tier-${skill.tier}`}
+          initial={{ width: prefersReducedMotion ? `${skill.level}%` : '0%' }}
+          animate={{ width: `${skill.level}%` }}
+          transition={{
+            duration: prefersReducedMotion ? 0 : 0.9,
+            ease: [0.16, 1, 0.3, 1],
+            delay: prefersReducedMotion ? 0 : 0.15 + index * 0.05,
+          }}
+        />
       </div>
     </motion.div>
   )
@@ -117,16 +111,16 @@ function SkillRow({ skill, index, prefersReducedMotion }) {
 
 function CategoryBlock({ category, skills, prefersReducedMotion, isSolo }) {
   return (
-    <motion.div 
+    <motion.div
       layout
       transition={{ type: 'spring', stiffness: 350, damping: 34 }}
-      className={`apple-category-card ${isSolo ? 'card-solo-focus' : ''}`}
+      className={`dash-category-card ${isSolo ? 'dash-card-solo-focus' : ''}`}
     >
-      <div className="apple-category-header">
-        <h3 className="apple-category-title">{category}</h3>
-        <span className="apple-category-count">{skills.length}</span>
+      <div className="dash-category-header">
+        <h3 className="dash-category-title">{category}</h3>
+        <span className="dash-category-count">{String(skills.length).padStart(2, '0')}</span>
       </div>
-      <div className="apple-category-rows-container">
+      <div className="dash-category-rows-container">
         <AnimatePresence mode="popLayout" initial={false}>
           {skills.map((skill, idx) => (
             <SkillRow
@@ -157,38 +151,41 @@ function Skills() {
   const grouped = useMemo(() => groupAndSort(visibleSkills), [visibleSkills])
   const categoryOrder =
     activeCategory === 'All' ? Object.keys(RAW_SKILLS) : [activeCategory]
-  
+
   const isSoloActive = activeCategory !== 'All'
 
   return (
-    <section className="apple-skills-section" id="skills">
-      <div className="apple-skills-container">
+    <section className="dash-skills-section" id="skills">
+      <div className="dash-skills-container">
         <motion.div
-          className="apple-skills-header-block"
+          className="dash-skills-header-block"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="apple-skills-eyebrow">Technical Competencies</span>
-          <h2 className="apple-skills-title">
-            Engineered Toolkit. <span className="text-muted-grey">Calibrated for scale.</span>
+          <span className="dash-skills-eyebrow">
+            <span className="dash-eyebrow-dot" />
+            technical competencies
+          </span>
+          <h2 className="dash-skills-title">
+            Engineered toolkit. <span className="dash-text-muted">Calibrated for scale.</span>
           </h2>
-          <p className="apple-skills-subhead">
+          <p className="dash-skills-subhead">
             Primary specialization centered around high-integrity enterprise ecosystems built with C# and ASP.NET Core, complemented by performant React client interfaces.
           </p>
         </motion.div>
 
-        {/* Native macOS/iOS Segments Track */}
-        <div className="apple-segmented-outer-wrapper">
+        {/* Segmented filter track */}
+        <div className="dash-segmented-outer-wrapper">
           <motion.div
-            className="apple-segmented-controls-container"
+            className="dash-segmented-controls-container"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="apple-segmented-track" role="tablist" aria-label="Filter skill matrix">
+            <div className="dash-segmented-track" role="tablist" aria-label="Filter skill matrix">
               {CATEGORIES.map((cat) => {
                 const isActive = activeCategory === cat
                 return (
@@ -197,16 +194,18 @@ function Skills() {
                     type="button"
                     role="tab"
                     aria-selected={isActive}
-                    className={`apple-segmented-item ${isActive ? 'item-active' : ''}`}
+                    className={`dash-segmented-item ${isActive ? 'dash-item-active' : ''}`}
                     onClick={() => setActiveCategory(cat)}
                   >
-                    <span className="apple-segmented-label-text">{cat}</span>
+                    <span className="dash-segmented-label-text">{cat}</span>
                     {isActive && !prefersReducedMotion && (
-                      <motion.div 
-                        className="apple-segmented-active-thumb" 
+                      <motion.div
+                        className="dash-segmented-active-thumb"
                         layoutId="activeSegmentIndicator"
                         transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                      />
+                      >
+                        <span className="dash-segment-sweep" />
+                      </motion.div>
                     )}
                   </button>
                 )
@@ -215,11 +214,11 @@ function Skills() {
           </motion.div>
         </div>
 
-        {/* Re-engineered Canvas Layout Container */}
+        {/* Layout container */}
         <motion.div
           layout
-          className={`apple-skills-layout-wrapper ${
-            isSoloActive ? 'solo-active-layout' : 'multi-columns-masonry'
+          className={`dash-skills-layout-wrapper ${
+            isSoloActive ? 'dash-solo-active-layout' : 'dash-multi-columns-masonry'
           }`}
         >
           <AnimatePresence mode="popLayout" initial={false}>

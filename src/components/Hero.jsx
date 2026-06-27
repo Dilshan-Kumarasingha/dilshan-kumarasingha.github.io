@@ -18,6 +18,12 @@ const LinkedinIcon = () => (
   </svg>
 )
 
+const ArrowRightIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12h14M13 5l7 7-7 7" />
+  </svg>
+)
+
 function Hero() {
   const [isAiOpen, setIsAiOpen] = useState(false)
   const prefersReducedMotion = useReducedMotion()
@@ -28,17 +34,15 @@ function Hero() {
     offset: ['start start', 'end start'],
   })
 
-  // Apple-grade Scroll Mechanics: Subtly compresses opacity and scale down on scroll exit
   const contentOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0])
   const contentScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.96])
   const photoY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -30])
 
-  // Apple Cinematic Fluid Curve Easing [0.16, 1, 0.3, 1]
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { 
+      transition: {
         staggerChildren: 0.08,
         delayChildren: 0.1
       }
@@ -47,15 +51,15 @@ function Hero() {
 
   const revealUpVariants = {
     hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 40 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] }
     }
   }
 
-  const imageFrameVariants = {
-    hidden: { opacity: 0, scale: prefersReducedMotion ? 1 : 1.05, y: prefersReducedMotion ? 0 : 15 },
+  const panelVariants = {
+    hidden: { opacity: 0, scale: prefersReducedMotion ? 1 : 0.97, y: prefersReducedMotion ? 0 : 15 },
     visible: {
       opacity: 1,
       scale: 1,
@@ -64,111 +68,128 @@ function Hero() {
     }
   }
 
-  const textWords = "Engineering systems that hold up under pressure.".split(" ")
-
   return (
-    <section className="apple-hero" ref={heroRef}>
-      <motion.div 
-        className="apple-hero-frame" 
+    <section className="dash-hero" ref={heroRef}>
+      <motion.div
+        className="dash-hero-frame"
         style={{ opacity: contentOpacity, scale: contentScale }}
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <div className="apple-hero-split-container">
-          
-          {/* LEFT SIDE: Typography Content */}
-          <div className="apple-hero-left">
-            <div className="apple-mask-overflow">
-              <motion.div className="apple-hero-eyebrow" variants={revealUpVariants}>
-                Full-Stack Engineer &middot; Colombo, Sri Lanka
-              </motion.div>
-            </div>
+        <div className="dash-hero-split-container">
 
-            <div className="apple-mask-overflow">
-              <motion.h1 className="apple-hero-headline" variants={revealUpVariants}>
-                {textWords.map((word, idx) => {
-                  const isAccent = idx >= 3
-                  return (
-                    <span 
-                      key={idx} 
-                      className={`apple-headline-word ${isAccent ? 'apple-text-accent' : ''}`}
-                    >
-                      {word}&nbsp;
-                    </span>
-                  )
-                })}
+          {/* LEFT SIDE: Content */}
+          <div className="dash-hero-left">
+            <motion.div className="dash-status-line" variants={revealUpVariants}>
+              <span className="dash-status-dot" />
+              <strong>status: building</strong>
+              <span className="dash-status-sep">|</span>
+              .NET &middot; React &middot; PostgreSQL
+            </motion.div>
+
+            <div className="dash-mask-overflow">
+              <motion.h1 className="dash-hero-headline" variants={revealUpVariants}>
+                Systems that don&rsquo;t<br />
+                <span className="dash-headline-dim">page anyone at 3am.</span>
               </motion.h1>
             </div>
 
-            <div className="apple-mask-overflow">
-              <motion.p className="apple-hero-subhead" variants={revealUpVariants}>
-                I design and build backend systems in C# and ASP.NET Core, and the React interfaces that sit on top of them — with the same care for testing and reliability that ships software other people can depend on.
-              </motion.p>
-            </div>
+            <motion.p className="dash-hero-subhead" variants={revealUpVariants}>
+              I build backend services in <code>C# / ASP.NET Core</code> and the{' '}
+              <code>React</code> interfaces on top of them — with the state machines,
+              SLA logic, and test coverage that keep them reliable after they ship.
+            </motion.p>
 
-            <motion.div className="apple-hero-actions" variants={revealUpVariants}>
-              <motion.a 
-                href="#projects" 
-                className="apple-btn-primary"
+            <motion.div className="dash-metric-strip" variants={revealUpVariants}>
+              <div className="dash-metric">
+                <span className="dash-metric-val">3</span>
+                <span className="dash-metric-label">shipped projects</span>
+              </div>
+              <div className="dash-metric">
+                <span className="dash-metric-val">13</span>
+                <span className="dash-metric-label">entity schema (current build)</span>
+              </div>
+              <div className="dash-metric">
+                <span className="dash-metric-val">.NET 8</span>
+                <span className="dash-metric-label">primary stack</span>
+              </div>
+            </motion.div>
+
+            <motion.div className="dash-hero-actions" variants={revealUpVariants}>
+              <motion.a
+                href="#projects"
+                className="dash-btn-primary"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
-                View My Work <span className="apple-chevron">&rarr;</span>
+                View my work <ArrowRightIcon />
               </motion.a>
-              <motion.button 
-                className="apple-btn-secondary" 
+              <motion.button
+                className="dash-btn-secondary"
                 onClick={() => setIsAiOpen(true)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
-                Ask My Assistant
+                Ask my assistant
               </motion.button>
             </motion.div>
 
-            <motion.div className="apple-hero-links" variants={revealUpVariants}>
-              <a href="https://github.com/Dilshan-Kumarasingha" target="_blank" rel="noreferrer" className="apple-hero-social-link">
+            <motion.div className="dash-hero-links" variants={revealUpVariants}>
+              <a href="https://github.com/Dilshan-Kumarasingha" target="_blank" rel="noreferrer" className="dash-hero-social-link">
                 <GithubIcon />
                 <span>GitHub</span>
               </a>
-              <a href="https://linkedin.com/in/dilshan-kumarasingha" target="_blank" rel="noreferrer" className="apple-hero-social-link">
+              <a href="https://linkedin.com/in/dilshan-kumarasingha" target="_blank" rel="noreferrer" className="dash-hero-social-link">
                 <LinkedinIcon />
                 <span>LinkedIn</span>
               </a>
             </motion.div>
           </div>
 
-          {/* RIGHT SIDE: Photo Container */}
-          <div className="apple-hero-right">
-            <motion.div 
-              className="apple-hero-photo-wrap"
-              variants={imageFrameVariants}
-            >
+          {/* RIGHT SIDE: Dashboard Panel */}
+          <div className="dash-hero-right">
+            <motion.div className="dash-panel" variants={panelVariants}>
+              <div className="dash-panel-head">
+                <span>profile.engineer</span>
+                <span className="dash-panel-live">
+                  <span className="dash-panel-live-dot" />
+                  online
+                </span>
+              </div>
+
               <motion.div
-                className="apple-hero-photo-frame"
+                className="dash-photo-frame"
                 style={prefersReducedMotion ? undefined : { y: photoY }}
               >
                 <img
                   src={profilePhoto}
                   alt="Dilshan Kumarasingha"
-                  className="apple-hero-photo-img"
+                  className="dash-photo-img"
                 />
+                <div className="dash-photo-caption">
+                  <div className="dash-photo-name">Dilshan Kumarasingha</div>
+                  <div className="dash-photo-role">Colombo, Sri Lanka</div>
+                </div>
               </motion.div>
+
+              <div className="dash-panel-foot">
+                <div className="dash-panel-cell">
+                  <div className="dash-panel-k">currently</div>
+                  <div className="dash-panel-v">HelpDeskHQ &middot; Phase 3</div>
+                </div>
+                <div className="dash-panel-cell">
+                  <div className="dash-panel-k">based in</div>
+                  <div className="dash-panel-v">Colombo, LK</div>
+                </div>
+              </div>
             </motion.div>
           </div>
 
         </div>
       </motion.div>
-
-      <div className="apple-hero-scroll-cue">
-        <motion.span
-          className="apple-hero-scroll-dot"
-          animate={prefersReducedMotion ? {} : { y: [0, 8, 0], opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </div>
 
       <AnimatePresence>
         {isAiOpen && <AIAssistant onClose={() => setIsAiOpen(false)} />}

@@ -1,64 +1,75 @@
 /* ============================================================
-   NAVBAR — Apple Web Native App UI Specification
-   Frosted glass backdrop track layout layers, minimal core accents,
-   and clean system interactions.
+   NAVBAR — Dashboard / Status Panel Native App UI Specification
+   Dark glass backdrop, status-green accents, clean system interactions.
    ============================================================ */
 
-.apple-navbar {
+.dash-navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
   padding: 1.25rem 2rem;
-  background: rgba(255, 255, 255, 0.7); /* Apple native glass background spec */
+  background: rgba(11, 14, 20, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid #1B212C;
   transition: background-color 0.3s ease, border-color 0.3s ease, padding 0.3s ease;
 }
 
-.apple-navbar-scrolled {
+.dash-navbar-scrolled {
   padding: 0.85rem 2rem;
-  background: rgba(255, 255, 255, 0.82);
-  border-bottom-color: rgba(0, 0, 0, 0.07);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.01);
+  background: rgba(11, 14, 20, 0.92);
+  border-bottom-color: #1F2530;
 }
 
-.apple-navbar-inner {
-  max-width: 1040px;
+.dash-navbar-inner {
+  max-width: 1180px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* ---------- Typography Logo Signature ---------- */
-.apple-navbar-logo {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-  font-size: 1.05rem;
+/* ---------- Logo ---------- */
+.dash-navbar-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-size: 1.02rem;
   font-weight: 600;
-  color: #1d1d1f;
+  color: #F2F3F5;
   text-decoration: none;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
   position: relative;
   z-index: 101;
   transition: opacity 0.15s ease;
 }
 
-.apple-navbar-logo:hover {
-  opacity: 0.7;
+.dash-navbar-logo:hover {
+  opacity: 0.75;
 }
 
-/* ---------- Desktop Integrated Track Rails ---------- */
-.apple-navbar-links {
+.dash-logo-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3DD68C;
+  box-shadow: 0 0 0 3px rgba(61, 214, 140, 0.15);
+  flex-shrink: 0;
+}
+
+/* ---------- Desktop Nav Track ---------- */
+.dash-navbar-links {
   display: flex;
   align-items: center;
   gap: 1.5rem;
 }
 
-.apple-nav-pill-track {
-  background: rgba(0, 0, 0, 0.03);
+.dash-nav-pill-track {
+  background: #11151D;
+  border: 1px solid #1F2530;
   padding: 3px;
   border-radius: 8px;
   display: inline-flex;
@@ -66,66 +77,65 @@
   gap: 2px;
 }
 
-.apple-nav-link {
+.dash-nav-link {
   position: relative;
   display: inline-flex;
   align-items: center;
   padding: 0.4rem 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   font-size: 0.82rem;
-  color: #515154;
+  color: #7C8694;
   text-decoration: none;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
   border-radius: 6px;
   transition: color 0.15s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-.apple-nav-label-text {
+.dash-nav-label-text {
   position: relative;
-  z-index: 3; /* Lift text elements clearly over the moving container thumb */
+  z-index: 3;
 }
 
-.apple-nav-link:hover {
-  color: #000000;
+.dash-nav-link:hover {
+  color: #E8EAED;
 }
 
-.apple-nav-link-active {
-  color: #1d1d1f;
+.dash-nav-link-active {
+  color: #0B0E14;
   font-weight: 600;
 }
 
-.apple-nav-active-pill {
+.dash-nav-active-pill {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: #ffffff;
+  background: #3DD68C;
   border-radius: 6px;
   z-index: 1;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 1px rgba(0, 0, 0, 0.03);
 }
 
-.apple-contact-nav-btn {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+.dash-contact-nav-btn {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   font-size: 0.82rem;
-  font-weight: 500;
+  font-weight: 600;
   padding: 0.45rem 1rem;
-  background: #0071e3; /* Premium focus accent color */
-  color: #ffffff;
+  background: #3DD68C;
+  color: #07140E;
   text-decoration: none;
   border-radius: 6px;
   transition: background-color 0.15s ease;
 }
 
-.apple-contact-nav-btn:hover {
-  background: #0077ed;
+.dash-contact-nav-btn:hover {
+  background: #4FE89C;
 }
 
-/* ---------- iOS Style System Menu Trigger ---------- */
-.apple-menu-toggle {
+/* ---------- Mobile Menu Trigger ---------- */
+.dash-menu-toggle {
   display: none;
   flex-direction: column;
   align-items: center;
@@ -142,136 +152,148 @@
   outline: none;
 }
 
-.apple-toggle-bar {
+.dash-toggle-bar {
   display: block;
   width: 18px;
   height: 1.5px;
-  background: #1d1d1f;
+  background: #E8EAED;
   border-radius: 1px;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease;
 }
 
-/* Rebuilt hamburger micro-interactions with precise rotation centers */
-.apple-menu-toggle-open .apple-toggle-bar:first-child {
+.dash-menu-toggle-open .dash-toggle-bar:first-child {
   transform: translateY(3.25px) rotate(45deg);
-  background: #1d1d1f;
 }
 
-.apple-menu-toggle-open .apple-toggle-bar:last-child {
+.dash-menu-toggle-open .dash-toggle-bar:last-child {
   transform: translateY(-3.25px) rotate(-45deg);
-  background: #1d1d1f;
 }
 
-/* ---------- iOS Full Slide-Out Navigation Sheets ---------- */
-.apple-mobile-backdrop {
+/* ---------- Mobile Slide-Out Panel ---------- */
+.dash-mobile-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 99;
 }
 
-.apple-mobile-panel {
+.dash-mobile-panel {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   width: min(85vw, 340px);
   z-index: 100;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(14, 18, 25, 0.96);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  border-left: 1px solid rgba(0, 0, 0, 0.04);
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.02);
+  border-left: 1px solid #1F2530;
   padding: 6.5rem 2.5rem 2.5rem;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
 }
 
-.apple-mobile-eyebrow {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
+.dash-mobile-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.74rem;
+  font-weight: 500;
   letter-spacing: 0.04em;
-  color: #86868b;
-  margin-bottom: 1.5rem;
+  color: #7C8694;
+  background: #161B24;
+  border: 1px solid #232A36;
+  padding: 5px 12px 5px 9px;
+  border-radius: 6px;
+  margin-bottom: 1.75rem;
 }
 
-.apple-mobile-links {
+.dash-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3DD68C;
+  box-shadow: 0 0 0 3px rgba(61, 214, 140, 0.15);
+  flex-shrink: 0;
+}
+
+.dash-mobile-links {
   display: flex;
   flex-direction: column;
 }
 
-.apple-mobile-link {
+.dash-mobile-link {
   display: block;
   padding: 1.15rem 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  border-bottom: 1px solid #1B212C;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   font-size: 1.4rem;
-  font-weight: 500;
-  color: #1d1d1f;
+  font-weight: 600;
+  color: #F2F3F5;
   text-decoration: none;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
   transition: color 0.15s ease, padding-left 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.apple-mobile-link:hover,
-.apple-mobile-link-active {
-  color: #0071e3;
+.dash-mobile-link:hover,
+.dash-mobile-link-active {
+  color: #3DD68C;
   padding-left: 4px;
 }
 
-.apple-mobile-cta {
+.dash-mobile-cta {
   margin-top: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0.9rem 1.5rem;
-  background: #0071e3;
-  color: #ffffff;
+  background: #3DD68C;
+  color: #07140E;
   border-radius: 8px;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.95rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   text-decoration: none;
   text-align: center;
   transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
-.apple-mobile-cta:hover {
-  background: #0077ed;
+.dash-mobile-cta:hover {
+  background: #4FE89C;
 }
 
-.apple-mobile-cta:active {
+.dash-mobile-cta:active {
   transform: scale(0.98);
 }
 
-/* ---------- Structural Media Breakpoints ---------- */
+/* ---------- Breakpoints ---------- */
 @media (max-width: 740px) {
-  .apple-navbar-links {
+  .dash-navbar-links {
     display: none;
   }
-  .apple-menu-toggle {
+  .dash-menu-toggle {
     display: flex;
   }
 }
 
 @media (max-width: 640px) {
-  .apple-navbar {
+  .dash-navbar {
     padding: 1rem 1.5rem;
   }
-  .apple-navbar-scrolled {
+  .dash-navbar-scrolled {
     padding: 0.8rem 1.5rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .apple-toggle-bar,
-  .apple-mobile-link,
-  .apple-mobile-cta {
+  .dash-toggle-bar,
+  .dash-mobile-link,
+  .dash-mobile-cta {
     transition: none;
   }
 }

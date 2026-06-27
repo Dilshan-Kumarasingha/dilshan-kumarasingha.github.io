@@ -26,7 +26,6 @@ const HEADLINE_PLAIN = 'Built with the discipline of '
 const HEADLINE_ACCENT = 'production, not practice.'
 
 function ScrollWord({ word, progress, start, end, accent, prefersReducedMotion }) {
-  // Apple Editorial: Higher baseline opacity shift from 0.2 -> 1 avoids a washed-out feeling
   const opacity = useTransform(progress, [start, end], [0.2, 1])
   const y = useTransform(progress, [start, end], [prefersReducedMotion ? 0 : 12, 0])
   const filter = useTransform(progress, [start, end], [
@@ -34,7 +33,6 @@ function ScrollWord({ word, progress, start, end, accent, prefersReducedMotion }
     'blur(0px)',
   ])
 
-  // Apple Cinematic Spring configuration
   const springConfig = { damping: 32, stiffness: 180, mass: 0.35 }
   const smoothOpacity = useSpring(opacity, springConfig)
   const smoothY = useSpring(y, springConfig)
@@ -46,7 +44,7 @@ function ScrollWord({ word, progress, start, end, accent, prefersReducedMotion }
         y: smoothY,
         filter: prefersReducedMotion ? undefined : filter,
       }}
-      className={`about-word ${accent ? 'about-word-accent' : ''}`}
+      className={`dash-about-word ${accent ? 'dash-about-word-accent' : ''}`}
     >
       {word}&nbsp;
     </motion.span>
@@ -54,7 +52,6 @@ function ScrollWord({ word, progress, start, end, accent, prefersReducedMotion }
 }
 
 function ScrollStat({ stat, index, progress, prefersReducedMotion }) {
-  // Stagger loading windows seamlessly as user scrolls down
   const start = 0.08 + index * 0.05
   const end = start + 0.18
 
@@ -70,33 +67,32 @@ function ScrollStat({ stat, index, progress, prefersReducedMotion }) {
   return (
     <motion.div
       style={{ opacity: smoothOpacity, scale: smoothScale, y: smoothY }}
-      className="stat-card"
+      className="dash-stat-card"
       whileHover={{ scale: 1.015, y: -2 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
     >
-      <div className="stat-value">
+      <div className="dash-stat-value">
         {stat.value}
-        <span className="stat-suffix">{stat.suffix}</span>
+        <span className="dash-stat-suffix">{stat.suffix}</span>
       </div>
-      <div className="stat-label">{stat.label}</div>
+      <div className="dash-stat-label">{stat.label}</div>
     </motion.div>
   )
 }
 
 function ScrollTimeline({ progress, prefersReducedMotion }) {
-  // Premium smooth stretching logic for the vertical track rail
   const scaleY = useTransform(progress, [0.22, 0.6], [0, 1])
   const smoothScaleY = useSpring(scaleY, { damping: 35, stiffness: 120 })
 
   return (
-    <div className="depth-rail-container">
-      <div className="depth-rail-track" />
+    <div className="dash-rail-container">
+      <div className="dash-rail-track" />
       <motion.div
         style={{ scaleY: smoothScaleY }}
-        className="depth-rail-line-fill"
+        className="dash-rail-line-fill"
       />
 
-      <div className="depth-entries-stack">
+      <div className="dash-entries-stack">
         {timeline.map((item, i) => {
           const entryStart = 0.25 + i * 0.12
           const entryEnd = entryStart + 0.16
@@ -111,12 +107,12 @@ function ScrollTimeline({ progress, prefersReducedMotion }) {
             <motion.div
               key={item.company}
               style={{ opacity: smoothOpacity, x: smoothX }}
-              className="depth-entry"
+              className="dash-entry"
             >
-              <div className="depth-node" />
-              <div className="depth-year">{item.ref}</div>
-              <div className="depth-role">{item.role}</div>
-              <div className="depth-company">{item.company}</div>
+              <div className="dash-node" />
+              <div className="dash-year">{item.ref}</div>
+              <div className="dash-role">{item.role}</div>
+              <div className="dash-company">{item.company}</div>
             </motion.div>
           )
         })}
@@ -139,15 +135,18 @@ function About() {
   const totalWords = plainWords.length + accentWords.length
 
   return (
-    <section className="about" id="about" ref={targetRef}>
-      <div className="about-inner">
-        <div className="about-grid">
-          
+    <section className="dash-about" id="about" ref={targetRef}>
+      <div className="dash-about-inner">
+        <div className="dash-about-grid">
+
           {/* LEFT COLUMN: Narrative Details */}
-          <div className="about-left">
-            <span className="section-eyebrow">01 &middot; About Journey</span>
-            
-            <h2 className="about-headline">
+          <div className="dash-about-left">
+            <span className="dash-section-eyebrow">
+              <span className="dash-eyebrow-dot" />
+              01 &middot; about.log
+            </span>
+
+            <h2 className="dash-about-headline">
               {plainWords.map((word, i) => {
                 const start = (i / totalWords) * 0.32
                 const end = start + 0.14
@@ -181,34 +180,34 @@ function About() {
               })}
             </h2>
 
-            <motion.div 
-              className="about-paragraphs"
+            <motion.div
+              className="dash-about-paragraphs"
               style={{
                 opacity: useSpring(useTransform(scrollYProgress, [0.18, 0.38], [0.3, 1]), { damping: 25 })
               }}
             >
-              <p className="about-text">
-                My career path starting in high-volume technology infrastructure gave me an 
-                appreciation for systems that scale reliably. Troubleshooting critical network hardware 
-                and keeping systems interactive taught me to treat software architecture decisions with 
+              <p className="dash-about-text">
+                My career path starting in high-volume technology infrastructure gave me an
+                appreciation for systems that scale reliably. Troubleshooting critical network hardware
+                and keeping systems interactive taught me to treat software architecture decisions with
                 the same strict standards required in a production enterprise environment.
               </p>
-              <p className="about-text">
-                That experience set the bar for how I build: every service requires clean test suites, 
-                predictable database parameters, and scalable deployment operations. I apply that 
-                engineering discipline to design end-to-end full-stack systems backed by robust architecture 
+              <p className="dash-about-text">
+                That experience set the bar for how I build: every service requires clean test suites,
+                predictable database parameters, and scalable deployment operations. I apply that
+                engineering discipline to design end-to-end full-stack systems backed by robust architecture
                 rather than just shipping interfaces and hoping they stay active.
               </p>
-              <p className="about-text">
-                Currently looking for a full-time Software Engineer role where I can build and refine systems 
+              <p className="dash-about-text">
+                Currently looking for a full-time Software Engineer role where I can build and refine systems
                 built to handle live enterprise pressure.
               </p>
             </motion.div>
           </div>
 
           {/* RIGHT COLUMN: Statistics & Timeline Panels */}
-          <div className="about-right">
-            <div className="stats-grid">
+          <div className="dash-about-right">
+            <div className="dash-stats-grid">
               {stats.map((stat, i) => (
                 <ScrollStat
                   key={stat.label}

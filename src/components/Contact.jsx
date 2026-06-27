@@ -41,7 +41,7 @@ const GithubIcon = ({ size = 13 }) => (
 export function Contact() {
   const prefersReducedMotion = useReducedMotion()
   const cardRef = useRef(null)
-  
+
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
@@ -51,7 +51,7 @@ export function Contact() {
 
   const rotateX = useTransform(mouseY, [-250, 250], [3.5, -3.5])
   const rotateY = useTransform(mouseX, [-450, 450], [-4, 4])
-  
+
   const springRotateX = useSpring(rotateX, springConfig)
   const springRotateY = useSpring(rotateY, springConfig)
 
@@ -68,12 +68,15 @@ export function Contact() {
   }
 
   return (
-    <section className="apple-contact-section" id="contact">
-      <div className="apple-contact-container">
-        <span className="apple-contact-eyebrow">Connection Workspace</span>
-        
-        <div className="apple-contact-split">
-          
+    <section className="dash-contact-section" id="contact">
+      <div className="dash-contact-container">
+        <span className="dash-contact-eyebrow">
+          <span className="dash-eyebrow-dot" />
+          connection workspace
+        </span>
+
+        <div className="dash-contact-split">
+
           {/* macOS Window Frame Card */}
           <motion.div
             ref={cardRef}
@@ -84,149 +87,149 @@ export function Contact() {
               rotateY: springRotateY,
               transformStyle: 'preserve-3d',
             }}
-            className="apple-diagnostics-window"
+            className="dash-diagnostics-window"
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             {!prefersReducedMotion && (
-              <motion.div 
-                className="apple-window-specular-pass"
+              <motion.div
+                className="dash-window-specular-pass"
                 style={{
                   background: useTransform(
                     [glowX, glowY],
-                    ([latestX, latestY]) => `radial-gradient(380px circle at ${latestX + 240}px ${latestY + 180}px, rgba(255, 255, 255, 0.06), transparent 70%)`
+                    ([latestX, latestY]) => `radial-gradient(380px circle at ${latestX + 240}px ${latestY + 180}px, rgba(61, 214, 140, 0.06), transparent 70%)`
                   )
                 }}
               />
             )}
 
-            <div className="window-header-ui">
-              <div className="window-controls-dot">
-                <span className="dot dot-close" />
-                <span className="dot dot-minimize" />
-                <span className="dot dot-expand" />
+            <div className="dash-window-header-ui">
+              <div className="dash-window-controls-dot">
+                <span className="dash-dot dash-dot-close" />
+                <span className="dash-dot dash-dot-minimize" />
+                <span className="dash-dot dash-dot-expand" />
               </div>
-              <span className="window-system-title">terminal — diagnostics.sh</span>
+              <span className="dash-window-system-title">terminal — diagnostics.sh</span>
             </div>
 
-            <div className="window-terminal-body">
-              <div className="terminal-shell-line">
-                <span className="shell-prompt">guest@portfolio ~ %</span>
-                <span className="shell-command"> ./get_network_coordinates.sh</span>
+            <div className="dash-window-terminal-body">
+              <div className="dash-terminal-shell-line">
+                <span className="dash-shell-prompt">guest@portfolio ~ %</span>
+                <span className="dash-shell-command"> ./get_network_coordinates.sh</span>
               </div>
-              
-              <div className="terminal-payload-output">
-                <p className="payload-title">// PERSISTENT COMMS MATRIX</p>
-                <div className="payload-row">
-                  <span className="payload-key">LOC:</span>
-                  <span className="payload-val">Colombo, LK (UTC +05:30)</span>
+
+              <div className="dash-terminal-payload-output">
+                <p className="dash-payload-title">// persistent comms matrix</p>
+                <div className="dash-payload-row">
+                  <span className="dash-payload-key">LOC:</span>
+                  <span className="dash-payload-val">Colombo, LK (UTC +05:30)</span>
                 </div>
-                <div className="payload-row">
-                  <span className="payload-key">AVAILABILITY:</span>
-                  <span className="payload-val token-success">Active // Remote Ops</span>
+                <div className="dash-payload-row">
+                  <span className="dash-payload-key">AVAILABILITY:</span>
+                  <span className="dash-payload-val dash-token-success">Active // Remote Ops</span>
                 </div>
-                <div className="payload-row">
-                  <span className="payload-key">ROLES:</span>
-                  <span className="payload-val">Full-Stack Dev / QA Automation</span>
+                <div className="dash-payload-row">
+                  <span className="dash-payload-key">ROLES:</span>
+                  <span className="dash-payload-val">Full-Stack Dev / QA Automation</span>
                 </div>
               </div>
 
-              <div className="terminal-system-status">
-                <div className="status-ping-beacon">
-                  <span className="beacon-core" />
-                  <span className="beacon-wave" />
+              <div className="dash-terminal-system-status">
+                <div className="dash-status-ping-beacon">
+                  <span className="dash-beacon-core" />
+                  <span className="dash-beacon-wave" />
                 </div>
-                <span className="status-message">Listening for webhooks...</span>
+                <span className="dash-status-message">Listening for webhooks...</span>
               </div>
             </div>
           </motion.div>
 
           {/* Form Card */}
           <motion.div
-            className="apple-dispatch-card"
+            className="dash-dispatch-card"
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.8, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="dispatch-header-group">
-              <h3 className="dispatch-card-heading">Initiate Transmission</h3>
-              <p className="dispatch-card-description">
+            <div className="dash-dispatch-header-group">
+              <h3 className="dash-dispatch-card-heading">Initiate transmission</h3>
+              <p className="dash-dispatch-card-description">
                 Drop an architectural query below to push a record into my workspace logs.
               </p>
             </div>
 
-            <form className="apple-dispatch-form" onSubmit={(e) => e.preventDefault()}>
-              <div className="form-input-container">
-                <input 
-                  type="text" 
-                  id="sender-identity" 
-                  required 
+            <form className="dash-dispatch-form" onSubmit={(e) => e.preventDefault()}>
+              <div className="dash-form-input-container">
+                <input
+                  type="text"
+                  id="sender-identity"
+                  required
                   placeholder=" "
-                  className="apple-form-field"
+                  className="dash-form-field"
                 />
-                <label htmlFor="sender-identity" className="apple-form-label">Your Name</label>
+                <label htmlFor="sender-identity" className="dash-form-label">Your name</label>
               </div>
 
-              <div className="form-input-container">
-                <input 
-                  type="email" 
-                  id="sender-endpoint" 
-                  required 
+              <div className="dash-form-input-container">
+                <input
+                  type="email"
+                  id="sender-endpoint"
+                  required
                   placeholder=" "
-                  className="apple-form-field"
+                  className="dash-form-field"
                 />
-                <label htmlFor="sender-endpoint" className="apple-form-label">Email Endpoint</label>
+                <label htmlFor="sender-endpoint" className="dash-form-label">Email endpoint</label>
               </div>
 
-              <div className="form-input-container">
-                <textarea 
-                  id="transmission-body" 
-                  rows={3} 
-                  required 
+              <div className="dash-form-input-container">
+                <textarea
+                  id="transmission-body"
+                  rows={3}
+                  required
                   placeholder=" "
-                  className="apple-form-field field-textarea"
+                  className="dash-form-field dash-field-textarea"
                 />
-                <label htmlFor="transmission-body" className="apple-form-label">Message String</label>
+                <label htmlFor="transmission-body" className="dash-form-label">Message string</label>
               </div>
 
-              <div className="form-actions-row">
-                <button type="submit" className="apple-action-btn-primary">
+              <div className="dash-form-actions-row">
+                <button type="submit" className="dash-action-btn-primary">
                   <Mail size={14} />
-                  <span>Send Transmission</span>
+                  <span>Send transmission</span>
                 </button>
 
                 <a
                   href="https://linkedin.com/in/dilshan-kumarasingha"
                   target="_blank"
                   rel="noreferrer"
-                  className="apple-action-btn-secondary"
+                  className="dash-action-btn-secondary"
                 >
                   <LinkedinIcon size={14} />
-                  <span>LinkedIn Link</span>
+                  <span>LinkedIn link</span>
                 </a>
               </div>
             </form>
 
-            <div className="apple-alternative-routes">
+            <div className="dash-alternative-routes">
               <a
                 href="https://github.com/Dilshan-Kumarasingha"
                 target="_blank"
                 rel="noreferrer"
-                className="apple-sub-archival-link"
+                className="dash-sub-archival-link"
               >
                 <GithubIcon size={13} />
-                <span>Repository Archive</span>
+                <span>Repository archive</span>
               </a>
             </div>
           </motion.div>
         </div>
 
-        <div className="apple-footer-metadata">
-          <span className="metadata-copyright">&copy; 2026 Dilshan Kumarasingha. All rights reserved.</span>
-          <span className="metadata-spec">Engineered via Core React Ecosystem &bull; Framework Architecture</span>
+        <div className="dash-footer-metadata">
+          <span className="dash-metadata-copyright">&copy; 2026 Dilshan Kumarasingha. All rights reserved.</span>
+          <span className="dash-metadata-spec">Engineered via Core React Ecosystem &bull; Framework Architecture</span>
         </div>
       </div>
     </section>

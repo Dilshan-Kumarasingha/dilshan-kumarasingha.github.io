@@ -119,18 +119,16 @@ const projects = [
 
 function ProjectCard({ project, prefersReducedMotion }) {
   const cardRef = useRef(null)
-  
+
   const { scrollYProgress } = useScroll({
     target: cardRef,
     offset: ['start 0.95', 'end 0.2'],
   })
 
-  // Apple Product Site Architecture View transitions
   const opacity = useTransform(scrollYProgress, [0, 0.25], [0, 1])
   const scale = useTransform(scrollYProgress, [0, 0.25], [prefersReducedMotion ? 1 : 0.97, 1])
   const y = useTransform(scrollYProgress, [0, 0.25], [prefersReducedMotion ? 0 : 30, 0])
-  
-  // Premium responsive micro-spring dampening configurations
+
   const smoothOpacity = useSpring(opacity, { damping: 32, stiffness: 160 })
   const smoothScale = useSpring(scale, { damping: 32, stiffness: 160 })
   const smoothY = useSpring(y, { damping: 32, stiffness: 160 })
@@ -139,41 +137,45 @@ function ProjectCard({ project, prefersReducedMotion }) {
     <motion.div
       ref={cardRef}
       style={{ opacity: smoothOpacity, scale: smoothScale, y: smoothY }}
-      className="apple-project-card"
-      whileHover={prefersReducedMotion ? {} : { y: -4, boxShadow: "0 30px 60px rgba(0, 0, 0, 0.04)" }}
+      className="dash-project-card"
+      whileHover={prefersReducedMotion ? {} : { y: -4, borderColor: "#2A3140" }}
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
     >
-      <div className="project-meta-strip">
-        <span className="project-numerical-id">{project.id}</span>
-        <div className="project-identity-stack">
-          <h3 className="project-brand-name">{project.name}</h3>
-          <p className="project-tagline-text">{project.tagline}</p>
+      <div className="dash-project-meta-strip">
+        <span className="dash-project-numerical-id">{project.id}</span>
+        <div className="dash-project-identity-stack">
+          <h3 className="dash-project-brand-name">{project.name}</h3>
+          <p className="dash-project-tagline-text">{project.tagline}</p>
         </div>
+        <span className="dash-project-status-pill">
+          <span className="dash-project-status-dot" />
+          shipped
+        </span>
       </div>
 
-      <p className="project-narrative-body">{project.description}</p>
+      <p className="dash-project-narrative-body">{project.description}</p>
 
-      <div className="project-details-grid">
-        <div className="project-highlights-column">
-          <h4 className="detail-section-title">Verified Implementations</h4>
-          <ul className="apple-highlights-list">
+      <div className="dash-project-details-grid">
+        <div className="dash-project-highlights-column">
+          <h4 className="dash-detail-section-title">Verified implementations</h4>
+          <ul className="dash-highlights-list">
             {project.highlights.map((highlight, index) => (
-              <li key={index} className="apple-highlight-item">
-                <span className="highlight-bullet-point">&middot;</span>
-                <span className="highlight-text-content">{highlight}</span>
+              <li key={index} className="dash-highlight-item">
+                <span className="dash-highlight-bullet-point">&middot;</span>
+                <span className="dash-highlight-text-content">{highlight}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="project-ecosystem-column">
-          <h4 className="detail-section-title">Ecosystem Stack</h4>
-          <div className="apple-tech-badges-flex">
+        <div className="dash-project-ecosystem-column">
+          <h4 className="dash-detail-section-title">Ecosystem stack</h4>
+          <div className="dash-tech-badges-flex">
             {project.stack.map((tech) => (
-              <motion.span 
-                key={tech} 
-                className="apple-tech-badge"
-                whileHover={prefersReducedMotion ? {} : { scale: 1.03, y: -1, backgroundColor: "#ffffff", borderColor: "#86868b" }}
+              <motion.span
+                key={tech}
+                className="dash-tech-badge"
+                whileHover={prefersReducedMotion ? {} : { scale: 1.03, y: -1, borderColor: "#3DD68C" }}
                 transition={{ type: "spring", stiffness: 500, damping: 20 }}
               >
                 {tech}
@@ -183,10 +185,10 @@ function ProjectCard({ project, prefersReducedMotion }) {
         </div>
       </div>
 
-      <div className="project-action-wrapper">
-        <a href={project.link} className="apple-link-action">
-          <span>Explore Architecture Specification</span>
-          <div className="apple-chevron-box">
+      <div className="dash-project-action-wrapper">
+        <a href={project.link} className="dash-link-action">
+          <span>Explore architecture specification</span>
+          <div className="dash-chevron-box">
             <ChevronRight size={13} />
           </div>
         </a>
@@ -208,25 +210,28 @@ function Projects() {
   }
 
   return (
-    <section className="apple-projects-section" id="projects">
-      <div className="apple-projects-container">
+    <section className="dash-projects-section" id="projects">
+      <div className="dash-projects-container">
         <motion.div
-          className="apple-section-header"
+          className="dash-section-header"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-120px' }}
           variants={headerVariants}
         >
-          <span className="apple-section-eyebrow">Selected Production Architecture</span>
-          <h2 className="apple-section-title">
-            Systems that scale. <span className="text-secondary-grey">Built with complete rigor.</span>
+          <span className="dash-section-eyebrow">
+            <span className="dash-eyebrow-dot" />
+            selected production architecture
+          </span>
+          <h2 className="dash-section-title">
+            Systems that scale. <span className="dash-text-secondary">Built with complete rigor.</span>
           </h2>
-          <p className="apple-section-subtitle">
+          <p className="dash-section-subtitle">
             Enterprise-ready implementations featuring isolated backend services, multi-tier automated verification, and deterministic layouts.
           </p>
         </motion.div>
 
-        <div className="apple-projects-grid">
+        <div className="dash-projects-grid">
           {projects.map((project) => (
             <ProjectCard
               key={project.id}
