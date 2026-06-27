@@ -187,10 +187,11 @@ function About() {
               }}
             >
               <p className="dash-about-text">
-                My career path starting in high-volume technology infrastructure gave me an
-                appreciation for systems that scale reliably. Troubleshooting critical network hardware
-                and keeping systems interactive taught me to treat software architecture decisions with
-                the same strict standards required in a production enterprise environment.
+                My experience as a Software Developer Intern at Bank of Ceylon and my current role as an IT Support & Lab Demonstrator 
+                at Lyceum International Schools
+                have given me a strong foundation in both software development and enterprise IT operations. 
+                Working across development, troubleshooting, and system support has taught me to build solutions that are reliable, 
+                maintainable, and practical for real-world environments
               </p>
               <p className="dash-about-text">
                 That experience set the bar for how I build: every service requires clean test suites,
@@ -199,8 +200,9 @@ function About() {
                 rather than just shipping interfaces and hoping they stay active.
               </p>
               <p className="dash-about-text">
-                Currently looking for a full-time Software Engineer role where I can build and refine systems
-                built to handle live enterprise pressure.
+                I'm currently seeking a full-time Software Engineer, Backend Developer, 
+                or System Administrator opportunity where I can continue building high-quality software, 
+                improve my technical skills, and contribute to projects that make a real impact.
               </p>
             </motion.div>
           </div>

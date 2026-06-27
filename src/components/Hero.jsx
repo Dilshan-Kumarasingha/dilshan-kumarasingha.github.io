@@ -89,10 +89,10 @@ function Hero() {
             </motion.div>
 
             <div className="dash-mask-overflow">
-              <motion.h1 className="dash-hero-headline" variants={revealUpVariants}>
-                Systems that don&rsquo;t<br />
-                <span className="dash-headline-dim">page anyone at 3am.</span>
-              </motion.h1>
+            <motion.h1 className="dash-hero-headline" variants={revealUpVariants}>
+              Building reliable software from<br />
+              <span className="dash-headline-dim"> backend to frontend.</span>
+            </motion.h1>
             </div>
 
             <motion.p className="dash-hero-subhead" variants={revealUpVariants}>
@@ -111,7 +111,7 @@ function Hero() {
                 <span className="dash-metric-label">entity schema (current build)</span>
               </div>
               <div className="dash-metric">
-                <span className="dash-metric-val">.NET 8</span>
+                <span className="dash-metric-val">.NET 10</span>
                 <span className="dash-metric-label">primary stack</span>
               </div>
             </motion.div>
