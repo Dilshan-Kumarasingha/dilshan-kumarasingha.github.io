@@ -12,7 +12,7 @@ const stats = [
 const timeline = [
   {
     ref: '2026 — Present',
-    role: 'IT Support & Lab Demonstrator',
+    role: 'Jr.System Administrator & Lab Demonstrator',
     company: 'Lyceum International Schools',
   },
   {
