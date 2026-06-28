@@ -2,7 +2,7 @@
   "name": "dilshan-portfolio",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://dilshan-kumarasingha.github.io/dilshan-portfolio/",
+  "homepage": "https://dilshan-kumarasingha.github.io",
   "type": "module",
   "scripts": {
     "dev": "vite",
