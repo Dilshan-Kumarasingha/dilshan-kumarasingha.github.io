@@ -187,7 +187,7 @@ function About() {
               }}
             >
               <p className="dash-about-text">
-                My experience as a Software Developer Intern at Bank of Ceylon and my current role as an IT Support & Lab Demonstrator 
+                My experience as a Software Developer Intern at Bank of Ceylon and my current role as an (Jr) system adminstrator & Lab Demonstrator 
                 at Lyceum International Schools
                 have given me a strong foundation in both software development and enterprise IT operations. 
                 Working across development, troubleshooting, and system support has taught me to build solutions that are reliable, 
