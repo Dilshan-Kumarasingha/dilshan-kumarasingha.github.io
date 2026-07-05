@@ -152,11 +152,13 @@
 /* ---------- Metric strip (real content, not decoration) ---------- */
 .dash-metric-strip {
   display: flex;
-  gap: 2.2rem;
+  align-items: flex-end;
+  gap: 2rem;
   margin-bottom: 2.4rem;
   padding-bottom: 2rem;
   width: 100%;
   border-bottom: 1px solid #1B212C;
+  flex-wrap: wrap;
 }
 
 .dash-metric {
@@ -176,6 +178,21 @@
   font-size: 0.74rem;
   color: #5C6573 !important;
   letter-spacing: 0.02em;
+}
+
+/* second accent — amber — marks the "active/build" stat so green isn't the only signal color */
+.dash-metric--accent .dash-metric-val {
+  color: #E8A23D !important;
+}
+
+.dash-metric--graph {
+  gap: 6px;
+}
+
+.dash-sparkline {
+  width: 84px;
+  height: 24px;
+  display: block;
 }
 
 /* ---------- Actions & social links ---------- */
@@ -317,7 +334,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(11, 14, 20, 0) 55%, rgba(11, 14, 20, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(11, 14, 20, 0) 50%, rgba(11, 14, 20, 0.9) 100%);
   pointer-events: none;
 }
 
@@ -341,6 +358,59 @@
   font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
 }
 
+/* ---------- Activity log (signature element) ---------- */
+.dash-log {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid #1F2530;
+  border-bottom: 1px solid #1F2530;
+  background: #0E1119;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.74rem;
+  min-height: 20px;
+  overflow: hidden;
+}
+
+.dash-log-prompt {
+  color: #3DD68C !important;
+  flex-shrink: 0;
+}
+
+.dash-log-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.dash-log-tag {
+  flex-shrink: 0;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+}
+
+.dash-log-tag--ok {
+  color: #3DD68C !important;
+  background: rgba(61, 214, 140, 0.1);
+}
+
+.dash-log-tag--warn {
+  color: #E8A23D !important;
+  background: rgba(232, 162, 61, 0.1);
+}
+
+.dash-log-text {
+  color: #8A93A3 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .dash-panel-foot {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -348,7 +418,6 @@
 
 .dash-panel-cell {
   padding: 12px 16px;
-  border-top: 1px solid #1F2530;
 }
 
 .dash-panel-cell:first-child {
@@ -366,6 +435,10 @@
   font-size: 0.85rem;
   color: #C7CDD6 !important;
   font-weight: 500;
+}
+
+.dash-panel-v--warn {
+  color: #E8A23D !important;
 }
 
 /* ---------- Responsive ---------- */
@@ -411,6 +484,10 @@
     gap: 1.6rem;
   }
 
+  .dash-metric--graph {
+    align-items: center;
+  }
+
   .dash-hero-actions {
     flex-direction: column;
     gap: 0.85rem;
@@ -429,5 +506,13 @@
   .dash-hero-right {
     max-width: 340px;
     width: 100%;
+  }
+
+  .dash-log-line {
+    justify-content: center;
+  }
+
+  .dash-log {
+    justify-content: center;
   }
 }

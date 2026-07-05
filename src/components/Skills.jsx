@@ -91,7 +91,9 @@ function SkillRow({ skill, index, prefersReducedMotion }) {
     >
       <div className="dash-skill-row-top">
         <span className="dash-skill-name">{skill.name}</span>
-        <span className={`dash-skill-pct dash-pct-tier-${skill.tier}`}>{skill.level}%</span>
+        <span className={`dash-skill-pct dash-pct-tier-${skill.tier}`}>
+          {TIERS[skill.tier].label}
+        </span>
       </div>
       <div className="dash-bar-track">
         <motion.div

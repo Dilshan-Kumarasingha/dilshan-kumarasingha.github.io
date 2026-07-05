@@ -74,16 +74,30 @@ function Navbar() {
 
   const closeMenu = () => setIsMenuOpen(false)
 
+  const scrollToId = (targetId) => {
+    const targetElement = document.getElementById(targetId)
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' })
+    } else if (targetId === '') {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' })
+    }
+  }
+
+  const handleNavLinkClick = (e, targetId) => {
+    e.preventDefault()
+    scrollToId(targetId)
+  }
+
+  const handleLogoClick = (e) => {
+    e.preventDefault()
+    closeMenu()
+    scrollToId('')
+  }
+
   const handleMobileLinkClick = (e, targetId) => {
     e.preventDefault()
     closeMenu()
-
-    setTimeout(() => {
-      const targetElement = document.getElementById(targetId)
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' })
-      }
-    }, 50)
+    setTimeout(() => scrollToId(targetId), 50)
   }
 
   return (
@@ -94,7 +108,7 @@ function Navbar() {
       transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
     >
       <div className="dash-navbar-inner">
-        <a href="#" className="dash-navbar-logo" onClick={closeMenu}>
+        <a href="#" className="dash-navbar-logo" onClick={handleLogoClick}>
           <span className="dash-logo-dot" />
           Dilshan K.
         </a>
@@ -109,6 +123,7 @@ function Navbar() {
                   key={item.id}
                   href={`#${item.id}`}
                   className={`dash-nav-link ${isActive ? 'dash-nav-link-active' : ''}`}
+                  onClick={(e) => handleNavLinkClick(e, item.id)}
                 >
                   <span className="dash-nav-label-text">{item.label}</span>
                   {isActive && !prefersReducedMotion && (
@@ -123,7 +138,7 @@ function Navbar() {
               )
             })}
           </div>
-          <a href="#contact" className="dash-contact-nav-btn">
+          <a href="#contact" className="dash-contact-nav-btn" onClick={(e) => handleNavLinkClick(e, 'contact')}>
             Hire me
           </a>
         </div>

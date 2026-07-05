@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, useReducedMotion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import AIAssistant from './AIAssistant'
 import profilePhoto from '../assets/Profile 2.jpeg'
@@ -23,6 +23,64 @@ const ArrowRightIcon = () => (
     <path d="M5 12h14M13 5l7 7-7 7" />
   </svg>
 )
+
+// Small deterministic sparkline — reads as "commits / activity over time"
+const Sparkline = () => {
+  const points = [4, 7, 5, 9, 6, 11, 8, 13, 10, 15, 12, 17]
+  const max = Math.max(...points)
+  const w = 84
+  const h = 24
+  const step = w / (points.length - 1)
+  const path = points
+    .map((p, i) => `${i === 0 ? 'M' : 'L'} ${(i * step).toFixed(1)} ${(h - (p / max) * h).toFixed(1)}`)
+    .join(' ')
+
+  return (
+    <svg className="dash-sparkline" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none">
+      <path d={path} fill="none" stroke="#3DD68C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+const LOG_LINES = [
+  { tag: 'build', text: 'HelpDeskHQ · migration 0013_add_sla_breach_flag applied', tone: 'ok' },
+  { tag: 'test', text: '47 integration tests passed · 0 failed', tone: 'ok' },
+  { tag: 'deploy', text: 'staging → api.helpdeskhq  ·  2h ago', tone: 'warn' },
+  { tag: 'commit', text: 'refactor: extract SLA timer into background service', tone: 'ok' },
+]
+
+// Signature element: a small rotating "system log" readout instead of a static caption.
+// Encodes something true — this is what the person is actually shipping this week.
+const ActivityLog = ({ reduceMotion }) => {
+  const [i, setI] = useState(0)
+
+  useEffect(() => {
+    if (reduceMotion) return
+    const id = setInterval(() => setI((v) => (v + 1) % LOG_LINES.length), 3200)
+    return () => clearInterval(id)
+  }, [reduceMotion])
+
+  const line = LOG_LINES[i]
+
+  return (
+    <div className="dash-log">
+      <span className="dash-log-prompt">$</span>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={i}
+          className="dash-log-line"
+          initial={{ opacity: 0, y: reduceMotion ? 0 : 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: reduceMotion ? 0 : -6 }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className={`dash-log-tag dash-log-tag--${line.tone}`}>{line.tag}</span>
+          <span className="dash-log-text">{line.text}</span>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  )
+}
 
 function Hero() {
   const [isAiOpen, setIsAiOpen] = useState(false)
@@ -110,9 +168,13 @@ function Hero() {
                 <span className="dash-metric-val">13</span>
                 <span className="dash-metric-label">entity schema (current build)</span>
               </div>
-              <div className="dash-metric">
+              <div className="dash-metric dash-metric--accent">
                 <span className="dash-metric-val">.NET 10</span>
                 <span className="dash-metric-label">primary stack</span>
+              </div>
+              <div className="dash-metric dash-metric--graph">
+                <Sparkline />
+                <span className="dash-metric-label">commits · last 12wk</span>
               </div>
             </motion.div>
 
@@ -169,11 +231,14 @@ function Hero() {
                   alt="Dilshan Kumarasingha"
                   className="dash-photo-img"
                 />
+                <div className="dash-photo-scanlines" />
                 <div className="dash-photo-caption">
                   <div className="dash-photo-name">Dilshan Kumarasingha</div>
                   <div className="dash-photo-role">Colombo, Sri Lanka</div>
                 </div>
               </motion.div>
+
+              <ActivityLog reduceMotion={prefersReducedMotion} />
 
               <div className="dash-panel-foot">
                 <div className="dash-panel-cell">
@@ -181,8 +246,8 @@ function Hero() {
                   <div className="dash-panel-v">HelpDeskHQ &middot; Phase 3</div>
                 </div>
                 <div className="dash-panel-cell">
-                  <div className="dash-panel-k">based in</div>
-                  <div className="dash-panel-v">Colombo, LK</div>
+                  <div className="dash-panel-k">last deploy</div>
+                  <div className="dash-panel-v dash-panel-v--warn">2h ago</div>
                 </div>
               </div>
             </motion.div>

@@ -42,6 +42,23 @@ export function Contact() {
   const prefersReducedMotion = useReducedMotion()
   const cardRef = useRef(null)
 
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+  const [status, setStatus] = useState('idle') // idle | drafted
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const subject = encodeURIComponent(`Portfolio contact from ${formData.name}`)
+    const body = encodeURIComponent(
+      `${formData.message}\n\n— ${formData.name} (${formData.email})`
+    )
+    window.location.href = `mailto:your-email@example.com?subject=${subject}&body=${body}`
+    setStatus('drafted')
+  }
+
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
@@ -141,7 +158,11 @@ export function Contact() {
                   <span className="dash-beacon-core" />
                   <span className="dash-beacon-wave" />
                 </div>
-                <span className="dash-status-message">Listening for webhooks...</span>
+                <span className="dash-status-message">
+                  {status === 'drafted'
+                    ? 'Message drafted — check your mail client'
+                    : 'Listening for webhooks...'}
+                </span>
               </div>
             </div>
           </motion.div>
@@ -161,14 +182,17 @@ export function Contact() {
               </p>
             </div>
 
-            <form className="dash-dispatch-form" onSubmit={(e) => e.preventDefault()}>
+            <form className="dash-dispatch-form" onSubmit={handleSubmit}>
               <div className="dash-form-input-container">
                 <input
                   type="text"
                   id="sender-identity"
+                  name="name"
                   required
                   placeholder=" "
                   className="dash-form-field"
+                  value={formData.name}
+                  onChange={handleChange}
                 />
                 <label htmlFor="sender-identity" className="dash-form-label">Your name</label>
               </div>
@@ -177,9 +201,12 @@ export function Contact() {
                 <input
                   type="email"
                   id="sender-endpoint"
+                  name="email"
                   required
                   placeholder=" "
                   className="dash-form-field"
+                  value={formData.email}
+                  onChange={handleChange}
                 />
                 <label htmlFor="sender-endpoint" className="dash-form-label">Email endpoint</label>
               </div>
@@ -187,10 +214,13 @@ export function Contact() {
               <div className="dash-form-input-container">
                 <textarea
                   id="transmission-body"
+                  name="message"
                   rows={3}
                   required
                   placeholder=" "
                   className="dash-form-field dash-field-textarea"
+                  value={formData.message}
+                  onChange={handleChange}
                 />
                 <label htmlFor="transmission-body" className="dash-form-label">Message string</label>
               </div>
@@ -229,7 +259,7 @@ export function Contact() {
 
         <div className="dash-footer-metadata">
           <span className="dash-metadata-copyright">&copy; 2026 Dilshan Kumarasingha. All rights reserved.</span>
-          <span className="dash-metadata-spec">Engineered via Core React Ecosystem &bull; Framework Architecture</span>
+          <span className="dash-metadata-spec">Built with React &bull; Framer Motion</span>
         </div>
       </div>
     </section>

@@ -6,7 +6,7 @@ const stats = [
   { value: 1, suffix: '+', label: 'Years across IT operations & internship' },
   { value: 3, suffix: '', label: 'Production-style full-stack projects shipped' },
   { value: 3, suffix: '', label: 'QA layers covered — UI, API, Database' },
-  { value: 40, suffix: '+', label: 'Workstations deployed at Lyceum IMS' },
+  { value: 40, suffix: '+', label: 'Workstations deployed at Lyceum IMS', accent: true },
 ]
 
 const timeline = [
@@ -14,11 +14,13 @@ const timeline = [
     ref: '2026 — Present',
     role: 'Jr.System Administrator & Lab Demonstrator',
     company: 'Lyceum International Schools',
+    active: true,
   },
   {
     ref: '2023 — 2024',
     role: 'Software Developer Intern',
     company: 'Bank of Ceylon',
+    active: false,
   },
 ]
 
@@ -67,15 +69,41 @@ function ScrollStat({ stat, index, progress, prefersReducedMotion }) {
   return (
     <motion.div
       style={{ opacity: smoothOpacity, scale: smoothScale, y: smoothY }}
-      className="dash-stat-card"
+      className={`dash-stat-card ${stat.accent ? 'dash-stat-card--accent' : ''}`}
       whileHover={{ scale: 1.015, y: -2 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
     >
       <div className="dash-stat-value">
         {stat.value}
-        <span className="dash-stat-suffix">{stat.suffix}</span>
+        <span className={`dash-stat-suffix ${stat.accent ? 'dash-stat-suffix--warm' : ''}`}>{stat.suffix}</span>
       </div>
       <div className="dash-stat-label">{stat.label}</div>
+    </motion.div>
+  )
+}
+
+function TimelineEntry({ item, index, progress, prefersReducedMotion }) {
+  const entryStart = 0.25 + index * 0.12
+  const entryEnd = entryStart + 0.16
+
+  const entryOpacity = useTransform(progress, [entryStart, entryEnd], [0, 1])
+  const entryX = useTransform(progress, [entryStart, entryEnd], [prefersReducedMotion ? 0 : 15, 0])
+
+  const smoothOpacity = useSpring(entryOpacity, { damping: 26, stiffness: 130 })
+  const smoothX = useSpring(entryX, { damping: 26, stiffness: 130 })
+
+  return (
+    <motion.div
+      style={{ opacity: smoothOpacity, x: smoothX }}
+      className={`dash-entry ${item.active ? 'dash-entry--active' : ''}`}
+    >
+      <div className="dash-node" />
+      <div className="dash-year">
+        {item.ref}
+        {item.active && <span className="dash-year-live">&middot; active</span>}
+      </div>
+      <div className="dash-role">{item.role}</div>
+      <div className="dash-company">{item.company}</div>
     </motion.div>
   )
 }
@@ -93,29 +121,15 @@ function ScrollTimeline({ progress, prefersReducedMotion }) {
       />
 
       <div className="dash-entries-stack">
-        {timeline.map((item, i) => {
-          const entryStart = 0.25 + i * 0.12
-          const entryEnd = entryStart + 0.16
-
-          const entryOpacity = useTransform(progress, [entryStart, entryEnd], [0, 1])
-          const entryX = useTransform(progress, [entryStart, entryEnd], [prefersReducedMotion ? 0 : 15, 0])
-
-          const smoothOpacity = useSpring(entryOpacity, { damping: 26, stiffness: 130 })
-          const smoothX = useSpring(entryX, { damping: 26, stiffness: 130 })
-
-          return (
-            <motion.div
-              key={item.company}
-              style={{ opacity: smoothOpacity, x: smoothX }}
-              className="dash-entry"
-            >
-              <div className="dash-node" />
-              <div className="dash-year">{item.ref}</div>
-              <div className="dash-role">{item.role}</div>
-              <div className="dash-company">{item.company}</div>
-            </motion.div>
-          )
-        })}
+        {timeline.map((item, i) => (
+          <TimelineEntry
+            key={item.company}
+            item={item}
+            index={i}
+            progress={progress}
+            prefersReducedMotion={prefersReducedMotion}
+          />
+        ))}
       </div>
     </div>
   )

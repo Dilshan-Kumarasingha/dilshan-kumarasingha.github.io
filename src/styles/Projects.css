@@ -126,6 +126,11 @@
   flex-shrink: 0;
 }
 
+/* in-development projects get the amber signal instead of green — same system as Hero/About */
+.dash-project-numerical-id--dev {
+  color: #E8A23D;
+}
+
 .dash-project-identity-stack {
   display: flex;
   flex-direction: column;
@@ -164,6 +169,14 @@
   border-radius: 999px;
   flex-shrink: 0;
   margin-top: 2px;
+}
+
+.dash-project-status-pill--dev {
+  color: #E8A23D !important;
+}
+
+.dash-project-status-pill--dev .dash-project-status-dot {
+  background: #E8A23D;
 }
 
 .dash-project-status-dot {
@@ -308,6 +321,15 @@
 
 .dash-link-action:hover .dash-chevron-box {
   transform: translateX(3px);
+}
+
+.dash-link-action--disabled {
+  color: #5C6573 !important;
+  cursor: default;
+}
+
+.dash-link-action--disabled span::after {
+  display: none;
 }
 
 /* ---------- Responsive View Adapters ---------- */

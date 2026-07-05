@@ -23,6 +23,7 @@ const projects = [
     id: '01',
     name: 'Flowspace',
     tagline: 'Async Team Standup & Decision Platform',
+    status: 'shipped',
     description:
       'Eliminates synchronous overhead by enabling team members to broadcast updates, flag real-time blockers via SignalR, and maintain an immutable decision status machine that preserves crucial development context.',
     stack: [
@@ -41,12 +42,13 @@ const projects = [
       'Drives a real-time collaborative workspace feed utilizing a dedicated SignalR hub for continuous client synchronization.',
       'Maintains a forward-only decision lifecycle state machine (Draft → Open → Decided → Superseded) with voting isolation.',
     ],
-    link: '#',
+    link: null,
   },
   {
     id: '02',
     name: 'HelpDeskHQ',
     tagline: 'Internal ITSM & Automated SLA Engine',
+    status: 'shipped',
     description:
       'An enterprise helpdesk application featuring an autonomous rule-evaluation pipeline that actively tracks and updates Service Level Agreement deadlines without requiring human intervention.',
     stack: [
@@ -65,12 +67,13 @@ const projects = [
       'Features programmatic ticket escalation routing and server-side state transition validations to prevent bypassing.',
       'Broadcasts live ticket queue changes and rolling 30-day compliance metrics instantaneously across user roles.',
     ],
-    link: '#',
+    link: null,
   },
   {
     id: '03',
     name: 'LankaCore Banking System',
     tagline: 'High-Performance Transaction Engine',
+    status: 'in development',
     description:
       'A secure core banking architecture tailored for multi-account management, automated security auditing, and zero-tolerance transactional accuracy.',
     stack: [
@@ -89,12 +92,13 @@ const projects = [
       'Implements clean data abstraction tiers ensuring strict isolation parameters for high-velocity account computations.',
       'Powers an interactive frontend monitoring dashboard featuring comprehensive ledger and transaction metrics visualization.',
     ],
-    link: '#',
+    link: null,
   },
   {
     id: '04',
     name: 'ShopQA E-Commerce',
     tagline: 'Full-Stack Application & Test Automation Suite',
+    status: 'in development',
     description:
       'A dual-purpose repository featuring a multi-role web platform coupled with an exhaustive, multi-tier QA test engineering framework validating everything from user journeys to persistent data layers.',
     stack: [
@@ -113,12 +117,13 @@ const projects = [
       'Deploys an end-to-end automation framework spanning UI Page Object Models and isolated REST API test assertions.',
       'Validates transactional persistence layers via direct JDBC structures inside a automated GitHub Actions CI pipeline.',
     ],
-    link: '#',
+    link: null,
   },
 ]
 
 function ProjectCard({ project, prefersReducedMotion }) {
   const cardRef = useRef(null)
+  const isShipped = project.status === 'shipped'
 
   const { scrollYProgress } = useScroll({
     target: cardRef,
@@ -142,14 +147,16 @@ function ProjectCard({ project, prefersReducedMotion }) {
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
     >
       <div className="dash-project-meta-strip">
-        <span className="dash-project-numerical-id">{project.id}</span>
+        <span className={`dash-project-numerical-id ${isShipped ? '' : 'dash-project-numerical-id--dev'}`}>
+          {project.id}
+        </span>
         <div className="dash-project-identity-stack">
           <h3 className="dash-project-brand-name">{project.name}</h3>
           <p className="dash-project-tagline-text">{project.tagline}</p>
         </div>
-        <span className="dash-project-status-pill">
+        <span className={`dash-project-status-pill ${isShipped ? '' : 'dash-project-status-pill--dev'}`}>
           <span className="dash-project-status-dot" />
-          shipped
+          {project.status}
         </span>
       </div>
 
@@ -186,12 +193,18 @@ function ProjectCard({ project, prefersReducedMotion }) {
       </div>
 
       <div className="dash-project-action-wrapper">
-        <a href={project.link} className="dash-link-action">
-          <span>Explore architecture specification</span>
-          <div className="dash-chevron-box">
-            <ChevronRight size={13} />
-          </div>
-        </a>
+        {project.link ? (
+          <a href={project.link} className="dash-link-action">
+            <span>Explore architecture specification</span>
+            <div className="dash-chevron-box">
+              <ChevronRight size={13} />
+            </div>
+          </a>
+        ) : (
+          <span className="dash-link-action dash-link-action--disabled">
+            <span>Repository private &middot; available on request</span>
+          </span>
+        )}
       </div>
     </motion.div>
   )
