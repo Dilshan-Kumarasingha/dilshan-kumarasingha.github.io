@@ -3,137 +3,26 @@ import { motion, useReducedMotion, useScroll, useTransform, useSpring } from 'fr
 import '../styles/About.css'
 
 const stats = [
-  { value: 1, suffix: '+', label: 'Years across IT operations & internship' },
-  { value: 3, suffix: '', label: 'Production-style full-stack projects shipped' },
-  { value: 3, suffix: '', label: 'QA layers covered — UI, API, Database' },
-  { value: 40, suffix: '+', label: 'Workstations deployed at Lyceum IMS', accent: true },
+  { value: 1, suffix: '+', label: 'years, IT ops & internship' },
+  { value: 3, suffix: '', label: 'full-stack builds shipped' },
+  { value: 3, suffix: '', label: 'QA layers — UI / API / DB' },
+  { value: 40, suffix: '+', label: 'workstations deployed', accent: true },
 ]
 
-const timeline = [
+const record = [
   {
-    ref: '2026 — Present',
-    role: 'Jr.System Administrator & Lab Demonstrator',
-    company: 'Lyceum International Schools',
-    active: true,
+    span: '2026 — Present',
+    role: 'Jr. System Administrator & Lab Demonstrator',
+    org: 'Lyceum International Schools',
+    status: 'active',
   },
   {
-    ref: '2023 — 2024',
+    span: '2023 — 2024',
     role: 'Software Developer Intern',
-    company: 'Bank of Ceylon',
-    active: false,
+    org: 'Bank of Ceylon',
+    status: 'resolved',
   },
 ]
-
-const HEADLINE_PLAIN = 'Built with the discipline of '
-const HEADLINE_ACCENT = 'production, not practice.'
-
-function ScrollWord({ word, progress, start, end, accent, prefersReducedMotion }) {
-  const opacity = useTransform(progress, [start, end], [0.2, 1])
-  const y = useTransform(progress, [start, end], [prefersReducedMotion ? 0 : 12, 0])
-  const filter = useTransform(progress, [start, end], [
-    prefersReducedMotion ? 'blur(0px)' : 'blur(4px)',
-    'blur(0px)',
-  ])
-
-  const springConfig = { damping: 32, stiffness: 180, mass: 0.35 }
-  const smoothOpacity = useSpring(opacity, springConfig)
-  const smoothY = useSpring(y, springConfig)
-
-  return (
-    <motion.span
-      style={{
-        opacity: smoothOpacity,
-        y: smoothY,
-        filter: prefersReducedMotion ? undefined : filter,
-      }}
-      className={`dash-about-word ${accent ? 'dash-about-word-accent' : ''}`}
-    >
-      {word}&nbsp;
-    </motion.span>
-  )
-}
-
-function ScrollStat({ stat, index, progress, prefersReducedMotion }) {
-  const start = 0.08 + index * 0.05
-  const end = start + 0.18
-
-  const opacity = useTransform(progress, [start, end], [0, 1])
-  const scale = useTransform(progress, [start, end], [prefersReducedMotion ? 1 : 0.96, 1])
-  const y = useTransform(progress, [start, end], [prefersReducedMotion ? 0 : 20, 0])
-
-  const springConfig = { damping: 28, stiffness: 140, mass: 0.5 }
-  const smoothOpacity = useSpring(opacity, springConfig)
-  const smoothScale = useSpring(scale, springConfig)
-  const smoothY = useSpring(y, springConfig)
-
-  return (
-    <motion.div
-      style={{ opacity: smoothOpacity, scale: smoothScale, y: smoothY }}
-      className={`dash-stat-card ${stat.accent ? 'dash-stat-card--accent' : ''}`}
-      whileHover={{ scale: 1.015, y: -2 }}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
-    >
-      <div className="dash-stat-value">
-        {stat.value}
-        <span className={`dash-stat-suffix ${stat.accent ? 'dash-stat-suffix--warm' : ''}`}>{stat.suffix}</span>
-      </div>
-      <div className="dash-stat-label">{stat.label}</div>
-    </motion.div>
-  )
-}
-
-function TimelineEntry({ item, index, progress, prefersReducedMotion }) {
-  const entryStart = 0.25 + index * 0.12
-  const entryEnd = entryStart + 0.16
-
-  const entryOpacity = useTransform(progress, [entryStart, entryEnd], [0, 1])
-  const entryX = useTransform(progress, [entryStart, entryEnd], [prefersReducedMotion ? 0 : 15, 0])
-
-  const smoothOpacity = useSpring(entryOpacity, { damping: 26, stiffness: 130 })
-  const smoothX = useSpring(entryX, { damping: 26, stiffness: 130 })
-
-  return (
-    <motion.div
-      style={{ opacity: smoothOpacity, x: smoothX }}
-      className={`dash-entry ${item.active ? 'dash-entry--active' : ''}`}
-    >
-      <div className="dash-node" />
-      <div className="dash-year">
-        {item.ref}
-        {item.active && <span className="dash-year-live">&middot; active</span>}
-      </div>
-      <div className="dash-role">{item.role}</div>
-      <div className="dash-company">{item.company}</div>
-    </motion.div>
-  )
-}
-
-function ScrollTimeline({ progress, prefersReducedMotion }) {
-  const scaleY = useTransform(progress, [0.22, 0.6], [0, 1])
-  const smoothScaleY = useSpring(scaleY, { damping: 35, stiffness: 120 })
-
-  return (
-    <div className="dash-rail-container">
-      <div className="dash-rail-track" />
-      <motion.div
-        style={{ scaleY: smoothScaleY }}
-        className="dash-rail-line-fill"
-      />
-
-      <div className="dash-entries-stack">
-        {timeline.map((item, i) => (
-          <TimelineEntry
-            key={item.company}
-            item={item}
-            index={i}
-            progress={progress}
-            prefersReducedMotion={prefersReducedMotion}
-          />
-        ))}
-      </div>
-    </div>
-  )
-}
 
 function About() {
   const targetRef = useRef(null)
@@ -141,109 +30,145 @@ function About() {
 
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ['start 0.85', 'end 0.25'],
+    offset: ['start 0.85', 'end 0.2'],
   })
 
-  const plainWords = HEADLINE_PLAIN.split(' ')
-  const accentWords = HEADLINE_ACCENT.split(' ')
-  const totalWords = plainWords.length + accentWords.length
+  const headlineOpacity = useTransform(scrollYProgress, [0, 0.16], [0, 1])
+  const headlineY = useTransform(scrollYProgress, [0, 0.16], [prefersReducedMotion ? 0 : 24, 0])
+  const smoothHeadlineOpacity = useSpring(headlineOpacity, { damping: 28, stiffness: 160 })
+  const smoothHeadlineY = useSpring(headlineY, { damping: 28, stiffness: 160 })
+
+  const bodyOpacity = useTransform(scrollYProgress, [0.1, 0.28], [0, 1])
+  const bodyY = useTransform(scrollYProgress, [0.1, 0.28], [prefersReducedMotion ? 0 : 20, 0])
+  const smoothBodyOpacity = useSpring(bodyOpacity, { damping: 26 })
+  const smoothBodyY = useSpring(bodyY, { damping: 26 })
 
   return (
-    <section className="dash-about" id="about" ref={targetRef}>
-      <div className="dash-about-inner">
-        <div className="dash-about-grid">
+    <section className="glow-about" id="about" ref={targetRef}>
+      <div className="glow-about-aurora" aria-hidden="true">
+        <span className="glow-about-blob glow-about-blob--violet" />
+        <span className="glow-about-blob glow-about-blob--cyan" />
+      </div>
 
-          {/* LEFT COLUMN: Narrative Details */}
-          <div className="dash-about-left">
-            <span className="dash-section-eyebrow">
-              <span className="dash-eyebrow-dot" />
-              01 &middot; about.log
-            </span>
+      <div className="glow-about-inner">
 
-            <h2 className="dash-about-headline">
-              {plainWords.map((word, i) => {
-                const start = (i / totalWords) * 0.32
-                const end = start + 0.14
-                return (
-                  <ScrollWord
-                    key={`p-${i}`}
-                    word={word}
-                    progress={scrollYProgress}
-                    start={start}
-                    end={end}
-                    accent={false}
-                    prefersReducedMotion={prefersReducedMotion}
-                  />
-                )
-              })}
-              {accentWords.map((word, i) => {
-                const idx = plainWords.length + i
-                const start = (idx / totalWords) * 0.32
-                const end = start + 0.14
-                return (
-                  <ScrollWord
-                    key={`a-${i}`}
-                    word={word}
-                    progress={scrollYProgress}
-                    start={start}
-                    end={end}
-                    accent={true}
-                    prefersReducedMotion={prefersReducedMotion}
-                  />
-                )
-              })}
-            </h2>
+        <span className="glow-eyebrow">who I am</span>
 
-            <motion.div
-              className="dash-about-paragraphs"
-              style={{
-                opacity: useSpring(useTransform(scrollYProgress, [0.18, 0.38], [0.3, 1]), { damping: 25 })
-              }}
-            >
-              <p className="dash-about-text">
-                My experience as a Software Developer Intern at Bank of Ceylon and my current role as an (Jr) system adminstrator & Lab Demonstrator 
-                at Lyceum International Schools
-                have given me a strong foundation in both software development and enterprise IT operations. 
-                Working across development, troubleshooting, and system support has taught me to build solutions that are reliable, 
-                maintainable, and practical for real-world environments
-              </p>
-              <p className="dash-about-text">
-                That experience set the bar for how I build: every service requires clean test suites,
-                predictable database parameters, and scalable deployment operations. I apply that
-                engineering discipline to design end-to-end full-stack systems backed by robust architecture
-                rather than just shipping interfaces and hoping they stay active.
-              </p>
-              <p className="dash-about-text">
-                I'm currently seeking a full-time Software Engineer, Backend Developer, 
-                or System Administrator opportunity where I can continue building high-quality software, 
-                improve my technical skills, and contribute to projects that make a real impact.
-              </p>
-            </motion.div>
-          </div>
+        <motion.h2
+          className="glow-about-headline"
+          style={{ opacity: smoothHeadlineOpacity, y: smoothHeadlineY }}
+          data-cursor="text"
+        >
+          Built with the discipline of
+          <br />
+          <span className="glow-headline-gradient">production, not practice.</span>
+        </motion.h2>
 
-          {/* RIGHT COLUMN: Statistics & Timeline Panels */}
-          <div className="dash-about-right">
-            <div className="dash-stats-grid">
-              {stats.map((stat, i) => (
-                <ScrollStat
-                  key={stat.label}
-                  stat={stat}
-                  index={i}
-                  progress={scrollYProgress}
-                  prefersReducedMotion={prefersReducedMotion}
-                />
-              ))}
-            </div>
+        <motion.div className="glow-about-body" style={{ opacity: smoothBodyOpacity, y: smoothBodyY }}>
+          <p className="glow-about-text">
+            My experience as a Software Developer Intern at Bank of Ceylon, and my
+            current role as a Jr. System Administrator &amp; Lab Demonstrator at
+            Lyceum International Schools, gave me a foundation in both software
+            development and enterprise IT operations — building things that hold up
+            under real, everyday use.
+          </p>
+          <p className="glow-about-text">
+            That's the bar I build to: clean test suites, predictable database
+            parameters, scalable deployment. Full-stack systems backed by real
+            architecture — not interfaces I ship and hope stay up.
+          </p>
+          <p className="glow-about-text">
+            Currently looking for a full-time Software Engineer, Backend Developer,
+            or System Administrator role — somewhere I can keep building things that
+            hold weight.
+          </p>
+        </motion.div>
 
-            <ScrollTimeline
+        {/* Stat cards — glass, gradient number on the standout metric */}
+        <div className="glow-stats-grid">
+          {stats.map((stat, i) => (
+            <StatCard
+              key={stat.label}
+              stat={stat}
+              index={i}
               progress={scrollYProgress}
               prefersReducedMotion={prefersReducedMotion}
             />
-          </div>
-
+          ))}
         </div>
+
+        {/* Service record — glass row list, gradient edge marks "active" */}
+        <div className="glow-record-block">
+          <span className="glow-record-label">experience</span>
+          <div className="glow-record-list">
+            {record.map((item, i) => (
+              <RecordRow
+                key={item.org}
+                item={item}
+                index={i}
+                progress={scrollYProgress}
+                prefersReducedMotion={prefersReducedMotion}
+              />
+            ))}
+          </div>
+        </div>
+
       </div>
     </section>
+  )
+}
+
+function StatCard({ stat, index, progress, prefersReducedMotion }) {
+  const start = 0.28 + index * 0.05
+  const end = start + 0.16
+
+  const opacity = useTransform(progress, [start, end], [0, 1])
+  const y = useTransform(progress, [start, end], [prefersReducedMotion ? 0 : 20, 0])
+  const smoothOpacity = useSpring(opacity, { damping: 28, stiffness: 150 })
+  const smoothY = useSpring(y, { damping: 28, stiffness: 150 })
+
+  return (
+    <motion.div
+      style={{ opacity: smoothOpacity, y: smoothY }}
+      className={`glow-stat-card ${stat.accent ? 'glow-stat-card--accent' : ''}`}
+      whileHover={{ y: -3 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+      data-cursor="hover"
+    >
+      <div className="glow-stat-value">
+        {stat.value}
+        <span className="glow-stat-suffix">{stat.suffix}</span>
+      </div>
+      <div className="glow-stat-label">{stat.label}</div>
+    </motion.div>
+  )
+}
+
+function RecordRow({ item, index, progress, prefersReducedMotion }) {
+  const start = 0.5 + index * 0.1
+  const end = start + 0.16
+  const opacity = useTransform(progress, [start, end], [0, 1])
+  const x = useTransform(progress, [start, end], [prefersReducedMotion ? 0 : -18, 0])
+  const smoothOpacity = useSpring(opacity, { damping: 28, stiffness: 140 })
+  const smoothX = useSpring(x, { damping: 28, stiffness: 140 })
+
+  return (
+    <motion.div
+      style={{ opacity: smoothOpacity, x: smoothX }}
+      className={`glow-record-row ${item.status === 'active' ? 'glow-record-row--active' : ''}`}
+      data-cursor="hover"
+      data-cursor-label={item.status === 'active' ? 'Now' : undefined}
+    >
+      <div className="glow-record-edge" />
+      <div className="glow-record-main">
+        <div className="glow-record-top">
+          <span className="glow-record-span">{item.span}</span>
+          {item.status === 'active' && <span className="glow-record-live">active</span>}
+        </div>
+        <div className="glow-record-role">{item.role}</div>
+        <div className="glow-record-org">{item.org}</div>
+      </div>
+    </motion.div>
   )
 }
 

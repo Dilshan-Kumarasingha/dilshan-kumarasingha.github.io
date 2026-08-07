@@ -142,47 +142,48 @@ function ProjectCard({ project, prefersReducedMotion }) {
     <motion.div
       ref={cardRef}
       style={{ opacity: smoothOpacity, scale: smoothScale, y: smoothY }}
-      className="dash-project-card"
-      whileHover={prefersReducedMotion ? {} : { y: -4, borderColor: "#2A3140" }}
+      className="glow-project-card"
+      whileHover={prefersReducedMotion ? {} : { y: -4 }}
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      data-cursor="hover"
     >
-      <div className="dash-project-meta-strip">
-        <span className={`dash-project-numerical-id ${isShipped ? '' : 'dash-project-numerical-id--dev'}`}>
-          {project.id}
-        </span>
-        <div className="dash-project-identity-stack">
-          <h3 className="dash-project-brand-name">{project.name}</h3>
-          <p className="dash-project-tagline-text">{project.tagline}</p>
-        </div>
-        <span className={`dash-project-status-pill ${isShipped ? '' : 'dash-project-status-pill--dev'}`}>
-          <span className="dash-project-status-dot" />
-          {project.status}
-        </span>
+      {/* SIGNATURE — glass status badge with gradient dot, top-right */}
+      <div className={`glow-badge ${isShipped ? 'glow-badge--shipped' : 'glow-badge--dev'}`}>
+        <span className="glow-badge-dot" />
+        {isShipped ? 'shipped' : 'in development'}
       </div>
 
-      <p className="dash-project-narrative-body">{project.description}</p>
+      <div className="glow-project-meta-strip">
+        <span className="glow-project-id">{project.id}</span>
+        <div className="glow-project-identity-stack">
+          <h3 className="glow-project-name">{project.name}</h3>
+          <p className="glow-project-tagline">{project.tagline}</p>
+        </div>
+      </div>
 
-      <div className="dash-project-details-grid">
-        <div className="dash-project-highlights-column">
-          <h4 className="dash-detail-section-title">Verified implementations</h4>
-          <ul className="dash-highlights-list">
+      <p className="glow-project-narrative">{project.description}</p>
+
+      <div className="glow-project-details-grid">
+        <div className="glow-project-highlights-column">
+          <h4 className="glow-detail-title">Verified implementations</h4>
+          <ul className="glow-highlights-list">
             {project.highlights.map((highlight, index) => (
-              <li key={index} className="dash-highlight-item">
-                <span className="dash-highlight-bullet-point">&middot;</span>
-                <span className="dash-highlight-text-content">{highlight}</span>
+              <li key={index} className="glow-highlight-item">
+                <span className="glow-highlight-mark" />
+                <span className="glow-highlight-text">{highlight}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="dash-project-ecosystem-column">
-          <h4 className="dash-detail-section-title">Ecosystem stack</h4>
-          <div className="dash-tech-badges-flex">
+        <div className="glow-project-ecosystem-column">
+          <h4 className="glow-detail-title">Ecosystem stack</h4>
+          <div className="glow-tech-badges">
             {project.stack.map((tech) => (
               <motion.span
                 key={tech}
-                className="dash-tech-badge"
-                whileHover={prefersReducedMotion ? {} : { scale: 1.03, y: -1, borderColor: "#3DD68C" }}
+                className="glow-tech-badge"
+                whileHover={prefersReducedMotion ? {} : { y: -1 }}
                 transition={{ type: "spring", stiffness: 500, damping: 20 }}
               >
                 {tech}
@@ -192,16 +193,16 @@ function ProjectCard({ project, prefersReducedMotion }) {
         </div>
       </div>
 
-      <div className="dash-project-action-wrapper">
+      <div className="glow-project-action-wrapper">
         {project.link ? (
-          <a href={project.link} className="dash-link-action">
+          <a href={project.link} className="glow-link-action" data-cursor="hover" data-cursor-label="Open">
             <span>Explore architecture specification</span>
-            <div className="dash-chevron-box">
+            <div className="glow-chevron-box">
               <ChevronRight size={13} />
             </div>
           </a>
         ) : (
-          <span className="dash-link-action dash-link-action--disabled">
+          <span className="glow-link-action glow-link-action--disabled">
             <span>Repository private &middot; available on request</span>
           </span>
         )}
@@ -223,28 +224,33 @@ function Projects() {
   }
 
   return (
-    <section className="dash-projects-section" id="projects">
-      <div className="dash-projects-container">
+    <section className="glow-projects" id="projects">
+      <div className="glow-projects-aurora" aria-hidden="true">
+        <span className="glow-projects-blob glow-projects-blob--violet" />
+        <span className="glow-projects-blob glow-projects-blob--pink" />
+      </div>
+
+      <div className="glow-projects-container">
         <motion.div
-          className="dash-section-header"
+          className="glow-section-header"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-120px' }}
           variants={headerVariants}
         >
-          <span className="dash-section-eyebrow">
-            <span className="dash-eyebrow-dot" />
-            selected production architecture
-          </span>
-          <h2 className="dash-section-title">
-            Systems that scale. <span className="dash-text-secondary">Built with complete rigor.</span>
+          <span className="glow-eyebrow">selected work</span>
+          <h2 className="glow-section-title">
+            Systems that scale.
+            <br />
+            <span className="glow-headline-gradient">Built with complete rigor.</span>
           </h2>
-          <p className="dash-section-subtitle">
-            Enterprise-ready implementations featuring isolated backend services, multi-tier automated verification, and deterministic layouts.
+          <p className="glow-section-subtitle">
+            Enterprise-ready implementations featuring isolated backend services,
+            multi-tier automated verification, and deterministic layouts.
           </p>
         </motion.div>
 
-        <div className="dash-projects-grid">
+        <div className="glow-projects-grid">
           {projects.map((project) => (
             <ProjectCard
               key={project.id}
