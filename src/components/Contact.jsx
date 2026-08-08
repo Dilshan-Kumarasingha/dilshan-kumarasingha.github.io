@@ -94,7 +94,7 @@ export function Contact() {
 
         <div className="dash-contact-split">
 
-          {/* macOS Window Frame Card */}
+          {/* Terminal window card */}
           <motion.div
             ref={cardRef}
             onMouseMove={handleMouseMove}
@@ -116,7 +116,7 @@ export function Contact() {
                 style={{
                   background: useTransform(
                     [glowX, glowY],
-                    ([latestX, latestY]) => `radial-gradient(380px circle at ${latestX + 240}px ${latestY + 180}px, rgba(61, 214, 140, 0.06), transparent 70%)`
+                    ([latestX, latestY]) => `radial-gradient(380px circle at ${latestX + 240}px ${latestY + 180}px, rgba(255, 138, 66, 0.06), transparent 70%)`
                   )
                 }}
               />
@@ -167,7 +167,7 @@ export function Contact() {
             </div>
           </motion.div>
 
-          {/* Form Card */}
+          {/* Form card */}
           <motion.div
             className="dash-dispatch-card"
             initial={{ opacity: 0, y: 25 }}

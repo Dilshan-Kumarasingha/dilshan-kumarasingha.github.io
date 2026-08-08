@@ -44,48 +44,43 @@ function About() {
   const smoothBodyY = useSpring(bodyY, { damping: 26 })
 
   return (
-    <section className="glow-about" id="about" ref={targetRef}>
-      <div className="glow-about-aurora" aria-hidden="true">
-        <span className="glow-about-blob glow-about-blob--violet" />
-        <span className="glow-about-blob glow-about-blob--cyan" />
-      </div>
+    <section className="about" id="about" ref={targetRef}>
+      <div className="about-inner">
 
-      <div className="glow-about-inner">
-
-        <span className="glow-eyebrow">who I am</span>
+        <span className="about-eyebrow">who I am</span>
 
         <motion.h2
-          className="glow-about-headline"
+          className="about-headline"
           style={{ opacity: smoothHeadlineOpacity, y: smoothHeadlineY }}
           data-cursor="text"
         >
           Built with the discipline of
           <br />
-          <span className="glow-headline-gradient">production, not practice.</span>
+          <span className="about-headline-accent">production, not practice.</span>
         </motion.h2>
 
-        <motion.div className="glow-about-body" style={{ opacity: smoothBodyOpacity, y: smoothBodyY }}>
-          <p className="glow-about-text">
+        <motion.div className="about-body" style={{ opacity: smoothBodyOpacity, y: smoothBodyY }}>
+          <p className="about-text">
             My experience as a Software Developer Intern at Bank of Ceylon, and my
             current role as a Jr. System Administrator &amp; Lab Demonstrator at
             Lyceum International Schools, gave me a foundation in both software
             development and enterprise IT operations — building things that hold up
             under real, everyday use.
           </p>
-          <p className="glow-about-text">
+          <p className="about-text">
             That's the bar I build to: clean test suites, predictable database
             parameters, scalable deployment. Full-stack systems backed by real
             architecture — not interfaces I ship and hope stay up.
           </p>
-          <p className="glow-about-text">
+          <p className="about-text">
             Currently looking for a full-time Software Engineer, Backend Developer,
             or System Administrator role — somewhere I can keep building things that
             hold weight.
           </p>
         </motion.div>
 
-        {/* Stat cards — glass, gradient number on the standout metric */}
-        <div className="glow-stats-grid">
+        {/* Stat cards — bordered panels, single top-tick accent on the standout metric */}
+        <div className="about-stats-grid">
           {stats.map((stat, i) => (
             <StatCard
               key={stat.label}
@@ -97,10 +92,10 @@ function About() {
           ))}
         </div>
 
-        {/* Service record — glass row list, gradient edge marks "active" */}
-        <div className="glow-record-block">
-          <span className="glow-record-label">experience</span>
-          <div className="glow-record-list">
+        {/* Service record — bordered row list, signal edge marks "active" */}
+        <div className="about-record-block">
+          <span className="about-record-label">experience</span>
+          <div className="about-record-list">
             {record.map((item, i) => (
               <RecordRow
                 key={item.org}
@@ -130,16 +125,14 @@ function StatCard({ stat, index, progress, prefersReducedMotion }) {
   return (
     <motion.div
       style={{ opacity: smoothOpacity, y: smoothY }}
-      className={`glow-stat-card ${stat.accent ? 'glow-stat-card--accent' : ''}`}
-      whileHover={{ y: -3 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+      className={`about-stat-card ${stat.accent ? 'about-stat-card--accent' : ''}`}
       data-cursor="hover"
     >
-      <div className="glow-stat-value">
+      <div className="about-stat-value">
         {stat.value}
-        <span className="glow-stat-suffix">{stat.suffix}</span>
+        <span className="about-stat-suffix">{stat.suffix}</span>
       </div>
-      <div className="glow-stat-label">{stat.label}</div>
+      <div className="about-stat-label">{stat.label}</div>
     </motion.div>
   )
 }
@@ -155,18 +148,18 @@ function RecordRow({ item, index, progress, prefersReducedMotion }) {
   return (
     <motion.div
       style={{ opacity: smoothOpacity, x: smoothX }}
-      className={`glow-record-row ${item.status === 'active' ? 'glow-record-row--active' : ''}`}
+      className={`about-record-row ${item.status === 'active' ? 'about-record-row--active' : ''}`}
       data-cursor="hover"
       data-cursor-label={item.status === 'active' ? 'Now' : undefined}
     >
-      <div className="glow-record-edge" />
-      <div className="glow-record-main">
-        <div className="glow-record-top">
-          <span className="glow-record-span">{item.span}</span>
-          {item.status === 'active' && <span className="glow-record-live">active</span>}
+      <div className="about-record-edge" />
+      <div className="about-record-main">
+        <div className="about-record-top">
+          <span className="about-record-span">{item.span}</span>
+          {item.status === 'active' && <span className="about-record-live">active</span>}
         </div>
-        <div className="glow-record-role">{item.role}</div>
-        <div className="glow-record-org">{item.org}</div>
+        <div className="about-record-role">{item.role}</div>
+        <div className="about-record-org">{item.org}</div>
       </div>
     </motion.div>
   )

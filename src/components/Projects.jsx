@@ -131,78 +131,68 @@ function ProjectCard({ project, prefersReducedMotion }) {
   })
 
   const opacity = useTransform(scrollYProgress, [0, 0.25], [0, 1])
-  const scale = useTransform(scrollYProgress, [0, 0.25], [prefersReducedMotion ? 1 : 0.97, 1])
-  const y = useTransform(scrollYProgress, [0, 0.25], [prefersReducedMotion ? 0 : 30, 0])
+  const y = useTransform(scrollYProgress, [0, 0.25], [prefersReducedMotion ? 0 : 24, 0])
 
   const smoothOpacity = useSpring(opacity, { damping: 32, stiffness: 160 })
-  const smoothScale = useSpring(scale, { damping: 32, stiffness: 160 })
   const smoothY = useSpring(y, { damping: 32, stiffness: 160 })
 
   return (
     <motion.div
       ref={cardRef}
-      style={{ opacity: smoothOpacity, scale: smoothScale, y: smoothY }}
-      className="glow-project-card"
-      whileHover={prefersReducedMotion ? {} : { y: -4 }}
-      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      style={{ opacity: smoothOpacity, y: smoothY }}
+      className="project-card"
       data-cursor="hover"
     >
-      {/* SIGNATURE — glass status badge with gradient dot, top-right */}
-      <div className={`glow-badge ${isShipped ? 'glow-badge--shipped' : 'glow-badge--dev'}`}>
-        <span className="glow-badge-dot" />
+      <div className={`project-badge ${isShipped ? 'project-badge--shipped' : ''}`}>
+        <span className="project-badge-dot" />
         {isShipped ? 'shipped' : 'in development'}
       </div>
 
-      <div className="glow-project-meta-strip">
-        <span className="glow-project-id">{project.id}</span>
-        <div className="glow-project-identity-stack">
-          <h3 className="glow-project-name">{project.name}</h3>
-          <p className="glow-project-tagline">{project.tagline}</p>
+      <div className="project-meta-strip">
+        <span className="project-id">{project.id}</span>
+        <div className="project-identity-stack">
+          <h3 className="project-name">{project.name}</h3>
+          <p className="project-tagline">{project.tagline}</p>
         </div>
       </div>
 
-      <p className="glow-project-narrative">{project.description}</p>
+      <p className="project-narrative">{project.description}</p>
 
-      <div className="glow-project-details-grid">
-        <div className="glow-project-highlights-column">
-          <h4 className="glow-detail-title">Verified implementations</h4>
-          <ul className="glow-highlights-list">
+      <div className="project-details-grid">
+        <div>
+          <h4 className="detail-title">Verified implementations</h4>
+          <ul className="highlights-list">
             {project.highlights.map((highlight, index) => (
-              <li key={index} className="glow-highlight-item">
-                <span className="glow-highlight-mark" />
-                <span className="glow-highlight-text">{highlight}</span>
+              <li key={index} className="highlight-item">
+                <span className="highlight-mark" />
+                <span>{highlight}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="glow-project-ecosystem-column">
-          <h4 className="glow-detail-title">Ecosystem stack</h4>
-          <div className="glow-tech-badges">
+        <div>
+          <h4 className="detail-title">Ecosystem stack</h4>
+          <div className="tech-badges">
             {project.stack.map((tech) => (
-              <motion.span
-                key={tech}
-                className="glow-tech-badge"
-                whileHover={prefersReducedMotion ? {} : { y: -1 }}
-                transition={{ type: "spring", stiffness: 500, damping: 20 }}
-              >
+              <span key={tech} className="tech-badge">
                 {tech}
-              </motion.span>
+              </span>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="glow-project-action-wrapper">
+      <div className="project-action-wrapper">
         {project.link ? (
-          <a href={project.link} className="glow-link-action" data-cursor="hover" data-cursor-label="Open">
+          <a href={project.link} className="project-link" data-cursor="hover" data-cursor-label="Open">
             <span>Explore architecture specification</span>
-            <div className="glow-chevron-box">
+            <span className="project-chevron">
               <ChevronRight size={13} />
-            </div>
+            </span>
           </a>
         ) : (
-          <span className="glow-link-action glow-link-action--disabled">
+          <span className="project-link project-link--disabled">
             <span>Repository private &middot; available on request</span>
           </span>
         )}
@@ -215,42 +205,37 @@ function Projects() {
   const prefersReducedMotion = useReducedMotion()
 
   const headerVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 30 },
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 24 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
+      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
     },
   }
 
   return (
-    <section className="glow-projects" id="projects">
-      <div className="glow-projects-aurora" aria-hidden="true">
-        <span className="glow-projects-blob glow-projects-blob--violet" />
-        <span className="glow-projects-blob glow-projects-blob--pink" />
-      </div>
-
-      <div className="glow-projects-container">
+    <section className="projects" id="projects">
+      <div className="projects-container">
         <motion.div
-          className="glow-section-header"
+          className="projects-header"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-120px' }}
           variants={headerVariants}
         >
-          <span className="glow-eyebrow">selected work</span>
-          <h2 className="glow-section-title">
+          <span className="projects-eyebrow">selected work</span>
+          <h2 className="projects-title">
             Systems that scale.
             <br />
-            <span className="glow-headline-gradient">Built with complete rigor.</span>
+            <span className="projects-title-accent">Built with complete rigor.</span>
           </h2>
-          <p className="glow-section-subtitle">
+          <p className="projects-subtitle">
             Enterprise-ready implementations featuring isolated backend services,
             multi-tier automated verification, and deterministic layouts.
           </p>
         </motion.div>
 
-        <div className="glow-projects-grid">
+        <div className="projects-grid">
           {projects.map((project) => (
             <ProjectCard
               key={project.id}

@@ -1,10 +1,24 @@
 /* ============================================================
-   SKILLS — Sci-Fi HUD / Scan Readout Specification
+   SKILLS — same blueprint system as Hero/About/Projects.
+   HUD readout kept, recolored to navy/amber, single-tick
+   corner mark instead of Hero's full four-corner frame.
    ============================================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
 .dash-skills-section {
-  padding: 10rem 2rem;
-  background: #0B0E14;
+  --void: #0E1620;
+  --panel: #16212F;
+  --line: #26364A;
+  --ink: #EEF3F8;
+  --ink-dim: #8494A8;
+  --ink-faint: #4C5C72;
+  --signal: #FF8A42;
+  --signal-dim: #C96A2D;
+
+  padding: 8rem 2rem;
+  background: var(--void);
+  border-top: 1px solid var(--line);
   position: relative;
   width: 100%;
   box-sizing: border-box;
@@ -23,63 +37,57 @@
   display: flex;
   flex-direction: column;
   text-align: left;
-  margin-bottom: 4rem;
+  margin-bottom: 3.5rem;
 }
 
 .dash-skills-eyebrow {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   width: fit-content;
-  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
-  font-size: 0.78rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.76rem;
   font-weight: 500;
-  color: #7C8694 !important;
-  letter-spacing: 0.04em;
-  background: #161B24;
-  border: 1px solid #232A36;
-  padding: 6px 14px 6px 10px;
-  border-radius: 6px;
-  margin-bottom: 1.25rem;
+  color: var(--signal) !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
 }
 
 .dash-eyebrow-dot {
   width: 7px;
   height: 7px;
-  border-radius: 50%;
-  background: #3DD68C;
-  box-shadow: 0 0 0 3px rgba(61, 214, 140, 0.15), 0 0 8px rgba(61, 214, 140, 0.5);
+  background: var(--signal);
   flex-shrink: 0;
   animation: dash-blink 2.2s ease-in-out infinite;
 }
 
 @keyframes dash-blink {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50% { opacity: 0.35; }
 }
 
 .dash-skills-title {
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
-  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-family: 'Familjen Grotesk', sans-serif;
+  font-size: clamp(2.1rem, 4.6vw, 3rem);
   font-weight: 700;
-  color: #F2F3F5;
-  line-height: 1.18;
-  letter-spacing: -0.025em;
+  color: var(--ink);
+  line-height: 1.16;
+  letter-spacing: -0.02em;
   margin: 0;
 }
 
 .dash-text-muted {
-  color: #4B5362 !important;
+  color: var(--ink-dim) !important;
   font-weight: 700;
 }
 
 .dash-skills-subhead {
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
-  font-size: clamp(1rem, 1.4vw, 1.12rem);
-  color: #9AA3B0 !important;
-  max-width: 640px;
-  line-height: 1.6;
-  letter-spacing: -0.01em;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: clamp(1rem, 1.4vw, 1.05rem);
+  color: var(--ink-dim) !important;
+  max-width: 620px;
+  line-height: 1.65;
   margin: 1.1rem 0 0 0;
 }
 
@@ -88,7 +96,7 @@
   width: 100%;
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 3.5rem;
+  margin-bottom: 3rem;
 }
 
 .dash-segmented-controls-container {
@@ -98,9 +106,8 @@
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   padding: 4px;
-  background: #11151D;
-  border: 1px solid #1F2530;
-  border-radius: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
 }
 
 .dash-segmented-controls-container::-webkit-scrollbar {
@@ -119,13 +126,12 @@
   background: transparent;
   border: none;
   outline: none;
-  padding: 0.5rem 1.3rem;
-  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
-  font-size: 0.82rem;
+  padding: 0.5rem 1.25rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
   font-weight: 500;
-  color: #7C8694;
+  color: var(--ink-dim);
   cursor: pointer;
-  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -141,11 +147,11 @@
 }
 
 .dash-segmented-item:hover {
-  color: #C7CDD6;
+  color: var(--ink);
 }
 
 .dash-item-active {
-  color: #0B0E14;
+  color: var(--void);
   font-weight: 600;
 }
 
@@ -155,8 +161,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: #3DD68C;
-  border-radius: 8px;
+  background: var(--signal);
   z-index: 1;
   overflow: hidden;
 }
@@ -167,7 +172,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
   animation: dash-sweep 2.2s ease-in-out infinite;
 }
 
@@ -177,7 +182,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dash-segment-sweep {
+  .dash-segment-sweep,
+  .dash-eyebrow-dot {
     animation: none;
     display: none;
   }
@@ -191,7 +197,7 @@
 
 .dash-skills-layout-wrapper.dash-multi-columns-masonry {
   column-count: 2;
-  column-gap: 1.5rem;
+  column-gap: 1.25rem;
 }
 
 .dash-skills-layout-wrapper.dash-solo-active-layout {
@@ -200,74 +206,57 @@
   margin: 0 auto;
 }
 
-/* ---------- Category card with HUD corner brackets ---------- */
+/* ---------- Category card — bordered panel, single corner tick ---------- */
 .dash-category-card {
   position: relative;
-  background: #0E1219;
-  border-radius: 12px;
-  padding: 1.85rem;
+  background: var(--panel);
+  padding: 1.75rem;
   box-sizing: border-box;
-  border: 1px solid #1F2530;
+  border: 1px solid var(--line);
   will-change: transform, opacity;
 
   display: inline-block;
   width: 100%;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   break-inside: avoid;
 }
 
-.dash-category-card::before,
-.dash-category-card::after {
+.dash-category-card::before {
   content: '';
   position: absolute;
-  width: 14px;
-  height: 14px;
-  border-color: #3DD68C;
-  opacity: 0.45;
-  pointer-events: none;
-}
-
-.dash-category-card::before {
-  top: 7px;
-  left: 7px;
-  border-top: 1.5px solid;
-  border-left: 1.5px solid;
-}
-
-.dash-category-card::after {
-  bottom: 7px;
-  right: 7px;
-  border-bottom: 1.5px solid;
-  border-right: 1.5px solid;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 2px;
+  background: var(--signal-dim);
 }
 
 .dash-category-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #1B212C;
+  padding-bottom: 0.95rem;
+  border-bottom: 1px solid var(--line);
   margin-bottom: 0.4rem;
 }
 
 .dash-category-title {
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
-  font-size: 1.08rem;
+  font-family: 'Familjen Grotesk', sans-serif;
+  font-size: 1.05rem;
   font-weight: 600;
-  color: #F2F3F5;
+  color: var(--ink);
   margin: 0;
   letter-spacing: -0.005em;
 }
 
 .dash-category-count {
-  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
-  font-size: 0.72rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
   font-weight: 500;
-  color: #5C6573 !important;
-  background: #161B24;
-  border: 1px solid #232A36;
-  padding: 0.16rem 0.5rem;
-  border-radius: 4px;
+  color: var(--ink-dim) !important;
+  background: var(--void);
+  border: 1px solid var(--line);
+  padding: 0.15rem 0.5rem;
 }
 
 .dash-category-rows-container {
@@ -275,13 +264,13 @@
   flex-direction: column;
 }
 
-/* ---------- Skill rows: HUD readout bars ---------- */
+/* ---------- Skill rows: readout bars ---------- */
 .dash-skill-row {
   display: flex;
   flex-direction: column;
   gap: 7px;
-  padding: 0.85rem 0;
-  border-bottom: 1px solid #14181F;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--void);
 }
 
 .dash-skill-row:last-child {
@@ -295,60 +284,54 @@
 }
 
 .dash-skill-name {
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
-  font-size: 0.92rem;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.9rem;
   font-weight: 400;
-  color: #E8EAED !important;
-  letter-spacing: -0.005em;
+  color: var(--ink) !important;
 }
 
 .dash-skill-pct {
-  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
-  font-size: 0.78rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
   font-weight: 500;
   letter-spacing: 0.01em;
 }
 
 .dash-pct-tier-core {
-  color: #3DD68C !important;
+  color: var(--signal) !important;
 }
 
 .dash-pct-tier-working {
-  color: #9AA3B0 !important;
+  color: var(--ink-dim) !important;
 }
 
 .dash-pct-tier-familiar {
-  color: #5C6573 !important;
+  color: var(--ink-faint) !important;
 }
 
 .dash-bar-track {
   width: 100%;
   height: 3px;
-  background: #1B212C;
-  border-radius: 2px;
+  background: var(--void);
   overflow: hidden;
   position: relative;
 }
 
 .dash-bar-fill {
   height: 100%;
-  border-radius: 2px;
   position: relative;
 }
 
 .dash-bar-tier-core {
-  background: #3DD68C;
-  box-shadow: 0 0 6px rgba(61, 214, 140, 0.55);
+  background: var(--signal);
 }
 
 .dash-bar-tier-working {
-  background: #9AA3B0;
-  box-shadow: 0 0 5px rgba(154, 163, 176, 0.35);
+  background: var(--ink-dim);
 }
 
 .dash-bar-tier-familiar {
-  background: #5C6573;
-  box-shadow: none;
+  background: var(--ink-faint);
 }
 
 /* ---------- Responsive ---------- */
@@ -364,9 +347,8 @@
   }
 
   .dash-category-card {
-    padding: 1.5rem 1.25rem;
-    border-radius: 10px;
-    margin-bottom: 1.1rem;
+    padding: 1.4rem 1.15rem;
+    margin-bottom: 1rem;
   }
 
   .dash-skills-title {
