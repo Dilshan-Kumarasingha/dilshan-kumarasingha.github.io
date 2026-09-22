@@ -6,14 +6,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 .projects {
-  --void: #0E1620;
-  --panel: #16212F;
-  --panel-hi: #1B2836;
-  --line: #26364A;
-  --ink: #EEF3F8;
-  --ink-dim: #8494A8;
-  --signal: #FF8A42;
-  --signal-dim: #C96A2D;
+  --void: #ffffff;
+  --panel: #f5f6f8;
+  --panel-hi: #ffffff;
+  --line: #e3e5ea;
+  --ink: #0b0d12;
+  --ink-dim: #5b6472;
+  --signal: #e5484d;
+  --signal-dim: #b3181d;
 
   position: relative;
   padding: 8rem 2rem;
@@ -93,8 +93,9 @@
 
 .project-card {
   position: relative;
-  background: var(--panel);
+  background: var(--panel-hi);
   border: 1px solid var(--line);
+  border-radius: 24px;
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
@@ -104,15 +105,17 @@
   will-change: transform, opacity;
   box-sizing: border-box;
   width: 100%;
-  transition: border-color 0.25s ease, background-color 0.25s ease;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 .project-card:hover {
-  border-color: #34455E;
-  background: var(--panel-hi);
+  border-color: #c7cbd3;
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
+  transform: translateY(-4px);
 }
 
-/* Status badge — bordered pill, mono label, dot for shipped vs in-dev */
+/* Status badge — soft pill, mono label, dot for shipped vs in-dev */
 .project-badge {
   position: absolute;
   top: 2rem;
@@ -125,9 +128,10 @@
   font-weight: 500;
   letter-spacing: 0.03em;
   color: var(--ink-dim) !important;
-  background: var(--void);
+  background: var(--panel);
   border: 1px solid var(--line);
-  padding: 5px 11px;
+  border-radius: 999px;
+  padding: 5px 12px;
 }
 
 .project-badge-dot {
@@ -140,7 +144,7 @@
 
 .project-badge--shipped .project-badge-dot {
   background: var(--signal);
-  box-shadow: 0 0 0 3px rgba(255, 138, 66, 0.15);
+  box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.15);
 }
 
 .project-badge--shipped {
@@ -163,10 +167,11 @@
   font-size: 0.82rem;
   font-weight: 500;
   color: var(--ink-dim);
-  background: var(--void);
+  background: var(--panel);
   border: 1px solid var(--line);
-  width: 36px;
-  height: 36px;
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -248,9 +253,10 @@
 
 .highlight-mark {
   flex-shrink: 0;
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   margin-top: 7px;
+  border-radius: 50%;
   background: var(--signal);
 }
 
@@ -264,21 +270,23 @@
 
 .tech-badge {
   display: inline-block;
-  padding: 0.38rem 0.8rem;
-  background: var(--void);
+  padding: 0.4rem 0.9rem;
+  background: var(--panel);
   border: 1px solid var(--line);
+  border-radius: 999px;
   font-size: 0.75rem;
   color: var(--ink-dim) !important;
   font-weight: 500;
   font-family: 'IBM Plex Mono', monospace;
   white-space: nowrap;
   will-change: transform, border-color;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
 }
 
 .tech-badge:hover {
-  border-color: var(--signal-dim);
-  color: var(--ink) !important;
+  border-color: var(--signal);
+  color: var(--signal) !important;
+  background: rgba(229, 72, 77, 0.06);
 }
 
 /* ---------- Footer link ---------- */
@@ -296,6 +304,14 @@
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(229, 72, 77, 0.08);
+  transition: background-color 0.2s ease;
+}
+
+.project-link:hover {
+  background: rgba(229, 72, 77, 0.14);
 }
 
 .project-chevron {

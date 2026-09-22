@@ -6,15 +6,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 .dash-contact-section {
-  --void: #0E1620;
-  --panel: #16212F;
-  --panel-hi: #1B2836;
-  --line: #26364A;
-  --ink: #EEF3F8;
-  --ink-dim: #8494A8;
-  --ink-faint: #4C5C72;
-  --signal: #FF8A42;
-  --signal-dim: #C96A2D;
+  --void: #ffffff;
+  --panel: #f5f6f8;
+  --panel-hi: #ffffff;
+  --line: #e3e5ea;
+  --ink: #0b0d12;
+  --ink-dim: #5b6472;
+  --ink-faint: #94a0b0;
+  --signal: #e5484d;
+  --signal-dim: #b3181d;
 
   padding: 8rem 2rem;
   background: var(--void);
@@ -72,6 +72,8 @@
   position: relative;
   overflow: hidden;
   border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
   display: flex;
   flex-direction: column;
 }
@@ -203,7 +205,7 @@
   left: -4px;
   width: 16px;
   height: 16px;
-  background: rgba(255, 138, 66, 0.3);
+  background: rgba(229, 72, 77, 0.28);
   border-radius: 50%;
   animation: dashBeaconPulse 2.4s infinite cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -229,10 +231,12 @@
 /* ---------- Form card ---------- */
 
 .dash-dispatch-card {
-  background: var(--panel);
+  background: var(--panel-hi);
   padding: 2.4rem;
   box-sizing: border-box;
   border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -277,7 +281,8 @@
   box-sizing: border-box;
   background: var(--void);
   border: 1px solid var(--line);
-  padding: 1.3rem 0.9rem 0.45rem 0.9rem;
+  border-radius: 14px;
+  padding: 1.3rem 1rem 0.45rem 1rem;
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 0.92rem;
   color: var(--ink);
@@ -286,13 +291,13 @@
 }
 
 .dash-form-field:hover {
-  border-color: #34455E;
+  border-color: #c7cbd3;
 }
 
 .dash-form-field:focus {
   background: var(--void);
   border-color: var(--signal);
-  box-shadow: 0 0 0 3px rgba(255, 138, 66, 0.12);
+  box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.15);
 }
 
 .dash-field-textarea {
@@ -338,20 +343,22 @@
   justify-content: center;
   gap: 0.4rem;
   background: var(--signal);
-  color: var(--void);
+  color: #fff;
   border: none;
   outline: none;
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 0.86rem;
   font-weight: 600;
-  padding: 0.65rem 1rem;
-  border-radius: 2px;
+  padding: 0.75rem 1.1rem;
+  border-radius: 999px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  box-shadow: 0 10px 20px rgba(229, 72, 77, 0.22);
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .dash-action-btn-primary:hover {
   background: var(--signal-dim);
+  transform: translateY(-2px);
 }
 
 .dash-action-btn-secondary {
@@ -366,11 +373,11 @@
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 0.86rem;
   font-weight: 500;
-  padding: 0.65rem 1rem;
-  border-radius: 2px;
+  padding: 0.75rem 1.1rem;
+  border-radius: 999px;
   cursor: pointer;
   text-decoration: none;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
 }
 
 .dash-action-btn-secondary:hover {

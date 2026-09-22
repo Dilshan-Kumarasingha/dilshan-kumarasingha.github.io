@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { id: 'about', label: 'About' },
   { id: 'projects', label: 'Projects' },
   { id: 'skills', label: 'Skills' },
+  { id: 'testimonials', label: 'Testimonials' },
 ]
 
 function Navbar() {

@@ -7,14 +7,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 .dash-skills-section {
-  --void: #0E1620;
-  --panel: #16212F;
-  --line: #26364A;
-  --ink: #EEF3F8;
-  --ink-dim: #8494A8;
-  --ink-faint: #4C5C72;
-  --signal: #FF8A42;
-  --signal-dim: #C96A2D;
+  --void: #ffffff;
+  --panel: #f5f6f8;
+  --line: #e3e5ea;
+  --ink: #0b0d12;
+  --ink-dim: #5b6472;
+  --ink-faint: #94a0b0;
+  --signal: #e5484d;
+  --signal-dim: #b3181d;
 
   padding: 8rem 2rem;
   background: var(--void);
@@ -105,9 +105,10 @@
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  padding: 4px;
+  padding: 5px;
   background: var(--panel);
   border: 1px solid var(--line);
+  border-radius: 999px;
 }
 
 .dash-segmented-controls-container::-webkit-scrollbar {
@@ -125,8 +126,9 @@
   position: relative;
   background: transparent;
   border: none;
+  border-radius: 999px;
   outline: none;
-  padding: 0.5rem 1.25rem;
+  padding: 0.55rem 1.3rem;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.8rem;
   font-weight: 500;
@@ -162,6 +164,7 @@
   right: 0;
   bottom: 0;
   background: var(--signal);
+  border-radius: 999px;
   z-index: 1;
   overflow: hidden;
 }
@@ -172,7 +175,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(10, 13, 20, 0.12), transparent);
   animation: dash-sweep 2.2s ease-in-out infinite;
 }
 
@@ -206,14 +209,16 @@
   margin: 0 auto;
 }
 
-/* ---------- Category card — bordered panel, single corner tick ---------- */
+/* ---------- Category card — rounded elevated card ---------- */
 .dash-category-card {
   position: relative;
   background: var(--panel);
   padding: 1.75rem;
   box-sizing: border-box;
   border: 1px solid var(--line);
+  border-radius: 20px;
   will-change: transform, opacity;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   display: inline-block;
   width: 100%;
@@ -221,14 +226,9 @@
   break-inside: avoid;
 }
 
-.dash-category-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 16px;
-  height: 2px;
-  background: var(--signal-dim);
+.dash-category-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.06);
 }
 
 .dash-category-header {
@@ -256,7 +256,8 @@
   color: var(--ink-dim) !important;
   background: var(--void);
   border: 1px solid var(--line);
-  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  padding: 0.18rem 0.6rem;
 }
 
 .dash-category-rows-container {
@@ -311,7 +312,8 @@
 
 .dash-bar-track {
   width: 100%;
-  height: 3px;
+  height: 5px;
+  border-radius: 999px;
   background: var(--void);
   overflow: hidden;
   position: relative;
@@ -319,6 +321,7 @@
 
 .dash-bar-fill {
   height: 100%;
+  border-radius: 999px;
   position: relative;
 }
 
