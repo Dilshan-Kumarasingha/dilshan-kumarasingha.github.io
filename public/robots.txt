@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dilshan-kumarasingha.github.io/sitemap.xml

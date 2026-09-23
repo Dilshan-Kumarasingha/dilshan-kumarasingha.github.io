@@ -96,7 +96,7 @@ function Hero() {
 
         <motion.div className="hero-photo-pop" variants={revealUpVariants} aria-hidden="true">
           <span className="hero-photo-glow" />
-          <img src={profileCutout} alt="" className="hero-photo-cutout" />
+          <img src={profileCutout} alt="Dilshan Kumarasingha" className="hero-photo-cutout" />
         </motion.div>
 
         <div className="hero-mask-overflow">

@@ -55,7 +55,7 @@ export function Contact() {
     const body = encodeURIComponent(
       `${formData.message}\n\n— ${formData.name} (${formData.email})`
     )
-    window.location.href = `mailto:your-email@example.com?subject=${subject}&body=${body}`
+    window.location.href = `mailto:dilshan.jkumarasingha@gmail.com?subject=${subject}&body=${body}`
     setStatus('drafted')
   }
 
@@ -258,7 +258,7 @@ export function Contact() {
         </div>
 
         <div className="dash-footer-metadata">
-          <span className="dash-metadata-copyright">&copy; 2026 Dilshan Kumarasingha. All rights reserved.</span>
+          <span className="dash-metadata-copyright">&copy; {new Date().getFullYear()} Dilshan Kumarasingha. All rights reserved.</span>
           <span className="dash-metadata-spec">Built with React &bull; Framer Motion</span>
         </div>
       </div>
