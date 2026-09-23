@@ -1,228 +1,453 @@
 /* ============================================================
-   HERO — light, editorial hero matching the rest of the site.
-   Oversized name, colored blob behind the photo cutout, tag
-   strip, dotted-grid ornament — same token system as every
-   other section.
+   HERO
+   Editorial portfolio hero with:
+   - responsive layout
+   - subtle parallax
+   - accessible controls
+   - reduced-motion support
+   - glass / paper visual system
    ============================================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 .hero {
   --void: #ffffff;
   --panel: #f5f6f8;
   --panel-hi: #ffffff;
+
   --line: #e3e5ea;
+  --line-strong: #d2d6dd;
+
   --ink: #0b0d12;
   --ink-dim: #5b6472;
   --ink-faint: #94a0b0;
+
   --signal: #e5484d;
-  --signal-dim: #b3181d;
+  --signal-dark: #b3181d;
+
   --gold: #f0a83c;
 
   position: relative;
-  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+
   padding: 8.5rem 2rem 0;
+
   box-sizing: border-box;
   overflow: hidden;
+
   background: var(--void);
   color: var(--ink);
+
+  isolation: isolate;
 }
 
-/* ---------- Background: soft paper tint + dotted ornament ---------- */
+/* ============================================================
+   BACKGROUND
+   ============================================================ */
+
 .hero-bg {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: -3;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .hero-bg-scrim {
   position: absolute;
-  inset: 0;
+  inset: -8%;
+  will-change: transform;
+
   background:
-    radial-gradient(ellipse 55% 45% at 88% 82%, rgba(229, 72, 77, 0.09), transparent 65%),
-    radial-gradient(ellipse 45% 38% at 6% 10%, rgba(240, 168, 60, 0.08), transparent 60%),
-    linear-gradient(160deg, #ffffff 0%, #fbf9f7 55%, #f7f4f0 100%);
+    radial-gradient(
+      ellipse 55% 45% at 88% 82%,
+      rgba(229, 72, 77, 0.1),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 45% 38% at 6% 10%,
+      rgba(240, 168, 60, 0.09),
+      transparent 60%
+    ),
+    linear-gradient(
+      160deg,
+      #ffffff 0%,
+      #fbf9f7 55%,
+      #f7f4f0 100%
+    );
 }
+
+.hero-bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.18;
+}
+
+.hero-bg-orb--one {
+  width: 300px;
+  height: 300px;
+  right: -100px;
+  top: 15%;
+  background: var(--signal);
+}
+
+.hero-bg-orb--two {
+  width: 240px;
+  height: 240px;
+  left: -100px;
+  bottom: 12%;
+  background: var(--gold);
+}
+
+/* ============================================================
+   DOT GRID
+   ============================================================ */
 
 .hero-dot-grid {
   position: absolute;
   top: 7rem;
   right: 2rem;
-  z-index: 1;
-}
-
-/* ---------- Floating cutout photo — colored blob behind it ---------- */
-.hero-photo-pop {
-  position: absolute;
-  right: 1rem;
-  bottom: 0;
-  z-index: 1;
-  height: min(88%, 640px);
-  display: flex;
-  align-items: flex-end;
-  pointer-events: none;
-}
-
-.hero-photo-glow {
-  position: absolute;
-  right: 4%;
-  bottom: 4%;
-  width: 78%;
-  height: 82%;
-  background: linear-gradient(160deg, var(--signal), var(--signal-dim));
-  border-radius: 48% 52% 40% 60% / 55% 45% 60% 40%;
   z-index: -1;
-}
 
-.hero-photo-glow::after {
-  content: '';
-  position: absolute;
-  inset: -18px;
-  border: 2px solid var(--gold);
-  border-radius: inherit;
+  width: 130px;
+  height: 90px;
+
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 11px;
+
   opacity: 0.55;
 }
 
-.hero-photo-cutout {
-  height: 100%;
-  width: auto;
-  max-width: none;
-  object-fit: contain;
-  filter: drop-shadow(0 25px 35px rgba(11, 13, 18, 0.18));
+.hero-dot-grid span {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--signal);
 }
 
-@media (max-width: 979px) {
-  .hero-photo-pop {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    height: 300px;
-    width: 100%;
-    justify-content: center;
-    margin: 0 auto 0.5rem;
-  }
-}
+/* ============================================================
+   FRAME
+   ============================================================ */
 
 .hero-frame {
   position: relative;
   z-index: 1;
+
   width: 100%;
   max-width: 1280px;
+
   margin: 0 auto;
-  padding-bottom: 0;
+
+  padding-bottom: 1.5rem;
+
+  will-change: transform, opacity;
 }
 
-/* ---------- Social icons, top right ---------- */
+/* ============================================================
+   SOCIAL LINKS
+   ============================================================ */
+
 .hero-top-links {
   position: absolute;
   top: -5.2rem;
   right: 0;
-  z-index: 2;
+
+  z-index: 5;
+
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .hero-icon-link {
-  display: flex;
+  width: 42px;
+  height: 42px;
+
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+
   border: 1px solid var(--line);
-  color: var(--ink-dim) !important;
-  background: var(--panel);
-  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+  border-radius: 50%;
+
+  color: var(--ink-dim);
+  background: rgba(255, 255, 255, 0.75);
+
+  box-shadow:
+    0 8px 20px rgba(11, 13, 18, 0.05);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .hero-icon-link:hover {
-  border-color: var(--signal);
-  color: var(--signal) !important;
-  background: rgba(229, 72, 77, 0.1);
+  color: var(--signal);
+  background: rgba(229, 72, 77, 0.08);
+
+  border-color: rgba(229, 72, 77, 0.35);
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 24px rgba(229, 72, 77, 0.12);
 }
 
-/* ---------- Oversized overlapping name ---------- */
+.hero-icon-link:focus-visible {
+  outline: 3px solid rgba(229, 72, 77, 0.22);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   PROFILE PHOTO
+   ============================================================ */
+
+.hero-photo-pop {
+  position: absolute;
+
+  right: 1rem;
+  bottom: 0;
+
+  z-index: 1;
+
+  height: min(88%, 640px);
+
+  display: flex;
+  align-items: flex-end;
+
+  pointer-events: none;
+
+  will-change: transform;
+}
+
+.hero-photo-glow {
+  position: absolute;
+
+  right: 4%;
+  bottom: 4%;
+
+  width: 78%;
+  height: 82%;
+
+  background:
+    linear-gradient(
+      160deg,
+      var(--signal),
+      var(--signal-dark)
+    );
+
+  border-radius:
+    48% 52% 40% 60% /
+    55% 45% 60% 40%;
+
+  z-index: -2;
+
+  box-shadow:
+    0 30px 70px rgba(229, 72, 77, 0.18);
+}
+
+.hero-photo-glow::after {
+  content: '';
+
+  position: absolute;
+  inset: -18px;
+
+  border: 2px solid var(--gold);
+  border-radius: inherit;
+
+  opacity: 0.55;
+}
+
+.hero-photo-ring {
+  position: absolute;
+
+  right: 2%;
+  bottom: 7%;
+
+  width: 75%;
+  height: 76%;
+
+  border: 1px solid rgba(255, 255, 255, 0.55);
+
+  border-radius:
+    48% 52% 40% 60% /
+    55% 45% 60% 40%;
+
+  z-index: -1;
+
+  transform: rotate(-7deg);
+}
+
+.hero-photo-cutout {
+  position: relative;
+
+  height: 100%;
+  width: auto;
+  max-width: none;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 25px 35px rgba(11, 13, 18, 0.18)
+    );
+
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ============================================================
+   HEADLINE
+   ============================================================ */
+
 .hero-mask-overflow {
-  overflow: hidden;
+  position: relative;
+  z-index: 3;
+
   width: 100%;
+
+  overflow: hidden;
 }
 
 .hero-headline {
+  display: flex;
+  flex-direction: column;
+
+  width: max-content;
+  max-width: 100%;
+
+  margin: 0 0 2.5rem;
+
   font-family: 'Familjen Grotesk', sans-serif;
+  font-size: clamp(3rem, 9vw, 7.2rem);
   font-weight: 800;
-  font-size: clamp(2.6rem, 9vw, 7.2rem);
-  line-height: 0.96;
-  letter-spacing: -0.01em;
+
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+
   text-transform: uppercase;
+
   color: var(--ink);
-  margin: 0 0 2.5rem 0;
+
+  text-wrap: balance;
 }
 
-/* ---------- Tagline + floating CTA row ---------- */
+.hero-headline span {
+  display: block;
+}
+
+/* ============================================================
+   BOTTOM CONTENT
+   ============================================================ */
+
 .hero-bottom-row {
   position: relative;
-  z-index: 2;
+  z-index: 4;
+
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+
   gap: 2rem;
-  flex-wrap: wrap;
+
   padding-bottom: 2.75rem;
 }
 
 .hero-copy {
-  max-width: 460px;
+  max-width: 500px;
 }
+
+/* ============================================================
+   AVAILABILITY
+   ============================================================ */
 
 .hero-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+
+  margin-bottom: 1rem;
+  padding: 0.4rem 0.85rem;
+
+  border: 1px solid rgba(229, 72, 77, 0.25);
+  border-radius: 999px;
+
+  background: rgba(229, 72, 77, 0.08);
+
+  color: var(--signal-dark);
+
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.76rem;
   font-weight: 600;
-  color: var(--signal-dim) !important;
+
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  margin-bottom: 1rem;
-  padding: 0.4rem 0.85rem;
-  background: rgba(229, 72, 77, 0.08);
-  border: 1px solid rgba(229, 72, 77, 0.25);
-  border-radius: 999px;
 }
 
-.hero-eyebrow::before {
-  content: '';
+.hero-status-dot {
   width: 7px;
   height: 7px;
+
+  flex: 0 0 auto;
+
   border-radius: 50%;
   background: var(--signal);
+
+  box-shadow:
+    0 0 0 4px rgba(229, 72, 77, 0.08);
 }
 
+/* ============================================================
+   DESCRIPTION
+   ============================================================ */
+
 .hero-subhead {
+  max-width: 490px;
+
+  margin: 0 0 1.5rem;
+
+  color: var(--ink-dim);
+
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.65;
-  color: var(--ink-dim) !important;
-  margin: 0 0 1.5rem 0;
+
+  line-height: 1.7;
 }
 
 .hero-subhead code {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.85em;
-  font-weight: 500;
-  color: var(--ink) !important;
-  background: var(--panel);
+  display: inline-block;
+
+  padding: 0.12em 0.45em;
+
   border: 1px solid var(--line);
   border-radius: 6px;
-  padding: 0.15em 0.5em;
+
+  background: var(--panel);
+
+  color: var(--ink);
+
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.84em;
+  font-weight: 500;
+
   white-space: nowrap;
 }
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
 
 .hero-actions {
   display: flex;
@@ -230,129 +455,609 @@
   gap: 1rem;
 }
 
+/* Secondary CTA */
+
 .hero-btn-secondary {
-  background: var(--panel);
+  min-height: 48px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+
+  padding: 0.75rem 0.8rem 0.75rem 1.35rem;
+
   border: 1px solid var(--line);
-  color: var(--ink) !important;
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: 500;
-  font-size: 0.9rem;
-  cursor: pointer;
-  padding: 0.85rem 1.6rem;
   border-radius: 999px;
-  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--ink);
+
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(11, 13, 18, 0.04);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .hero-btn-secondary:hover {
-  border-color: var(--signal);
+  border-color: rgba(229, 72, 77, 0.35);
+
   background: rgba(229, 72, 77, 0.06);
+  color: var(--signal-dark);
+
   transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 26px rgba(229, 72, 77, 0.1);
 }
+
+.hero-btn-secondary:active {
+  transform: translateY(0);
+}
+
+.hero-btn-secondary:focus-visible {
+  outline: 3px solid rgba(229, 72, 77, 0.22);
+  outline-offset: 3px;
+}
+
+.hero-btn-secondary-arrow {
+  width: 31px;
+  height: 31px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--ink);
+  color: #fff;
+
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.hero-btn-secondary:hover .hero-btn-secondary-arrow {
+  background: var(--signal);
+  transform: translateX(2px);
+}
+
+/* Primary CTA */
 
 .hero-btn-primary {
   flex-shrink: 0;
+
+  min-height: 52px;
+
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  padding: 1.2rem 2.1rem;
-  background: linear-gradient(135deg, var(--signal), var(--signal-dim));
-  color: #fff !important;
+
+  padding: 1rem 1.65rem;
+
+  border: 1px solid transparent;
   border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--signal),
+      var(--signal-dark)
+    );
+
+  color: #fff;
+
   font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: 600;
   font-size: 0.95rem;
+  font-weight: 600;
+
   text-decoration: none;
-  box-shadow: 0 18px 40px -12px rgba(229, 72, 77, 0.55);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  box-shadow:
+    0 18px 40px -12px rgba(229, 72, 77, 0.55);
+
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    filter 220ms ease;
 }
 
 .hero-btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 22px 48px -12px rgba(229, 72, 77, 0.65);
+
+  filter: saturate(1.05);
+
+  box-shadow:
+    0 22px 48px -12px rgba(229, 72, 77, 0.65);
+}
+
+.hero-btn-primary:active {
+  transform: translateY(-1px);
+}
+
+.hero-btn-primary:focus-visible {
+  outline: 3px solid rgba(229, 72, 77, 0.28);
+  outline-offset: 4px;
 }
 
 .hero-btn-primary svg {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    transform 220ms
+    cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hero-btn-primary:hover svg {
-  transform: translateX(2px);
+  transform: translateX(3px);
 }
 
-/* ---------- Bottom tag strip ---------- */
+/* ============================================================
+   TECHNOLOGY STRIP
+   ============================================================ */
+
 .hero-tag-strip {
   position: relative;
-  z-index: 2;
+  z-index: 3;
+
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  padding: 1.1rem 0;
+  align-items: center;
+  gap: 1.25rem;
+
+  padding: 1rem 0 0;
+
   border-top: 1px solid var(--line);
 }
 
-.hero-tag {
+.hero-tag-label {
+  flex: 0 0 auto;
+
+  color: var(--ink-faint);
+
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.72rem;
+  font-size: 0.67rem;
   font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--ink-dim);
-  padding: 0.55rem 1.1rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--panel);
-  white-space: nowrap;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.hero-tag:nth-child(3n+1) { border-color: rgba(229, 72, 77, 0.35); color: var(--signal-dim); }
-.hero-tag:nth-child(3n+2) { border-color: rgba(240, 168, 60, 0.4); color: #a06a1d; }
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
 
-/* ---------- Responsive ---------- */
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 30px;
+
+  padding: 0.4rem 0.85rem;
+
+  border: 1px solid var(--line);
+  border-radius: 999px;
+
+  background: rgba(245, 246, 248, 0.72);
+
+  color: var(--ink-dim);
+
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+
+  white-space: nowrap;
+
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.hero-tag:hover {
+  border-color: var(--line-strong);
+  color: var(--ink);
+  background: var(--panel-hi);
+  transform: translateY(-1px);
+}
+
+.hero-tag:nth-child(3n + 1) {
+  border-color: rgba(229, 72, 77, 0.3);
+  color: var(--signal-dark);
+}
+
+.hero-tag:nth-child(3n + 2) {
+  border-color: rgba(240, 168, 60, 0.38);
+  color: #a06a1d;
+}
+
+/* ============================================================
+   SCROLL CUE
+   ============================================================ */
+
+.hero-scroll-cue {
+  position: absolute;
+
+  right: 0;
+  bottom: -0.25rem;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  color: var(--ink-faint);
+
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.64rem;
+  font-weight: 500;
+
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  text-decoration: none;
+
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.hero-scroll-cue:hover {
+  color: var(--signal);
+  transform: translateY(2px);
+}
+
+.hero-scroll-cue:focus-visible {
+  outline: 3px solid rgba(229, 72, 77, 0.2);
+  outline-offset: 5px;
+}
+
+/* ============================================================
+   LARGE TABLETS
+   ============================================================ */
+
+@media (max-width: 1100px) {
+  .hero {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .hero-photo-pop {
+    right: -3rem;
+    height: min(78%, 570px);
+    opacity: 0.92;
+  }
+
+  .hero-headline {
+    font-size: clamp(3rem, 10vw, 6.5rem);
+  }
+
+  .hero-copy {
+    max-width: 450px;
+  }
+}
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .hero {
+    min-height: auto;
+    padding-top: 7rem;
+  }
+
+  .hero-frame {
+    padding-bottom: 2rem;
+  }
+
+  .hero-photo-pop {
+    position: relative;
+
+    right: auto;
+    bottom: auto;
+
+    width: 100%;
+    height: 310px;
+
+    justify-content: center;
+
+    margin: 0 auto 1rem;
+
+    opacity: 1;
+  }
+
+  .hero-photo-cutout {
+    height: 100%;
+    max-width: 90%;
+  }
+
+  .hero-photo-glow {
+    width: 280px;
+    height: 260px;
+
+    right: 50%;
+    bottom: 4%;
+
+    transform: translateX(50%);
+  }
+
+  .hero-photo-ring {
+    width: 275px;
+    height: 250px;
+
+    right: 50%;
+    bottom: 7%;
+
+    transform: translateX(50%) rotate(-7deg);
+  }
+
+  .hero-headline {
+    position: relative;
+    z-index: 4;
+
+    margin-bottom: 2rem;
+
+    font-size: clamp(3.4rem, 11vw, 6.5rem);
+  }
+
+  .hero-bottom-row {
+    align-items: flex-start;
+  }
+
+  .hero-copy {
+    max-width: 540px;
+  }
+
+  .hero-scroll-cue {
+    display: none;
+  }
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
 @media (max-width: 768px) {
+  .hero {
+    padding:
+      6.5rem
+      1.25rem
+      0;
+  }
+
   .hero-top-links {
     display: none;
   }
 
-  .hero {
-    padding: 7rem 1.25rem 0;
+  .hero-dot-grid {
+    top: 5.5rem;
+    right: 1rem;
+
+    width: 90px;
+    height: 65px;
+
+    gap: 8px;
+
+    opacity: 0.4;
+  }
+
+  .hero-photo-pop {
+    height: 270px;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-photo-cutout {
+    max-width: 95%;
+  }
+
+  .hero-photo-glow {
+    width: 240px;
+    height: 220px;
+  }
+
+  .hero-photo-ring {
+    width: 235px;
+    height: 215px;
   }
 
   .hero-headline {
     margin-bottom: 1.75rem;
+
+    font-size: clamp(
+      3rem,
+      15vw,
+      5rem
+    );
+
+    letter-spacing: -0.04em;
   }
 
   .hero-bottom-row {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+
+    gap: 1.5rem;
+
     padding-bottom: 2rem;
   }
 
-  .hero-btn-primary {
-    width: 100%;
-    justify-content: center;
+  .hero-copy {
+    max-width: none;
+  }
+
+  .hero-subhead {
+    font-size: 0.96rem;
+    line-height: 1.65;
   }
 
   .hero-actions {
-    flex-direction: column;
     width: 100%;
   }
 
   .hero-btn-secondary {
     width: 100%;
-    justify-content: center;
-    text-align: center;
+  }
+
+  .hero-btn-primary {
+    width: 100%;
   }
 
   .hero-tag-strip {
-    gap: 0.5rem;
-    overflow-x: auto;
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 0.75rem;
+
+    padding-top: 1rem;
+  }
+
+  .hero-tags {
+    width: 100%;
+
     flex-wrap: nowrap;
+
+    overflow-x: auto;
+
+    padding-bottom: 0.4rem;
+
+    scrollbar-width: none;
+
     -webkit-overflow-scrolling: touch;
+
+    overscroll-behavior-x: contain;
+  }
+
+  .hero-tags::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero-tag {
+    flex: 0 0 auto;
   }
 }
 
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .hero {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .hero-photo-pop {
+    height: 235px;
+  }
+
+  .hero-photo-glow {
+    width: 205px;
+    height: 195px;
+  }
+
+  .hero-photo-ring {
+    width: 200px;
+    height: 188px;
+  }
+
+  .hero-headline {
+    font-size: clamp(
+      2.7rem,
+      14vw,
+      4.2rem
+    );
+  }
+
+  .hero-subhead {
+    font-size: 0.93rem;
+  }
+
+  .hero-subhead code {
+    font-size: 0.78em;
+  }
+
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    min-height: 50px;
+  }
+}
+
+/* ============================================================
+   VERY SMALL SCREENS
+   ============================================================ */
+
+@media (max-width: 360px) {
+  .hero {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+  }
+
+  .hero-headline {
+    font-size: 2.55rem;
+  }
+
+  .hero-photo-pop {
+    height: 210px;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
 @media (prefers-reduced-motion: reduce) {
-  .hero * {
+  .hero *,
+  .hero *::before,
+  .hero *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .hero-photo-pop,
+  .hero-bg-scrim,
+  .hero-frame {
+    transform: none !important;
+  }
+}
+
+/* ============================================================
+   HIGH CONTRAST / FORCED COLORS
+   ============================================================ */
+
+@media (forced-colors: active) {
+  .hero-icon-link,
+  .hero-btn-secondary,
+  .hero-btn-primary,
+  .hero-tag {
+    border: 1px solid ButtonText;
+  }
+
+  .hero-btn-primary {
+    forced-color-adjust: none;
+  }
+
+  .hero-icon-link:focus-visible,
+  .hero-btn-secondary:focus-visible,
+  .hero-btn-primary:focus-visible,
+  .hero-scroll-cue:focus-visible {
+    outline: 2px solid Highlight;
   }
 }
