@@ -1,252 +1,454 @@
-import { useState, useMemo } from 'react'
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
-import '../styles/Skills.css'
 
-const RAW_SKILLS = {
-  Backend: [
-    { name: 'C#', level: 72 },
-    { name: 'ASP.NET Core', level: 68 },
-    { name: 'Java', level: 75 },
-    { name: 'Spring Boot', level: 65 },
-    { name: 'Python', level: 68 },
-    { name: 'Django REST', level: 55 },
-  ],
-  Frontend: [
-    { name: 'React 18', level: 75 },
-    { name: 'TypeScript', level: 65 },
-    { name: 'JavaScript', level: 75 },
-    { name: 'Tailwind CSS', level: 60 },
-    { name: 'Framer Motion', level: 62 },
-  ],
-  Databases: [
-    { name: 'PostgreSQL', level: 75 },
-    { name: 'SQL Server', level: 62 },
-    { name: 'MySQL', level: 68 },
-  ],
-  'QA & Testing': [
-    { name: 'Selenium WebDriver', level: 62 },
-    { name: 'TestNG', level: 65 },
-    { name: 'NUnit', level: 60 },
-    { name: 'RestAssured', level: 62 },
-    { name: 'Allure Reports', level: 60 },
-  ],
-  'Real-Time & Jobs': [
-    { name: 'SignalR', level: 62 },
-    { name: 'Hangfire', level: 60 },
-  ],
-  'DevOps & Tools': [
-    { name: 'Git', level: 80 },
-    { name: 'GitHub Actions', level: 75 },
-    { name: 'Docker', level: 60 },
-    { name: 'Postman', level: 75 },
-    { name: 'IntelliJ IDEA', level: 78 },
-    { name: 'VS Code', level: 82 },
-    { name: 'Visual Studio', level: 65 },
-  ],
-}
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
-const TIERS = {
-  core: { label: 'Core', rank: 3, threshold: 70 },
-  working: { label: 'Working', rank: 2, threshold: 55 },
-  familiar: { label: 'Familiar', rank: 1, threshold: 0 },
-}
+import "../styles/Skills.css";
 
-function tierFor(level) {
-  if (level >= TIERS.core.threshold) return 'core'
-  if (level >= TIERS.working.threshold) return 'working'
-  return 'familiar'
-}
+const SKILLS = [
+  // Backend
+  {
+    name: "C#",
+    category: "Backend",
+    tier: "Core",
+    mark: "C#",
+  },
+  {
+    name: ".NET",
+    category: "Backend",
+    tier: "Core",
+    mark: ".NET",
+  },
+  {
+    name: "Java",
+    category: "Backend",
+    tier: "Core",
+    mark: "JAVA",
+  },
+  {
+    name: "Spring Boot",
+    category: "Backend",
+    tier: "Working",
+    mark: "SB",
+  },
+  {
+    name: "Python",
+    category: "Backend",
+    tier: "Working",
+    mark: "PY",
+  },
+  {
+    name: "Django",
+    category: "Backend",
+    tier: "Familiar",
+    mark: "DJ",
+  },
+  {
+    name: "REST APIs",
+    category: "Backend",
+    tier: "Core",
+    mark: "API",
+  },
 
-const SKILLS = Object.entries(RAW_SKILLS).flatMap(([category, list]) =>
-  list.map((s) => ({ ...s, category, tier: tierFor(s.level) }))
-)
+  // Frontend
+  {
+    name: "React",
+    category: "Frontend",
+    tier: "Core",
+    mark: "RE",
+  },
+  {
+    name: "JavaScript",
+    category: "Frontend",
+    tier: "Core",
+    mark: "JS",
+  },
+  {
+    name: "TypeScript",
+    category: "Frontend",
+    tier: "Working",
+    mark: "TS",
+  },
+  {
+    name: "HTML",
+    category: "Frontend",
+    tier: "Core",
+    mark: "HTML",
+  },
+  {
+    name: "CSS",
+    category: "Frontend",
+    tier: "Core",
+    mark: "CSS",
+  },
+  {
+    name: "Tailwind CSS",
+    category: "Frontend",
+    tier: "Working",
+    mark: "TW",
+  },
+  {
+    name: "Framer Motion",
+    category: "Frontend",
+    tier: "Working",
+    mark: "FM",
+  },
 
-const CATEGORIES = ['All', ...Object.keys(RAW_SKILLS)]
+  // Databases
+  {
+    name: "PostgreSQL",
+    category: "Databases",
+    tier: "Working",
+    mark: "PG",
+  },
+  {
+    name: "MySQL",
+    category: "Databases",
+    tier: "Working",
+    mark: "SQL",
+  },
+  {
+    name: "SQL Server",
+    category: "Databases",
+    tier: "Working",
+    mark: "MS",
+  },
 
-function groupAndSort(skills) {
-  const byCategory = {}
-  skills.forEach((s) => {
-    if (!byCategory[s.category]) byCategory[s.category] = []
-    byCategory[s.category].push(s)
-  })
-  Object.values(byCategory).forEach((list) =>
-    list.sort((a, b) => TIERS[b.tier].rank - TIERS[a.tier].rank)
-  )
-  return byCategory
-}
+  // QA & Testing
+  {
+    name: "Selenium",
+    category: "QA & Testing",
+    tier: "Core",
+    mark: "SE",
+  },
+  {
+    name: "NUnit",
+    category: "QA & Testing",
+    tier: "Working",
+    mark: "NU",
+  },
+  {
+    name: "TestNG",
+    category: "QA & Testing",
+    tier: "Working",
+    mark: "TN",
+  },
+  {
+    name: "Rest Assured",
+    category: "QA & Testing",
+    tier: "Working",
+    mark: "RA",
+  },
+  {
+    name: "Postman",
+    category: "QA & Testing",
+    tier: "Core",
+    mark: "PM",
+  },
+  {
+    name: "API Testing",
+    category: "QA & Testing",
+    tier: "Core",
+    mark: "API",
+  },
+  {
+    name: "UI Automation",
+    category: "QA & Testing",
+    tier: "Core",
+    mark: "UI",
+  },
 
-function SkillRow({ skill, index, prefersReducedMotion }) {
+  // DevOps & Tools
+  {
+    name: "Git",
+    category: "DevOps & Tools",
+    tier: "Core",
+    mark: "GIT",
+  },
+  {
+    name: "GitHub Actions",
+    category: "DevOps & Tools",
+    tier: "Working",
+    mark: "CI",
+  },
+  {
+    name: "Docker",
+    category: "DevOps & Tools",
+    tier: "Working",
+    mark: "DK",
+  },
+  {
+    name: "Visual Studio",
+    category: "DevOps & Tools",
+    tier: "Core",
+    mark: "VS",
+  },
+  {
+    name: "VS Code",
+    category: "DevOps & Tools",
+    tier: "Core",
+    mark: "VS",
+  },
+  {
+    name: "IntelliJ IDEA",
+    category: "DevOps & Tools",
+    tier: "Working",
+    mark: "IJ",
+  },
+];
+
+const CATEGORIES = [
+  "All",
+  "Backend",
+  "Frontend",
+  "Databases",
+  "QA & Testing",
+  "DevOps & Tools",
+];
+
+const CATEGORY_META = {
+  Backend: {
+    number: "01",
+    description:
+      "Application logic, APIs and server-side systems.",
+  },
+  Frontend: {
+    number: "02",
+    description:
+      "Interfaces, interactions and client-side experiences.",
+  },
+  Databases: {
+    number: "03",
+    description:
+      "Relational data storage and persistence.",
+  },
+  "QA & Testing": {
+    number: "04",
+    description:
+      "Automation, validation and software quality.",
+  },
+  "DevOps & Tools": {
+    number: "05",
+    description:
+      "Development workflow, delivery and engineering tools.",
+  },
+};
+
+function TechnologyMark({ mark }) {
   return (
-    <motion.div
-      className="dash-skill-row"
-      layout="position"
-      initial={{ opacity: 0, clipPath: prefersReducedMotion ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)' }}
-      animate={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-      exit={{ opacity: 0 }}
+    <span className="technology-mark" aria-hidden="true">
+      {mark}
+    </span>
+  );
+}
+
+function TechnologyCard({ skill, index }) {
+  return (
+    <motion.article
+      className={`technology-card technology-card--${skill.tier.toLowerCase()}`}
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
       transition={{
-        duration: prefersReducedMotion ? 0.2 : 0.5,
-        ease: [0.16, 1, 0.3, 1],
-        delay: prefersReducedMotion ? 0 : index * 0.05,
+        duration: 0.45,
+        delay: Math.min(index * 0.035, 0.18),
       }}
     >
-      <div className="dash-skill-row-top">
-        <span className="dash-skill-name">{skill.name}</span>
-        <span className={`dash-skill-pct dash-pct-tier-${skill.tier}`}>
-          {TIERS[skill.tier].label}
+      <span
+        className="technology-card__signal"
+        aria-hidden="true"
+      />
+
+      <div className="technology-card__icon">
+        <TechnologyMark mark={skill.mark} />
+      </div>
+
+      <div className="technology-card__content">
+        <span className="technology-card__category">
+          {skill.category}
+        </span>
+
+        <h3>{skill.name}</h3>
+
+        <span className="technology-card__tier">
+          {skill.tier}
         </span>
       </div>
-      <div className="dash-bar-track">
-        <motion.div
-          className={`dash-bar-fill dash-bar-tier-${skill.tier}`}
-          initial={{ width: prefersReducedMotion ? `${skill.level}%` : '0%' }}
-          animate={{ width: `${skill.level}%` }}
-          transition={{
-            duration: prefersReducedMotion ? 0 : 0.9,
-            ease: [0.16, 1, 0.3, 1],
-            delay: prefersReducedMotion ? 0 : 0.15 + index * 0.05,
-          }}
-        />
-      </div>
-    </motion.div>
-  )
+    </motion.article>
+  );
 }
 
-function CategoryBlock({ category, skills, prefersReducedMotion, isSolo }) {
+function SkillCategory({ category, skills }) {
+  const meta = CATEGORY_META[category];
+
   return (
-    <motion.div
-      layout
-      transition={{ type: 'spring', stiffness: 350, damping: 34 }}
-      className={`dash-category-card ${isSolo ? 'dash-card-solo-focus' : ''}`}
+    <motion.section
+      className="skill-category"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.5 }}
     >
-      <div className="dash-category-header">
-        <h3 className="dash-category-title">{category}</h3>
-        <span className="dash-category-count">{String(skills.length).padStart(2, '0')}</span>
-      </div>
-      <div className="dash-category-rows-container">
-        <AnimatePresence mode="popLayout" initial={false}>
-          {skills.map((skill, idx) => (
-            <SkillRow
-              key={skill.name}
-              skill={skill}
-              index={idx}
-              prefersReducedMotion={prefersReducedMotion}
-            />
-          ))}
-        </AnimatePresence>
-      </div>
-    </motion.div>
-  )
-}
-
-function Skills() {
-  const prefersReducedMotion = useReducedMotion()
-  const [activeCategory, setActiveCategory] = useState('All')
-
-  const visibleSkills = useMemo(
-    () =>
-      activeCategory === 'All'
-        ? SKILLS
-        : SKILLS.filter((s) => s.category === activeCategory),
-    [activeCategory]
-  )
-
-  const grouped = useMemo(() => groupAndSort(visibleSkills), [visibleSkills])
-  const categoryOrder =
-    activeCategory === 'All' ? Object.keys(RAW_SKILLS) : [activeCategory]
-
-  const isSoloActive = activeCategory !== 'All'
-
-  return (
-    <section className="dash-skills-section" id="skills">
-      <div className="dash-skills-container">
-        <motion.div
-          className="dash-skills-header-block"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="dash-skills-heading-row">
-            <div>
-              <span className="dash-skills-eyebrow">
-                <span className="dash-eyebrow-dot" />
-                technical competencies
-              </span>
-              <h2 className="dash-skills-title">
-                Engineered toolkit. <span className="dash-text-muted">Calibrated for scale.</span>
-              </h2>
-              <p className="dash-skills-subhead">
-                Primary specialization centered around high-integrity enterprise ecosystems built with C# and ASP.NET Core, complemented by performant React client interfaces.
-              </p>
-            </div>
-            <div className="dot-grid dot-grid--red" aria-hidden="true">
-              {Array.from({ length: 24 }).map((_, i) => <span key={i} />)}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Segmented filter track */}
-        <div className="dash-segmented-outer-wrapper">
-          <motion.div
-            className="dash-segmented-controls-container"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div className="dash-segmented-track" role="tablist" aria-label="Filter skill matrix">
-              {CATEGORIES.map((cat) => {
-                const isActive = activeCategory === cat
-                return (
-                  <button
-                    key={cat}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    className={`dash-segmented-item ${isActive ? 'dash-item-active' : ''}`}
-                    onClick={() => setActiveCategory(cat)}
-                  >
-                    <span className="dash-segmented-label-text">{cat}</span>
-                    {isActive && !prefersReducedMotion && (
-                      <motion.div
-                        className="dash-segmented-active-thumb"
-                        layoutId="activeSegmentIndicator"
-                        transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                      >
-                        <span className="dash-segment-sweep" />
-                      </motion.div>
-                    )}
-                  </button>
-                )
-              })}
-            </div>
-          </motion.div>
+      <div className="skill-category__header">
+        <div className="skill-category__index">
+          {meta.number}
         </div>
 
-        {/* Layout container */}
-        <motion.div
-          layout
-          className={`dash-skills-layout-wrapper ${
-            isSoloActive ? 'dash-solo-active-layout' : 'dash-multi-columns-masonry'
-          }`}
-        >
-          <AnimatePresence mode="popLayout" initial={false}>
-            {categoryOrder.map((category) =>
-              grouped[category] ? (
-                <CategoryBlock
-                  key={category}
-                  category={category}
-                  skills={grouped[category]}
-                  prefersReducedMotion={prefersReducedMotion}
-                  isSolo={isSoloActive}
-                />
-              ) : null
-            )}
-          </AnimatePresence>
-        </motion.div>
+        <div>
+          <p className="skill-category__eyebrow">
+            SYSTEM / {meta.number}
+          </p>
+
+          <h3>{category}</h3>
+
+          <p className="skill-category__description">
+            {meta.description}
+          </p>
+        </div>
       </div>
-    </section>
-  )
+
+      <div className="technology-grid">
+        {skills.map((skill, index) => (
+          <TechnologyCard
+            key={skill.name}
+            skill={skill}
+            index={index}
+          />
+        ))}
+      </div>
+    </motion.section>
+  );
 }
 
-export default Skills
+export default function Skills() {
+  const [activeCategory, setActiveCategory] =
+    useState("All");
+
+  const shouldReduceMotion = useReducedMotion();
+
+  const visibleSkills = useMemo(() => {
+    if (activeCategory === "All") {
+      return SKILLS;
+    }
+
+    return SKILLS.filter(
+      (skill) => skill.category === activeCategory
+    );
+  }, [activeCategory]);
+
+  const groupedSkills = useMemo(() => {
+    return visibleSkills.reduce((groups, skill) => {
+      if (!groups[skill.category]) {
+        groups[skill.category] = [];
+      }
+
+      groups[skill.category].push(skill);
+
+      return groups;
+    }, {});
+  }, [visibleSkills]);
+
+  const visibleCategories =
+    activeCategory === "All"
+      ? Object.keys(CATEGORY_META)
+      : [activeCategory];
+
+  return (
+    <section className="skills-section" id="skills">
+      <div
+        className="skills-section__grid"
+        aria-hidden="true"
+      />
+
+      <div className="skills-section__container">
+        <motion.header
+          className="skills-header"
+          initial={
+            shouldReduceMotion
+              ? false
+              : { opacity: 0, y: 24 }
+          }
+          whileInView={
+            shouldReduceMotion
+              ? undefined
+              : { opacity: 1, y: 0 }
+          }
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.55 }}
+        >
+          <div className="skills-header__eyebrow">
+            <span className="skills-header__line" />
+            <span>04 / TECHNOLOGY STACK</span>
+          </div>
+
+          <h2>
+            Built with
+            <span> precision.</span>
+          </h2>
+
+          <p>
+            A practical technology stack spanning backend
+            engineering, modern interfaces, databases,
+            automated testing and development tooling.
+          </p>
+        </motion.header>
+
+        <nav
+          className="skills-filters"
+          aria-label="Filter technologies by category"
+        >
+          {CATEGORIES.map((category) => (
+            <button
+              key={category}
+              type="button"
+              className={
+                activeCategory === category
+                  ? "skills-filter is-active"
+                  : "skills-filter"
+              }
+              onClick={() => setActiveCategory(category)}
+              aria-pressed={activeCategory === category}
+            >
+              <span>{category}</span>
+
+              {activeCategory === category && (
+                <span
+                  className="skills-filter__dot"
+                  aria-hidden="true"
+                />
+              )}
+            </button>
+          ))}
+        </nav>
+
+        <div className="skills-categories">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              initial={
+                shouldReduceMotion
+                  ? false
+                  : { opacity: 0 }
+              }
+              animate={{ opacity: 1 }}
+              exit={
+                shouldReduceMotion
+                  ? undefined
+                  : { opacity: 0 }
+              }
+              transition={{ duration: 0.25 }}
+            >
+              {visibleCategories.map((category) => (
+                <SkillCategory
+                  key={category}
+                  category={category}
+                  skills={groupedSkills[category] || []}
+                />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+    </section>
+  );
+}
+
