@@ -56,9 +56,17 @@ function About() {
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
+            <span className="about-photo-ring" aria-hidden="true" />
             <span className="about-photo-arch" aria-hidden="true" />
             <div className="about-photo-frame">
-              <img src={profilePhoto} alt="Portrait" className="about-photo" />
+              <img src={profilePhoto} alt="Portrait of Dilshan Kumarasingha" className="about-photo" />
+            </div>
+            <div className="about-photo-badge">
+              <span className="about-photo-badge-dot" />
+              Full-stack Engineer
+            </div>
+            <div className="dot-grid dot-grid--corner" aria-hidden="true">
+              {Array.from({ length: 16 }).map((_, i) => <span key={i} />)}
             </div>
           </motion.div>
 
