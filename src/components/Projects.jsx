@@ -1,257 +1,251 @@
-import { useRef } from 'react'
-import { motion, useReducedMotion, useScroll, useTransform, useSpring } from 'framer-motion'
-import '../styles/Projects.css'
+import { motion, useReducedMotion } from "framer-motion";
+import { projects } from "../data/projects";
+import "../styles/Projects.css";
 
-const ChevronRight = ({ size = 16 }) => (
+const EASE = [0.16, 1, 0.3, 1];
+
+const statusLabels = {
+  shipped: "Shipped",
+  development: "In development",
+};
+
+const getStatusLabel = (status) =>
+  statusLabels[status] ?? "Project status unavailable";
+
+const ChevronRight = () => (
   <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
+    width="16"
+    height="16"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2.5"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    aria-hidden="true"
+    focusable="false"
   >
     <path d="m9 18 6-6-6-6" />
   </svg>
-)
+);
 
-const projects = [
-  {
-    id: '01',
-    name: 'Flowspace',
-    tagline: 'Async Team Standup & Decision Platform',
-    status: 'shipped',
-    description:
-      'Eliminates synchronous overhead by enabling team members to broadcast updates, flag real-time blockers via SignalR, and maintain an immutable decision status machine that preserves crucial development context.',
-    stack: [
-      'ASP.NET Core',
-      'React 18',
-      'TypeScript',
-      'PostgreSQL',
-      'SignalR',
-      'EF Core',
-      'FluentValidation',
-      'NUnit',
-      'Selenium',
-    ],
-    highlights: [
-      'Enforces business boundaries at the service layer, including unique daily update rules returning 409 Conflict.',
-      'Drives a real-time collaborative workspace feed utilizing a dedicated SignalR hub for continuous client synchronization.',
-      'Maintains a forward-only decision lifecycle state machine (Draft → Open → Decided → Superseded) with voting isolation.',
-    ],
-    link: null,
-  },
-  {
-    id: '02',
-    name: 'HelpDeskHQ',
-    tagline: 'Internal ITSM & Automated SLA Engine',
-    status: 'shipped',
-    description:
-      'An enterprise helpdesk application featuring an autonomous rule-evaluation pipeline that actively tracks and updates Service Level Agreement deadlines without requiring human intervention.',
-    stack: [
-      'ASP.NET Core',
-      'React',
-      'TypeScript',
-      'PostgreSQL',
-      'Hangfire',
-      'SignalR',
-      'EF Core',
-      'NUnit',
-      'RestSharp',
-    ],
-    highlights: [
-      'Integrates a Hangfire recurring background process to scan tickets, evaluate deadlines, and flag at-risk elements.',
-      'Features programmatic ticket escalation routing and server-side state transition validations to prevent bypassing.',
-      'Broadcasts live ticket queue changes and rolling 30-day compliance metrics instantaneously across user roles.',
-    ],
-    link: null,
-  },
-  {
-    id: '03',
-    name: 'LankaCore Banking System',
-    tagline: 'High-Performance Transaction Engine',
-    status: 'in development',
-    description:
-      'A secure core banking architecture tailored for multi-account management, automated security auditing, and zero-tolerance transactional accuracy.',
-    stack: [
-      'Java 25',
-      'Spring Boot 4.0',
-      'Spring Security',
-      'Spring Data JPA',
-      'PostgreSQL',
-      'React 19',
-      'Vite',
-      'Recharts',
-      'Maven',
-    ],
-    highlights: [
-      'Engineered with modern runtime stacks optimizing Spring Security patterns for multi-tenant account endpoints.',
-      'Implements clean data abstraction tiers ensuring strict isolation parameters for high-velocity account computations.',
-      'Powers an interactive frontend monitoring dashboard featuring comprehensive ledger and transaction metrics visualization.',
-    ],
-    link: null,
-  },
-  {
-    id: '04',
-    name: 'ShopQA E-Commerce',
-    tagline: 'Full-Stack Application & Test Automation Suite',
-    status: 'in development',
-    description:
-      'A dual-purpose repository featuring a multi-role web platform coupled with an exhaustive, multi-tier QA test engineering framework validating everything from user journeys to persistent data layers.',
-    stack: [
-      'Java 25',
-      'Spring Boot 4.0.6',
-      'PostgreSQL 18',
-      'React 18',
-      'Selenium',
-      'TestNG',
-      'RestAssured',
-      'Allure',
-      'GitHub Actions',
-    ],
-    highlights: [
-      'Features complete e-commerce workflows spanning product filtering, JWT-secured checkouts, and admin inventories.',
-      'Deploys an end-to-end automation framework spanning UI Page Object Models and isolated REST API test assertions.',
-      'Validates transactional persistence layers via direct JDBC structures inside a automated GitHub Actions CI pipeline.',
-    ],
-    link: null,
-  },
-]
+function ProjectLink({ project }) {
+  const repository = project.links?.repository;
+  const demo = project.links?.demo;
+  const caseStudy = project.links?.caseStudy;
 
-function ProjectCard({ project, prefersReducedMotion }) {
-  const cardRef = useRef(null)
-  const isShipped = project.status === 'shipped'
+  if (repository) {
+    return (
+      <a
+        className="project-link"
+        href={repository}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`View ${project.name} repository`}
+      >
+        <span>View repository</span>
+        <ChevronRight />
+      </a>
+    );
+  }
 
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ['start 0.95', 'end 0.2'],
-  })
+  if (demo) {
+    return (
+      <a
+        className="project-link"
+        href={demo}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`View ${project.name} live demo`}
+      >
+        <span>View live demo</span>
+        <ChevronRight />
+      </a>
+    );
+  }
 
-  const opacity = useTransform(scrollYProgress, [0, 0.25], [0, 1])
-  const y = useTransform(scrollYProgress, [0, 0.25], [prefersReducedMotion ? 0 : 24, 0])
-
-  const smoothOpacity = useSpring(opacity, { damping: 32, stiffness: 160 })
-  const smoothY = useSpring(y, { damping: 32, stiffness: 160 })
-
-  return (
-    <motion.div
-      ref={cardRef}
-      style={{ opacity: smoothOpacity, y: smoothY }}
-      className="project-card"
-      data-cursor="hover"
-    >
-      <div className={`project-badge ${isShipped ? 'project-badge--shipped' : ''}`}>
-        <span className="project-badge-dot" />
-        {isShipped ? 'shipped' : 'in development'}
-      </div>
-
-      <div className="project-meta-strip">
-        <span className="project-id">{project.id}</span>
-        <div className="project-identity-stack">
-          <h3 className="project-name">{project.name}</h3>
-          <p className="project-tagline">{project.tagline}</p>
-        </div>
-      </div>
-
-      <p className="project-narrative">{project.description}</p>
-
-      <div className="project-details-grid">
-        <div>
-          <h4 className="detail-title">Verified implementations</h4>
-          <ul className="highlights-list">
-            {project.highlights.map((highlight, index) => (
-              <li key={index} className="highlight-item">
-                <span className="highlight-mark" />
-                <span>{highlight}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="detail-title">Ecosystem stack</h4>
-          <div className="tech-badges">
-            {project.stack.map((tech) => (
-              <span key={tech} className="tech-badge">
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="project-action-wrapper">
-        {project.link ? (
-          <a href={project.link} className="project-link" data-cursor="hover" data-cursor-label="Open">
-            <span>Explore architecture specification</span>
-            <span className="project-chevron">
-              <ChevronRight size={13} />
-            </span>
-          </a>
-        ) : (
-          <span className="project-link project-link--disabled">
-            <span>Repository private &middot; available on request</span>
-          </span>
-        )}
-      </div>
-    </motion.div>
-  )
-}
-
-function Projects() {
-  const prefersReducedMotion = useReducedMotion()
-
-  const headerVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 24 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
-    },
+  if (caseStudy) {
+    return (
+      <a
+        className="project-link"
+        href={caseStudy}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Read ${project.name} case study`}
+      >
+        <span>View case study</span>
+        <ChevronRight />
+      </a>
+    );
   }
 
   return (
-    <section className="projects" id="projects">
-      <div className="projects-container">
-        <motion.div
+    <span className="project-link project-link--disabled">
+      <span>Repository private · available on request</span>
+    </span>
+  );
+}
+
+function ProjectCard({ project, index, shouldReduceMotion }) {
+  const statusLabel = getStatusLabel(project.status);
+
+  const cardInitial = shouldReduceMotion
+    ? { opacity: 1, y: 0 }
+    : { opacity: 0, y: 28 };
+
+  const cardVisible = { opacity: 1, y: 0 };
+
+  return (
+    <motion.article
+      className="project-card"
+      initial={cardInitial}
+      whileInView={cardVisible}
+      viewport={{
+        once: true,
+        amount: 0.18,
+      }}
+      transition={{
+        duration: 0.6,
+        delay: shouldReduceMotion ? 0 : Math.min(index * 0.07, 0.28),
+        ease: EASE,
+      }}
+    >
+      <div
+        className={`project-status project-status--${project.status}`}
+        aria-label={`Project status: ${statusLabel}`}
+      >
+        <span className="project-status__dot" aria-hidden="true" />
+        {statusLabel}
+      </div>
+
+      <div className="project-card__glow" aria-hidden="true" />
+
+      <header className="project-meta">
+        <span className="project-id" aria-hidden="true">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+
+        <div className="project-heading">
+          <h3 className="project-name">{project.name}</h3>
+
+          <p className="project-tagline">
+            {project.tagline}
+          </p>
+        </div>
+      </header>
+
+      <div className="project-content">
+        <p className="project-narrative">
+          {project.narrative}
+        </p>
+
+        <div className="project-details">
+          <section className="project-detail" aria-labelledby={`${project.id}-highlights`}>
+            <h4
+              className="project-detail__label"
+              id={`${project.id}-highlights`}
+            >
+              Verified implementations
+            </h4>
+
+            <ul className="project-highlights">
+              {project.highlights.map((highlight) => (
+                <li key={highlight}>
+                  <span className="project-highlight-marker" aria-hidden="true" />
+                  <span>{highlight}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="project-detail" aria-labelledby={`${project.id}-stack`}>
+            <h4
+              className="project-detail__label"
+              id={`${project.id}-stack`}
+            >
+              Technology stack
+            </h4>
+
+            <ul className="project-stack" aria-label="Technology stack">
+              {project.stack.map((technology) => (
+                <li className="tech-badge" key={technology}>
+                  {technology}
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <footer className="project-footer">
+        <ProjectLink project={project} />
+      </footer>
+    </motion.article>
+  );
+}
+
+export default function Projects() {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <section
+      className="projects"
+      id="projects"
+      aria-labelledby="projects-title"
+    >
+      <div className="projects__inner">
+        <motion.header
           className="projects-header"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-120px' }}
-          variants={headerVariants}
+          initial={
+            shouldReduceMotion
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 18 }
+          }
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{
+            once: true,
+            amount: 0.35,
+          }}
+          transition={{
+            duration: 0.55,
+            ease: EASE,
+          }}
         >
-          <div className="projects-header-text">
-            <span className="projects-eyebrow">selected work</span>
-            <h2 className="projects-title">
-              Systems that scale.
+          <div className="projects-header__content">
+            <span className="projects-eyebrow">
+              Selected work
+            </span>
+
+            <h2 className="projects-title" id="projects-title">
+              Systems that <span>scale.</span>
               <br />
-              <span className="projects-title-accent">Built with complete rigor.</span>
+              Built with complete rigor.
             </h2>
+
             <p className="projects-subtitle">
-              Enterprise-ready implementations featuring isolated backend services,
-              multi-tier automated verification, and deterministic layouts.
+              Software projects spanning backend architecture,
+              real-time systems, automation, testing, and modern
+              frontend development.
             </p>
           </div>
-          <div className="dot-grid dot-grid--red" aria-hidden="true">
-            {Array.from({ length: 24 }).map((_, i) => <span key={i} />)}
-          </div>
-        </motion.div>
 
-        <div className="projects-grid">
-          {projects.map((project) => (
+          <div
+            className="projects-grid-decoration"
+            aria-hidden="true"
+          />
+        </motion.header>
+
+        <div className="projects-list">
+          {projects.map((project, index) => (
             <ProjectCard
               key={project.id}
               project={project}
-              prefersReducedMotion={prefersReducedMotion}
+              index={index}
+              shouldReduceMotion={shouldReduceMotion}
             />
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
-
-export default Projects;
