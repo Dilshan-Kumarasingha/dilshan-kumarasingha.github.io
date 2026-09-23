@@ -35,8 +35,20 @@
 .projects-header {
   margin-bottom: 4rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
   text-align: left;
+}
+
+.projects-header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 720px) {
+  .projects-header .dot-grid { display: none; }
 }
 
 .projects-eyebrow {
@@ -91,11 +103,13 @@
   width: 100%;
 }
 
+.projects-grid .project-card:nth-child(odd) { border-radius: 24px 24px 24px 4px; }
+.projects-grid .project-card:nth-child(even) { border-radius: 24px 4px 24px 24px; }
+
 .project-card {
   position: relative;
   background: var(--panel-hi);
   border: 1px solid var(--line);
-  border-radius: 24px;
   padding: 2.5rem;
   display: flex;
   flex-direction: column;

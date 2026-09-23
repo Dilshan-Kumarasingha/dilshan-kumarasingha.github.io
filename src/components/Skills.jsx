@@ -166,16 +166,23 @@ function Skills() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="dash-skills-eyebrow">
-            <span className="dash-eyebrow-dot" />
-            technical competencies
-          </span>
-          <h2 className="dash-skills-title">
-            Engineered toolkit. <span className="dash-text-muted">Calibrated for scale.</span>
-          </h2>
-          <p className="dash-skills-subhead">
-            Primary specialization centered around high-integrity enterprise ecosystems built with C# and ASP.NET Core, complemented by performant React client interfaces.
-          </p>
+          <div className="dash-skills-heading-row">
+            <div>
+              <span className="dash-skills-eyebrow">
+                <span className="dash-eyebrow-dot" />
+                technical competencies
+              </span>
+              <h2 className="dash-skills-title">
+                Engineered toolkit. <span className="dash-text-muted">Calibrated for scale.</span>
+              </h2>
+              <p className="dash-skills-subhead">
+                Primary specialization centered around high-integrity enterprise ecosystems built with C# and ASP.NET Core, complemented by performant React client interfaces.
+              </p>
+            </div>
+            <div className="dot-grid dot-grid--red" aria-hidden="true">
+              {Array.from({ length: 24 }).map((_, i) => <span key={i} />)}
+            </div>
+          </div>
         </motion.div>
 
         {/* Segmented filter track */}

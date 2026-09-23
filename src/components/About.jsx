@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform, useSpring } from 'framer-motion'
+import profilePhoto from '../assets/Profile1.jpeg'
 import '../styles/About.css'
 
 const stats = [
@@ -47,37 +48,59 @@ function About() {
     <section className="about" id="about" ref={targetRef}>
       <div className="about-inner">
 
-        <span className="about-eyebrow">who I am</span>
+        <div className="about-intro-split">
+          <motion.div
+            className="about-photo-stage"
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span className="about-photo-arch" aria-hidden="true" />
+            <div className="about-photo-frame">
+              <img src={profilePhoto} alt="Portrait" className="about-photo" />
+            </div>
+          </motion.div>
 
-        <motion.h2
-          className="about-headline"
-          style={{ opacity: smoothHeadlineOpacity, y: smoothHeadlineY }}
-          data-cursor="text"
-        >
-          Built with the discipline of
-          <br />
-          <span className="about-headline-accent">production, not practice.</span>
-        </motion.h2>
+          <div className="about-intro-text">
+            <div className="about-eyebrow-row">
+              <span className="about-eyebrow">who I am</span>
+              <div className="dot-grid dot-grid--red" aria-hidden="true">
+                {Array.from({ length: 24 }).map((_, i) => <span key={i} />)}
+              </div>
+            </div>
 
-        <motion.div className="about-body" style={{ opacity: smoothBodyOpacity, y: smoothBodyY }}>
-          <p className="about-text">
-            My experience as a Software Developer Intern at Bank of Ceylon, and my
-            current role as a Jr. System Administrator &amp; Lab Demonstrator at
-            Lyceum International Schools, gave me a foundation in both software
-            development and enterprise IT operations — building things that hold up
-            under real, everyday use.
-          </p>
-          <p className="about-text">
-            That's the bar I build to: clean test suites, predictable database
-            parameters, scalable deployment. Full-stack systems backed by real
-            architecture — not interfaces I ship and hope stay up.
-          </p>
-          <p className="about-text">
-            Currently looking for a full-time Software Engineer, Backend Developer,
-            or System Administrator role — somewhere I can keep building things that
-            hold weight.
-          </p>
-        </motion.div>
+            <motion.h2
+              className="about-headline"
+              style={{ opacity: smoothHeadlineOpacity, y: smoothHeadlineY }}
+              data-cursor="text"
+            >
+              Built with the discipline of
+              <br />
+              <span className="about-headline-accent">production, not practice.</span>
+            </motion.h2>
+
+            <motion.div className="about-body" style={{ opacity: smoothBodyOpacity, y: smoothBodyY }}>
+              <p className="about-text">
+                My experience as a Software Developer Intern at Bank of Ceylon, and my
+                current role as a Jr. System Administrator &amp; Lab Demonstrator at
+                Lyceum International Schools, gave me a foundation in both software
+                development and enterprise IT operations — building things that hold up
+                under real, everyday use.
+              </p>
+              <p className="about-text">
+                That's the bar I build to: clean test suites, predictable database
+                parameters, scalable deployment. Full-stack systems backed by real
+                architecture — not interfaces I ship and hope stay up.
+              </p>
+              <p className="about-text">
+                Currently looking for a full-time Software Engineer, Backend Developer,
+                or System Administrator role — somewhere I can keep building things that
+                hold weight.
+              </p>
+            </motion.div>
+          </div>
+        </div>
 
         {/* Stat cards — bordered panels, single top-tick accent on the standout metric */}
         <div className="about-stats-grid">

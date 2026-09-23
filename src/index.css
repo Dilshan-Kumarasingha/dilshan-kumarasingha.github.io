@@ -8,33 +8,70 @@ html {
   scroll-behavior: smooth;
 }
 
+:root {
+  /* Light, editorial palette — red as the single accent, everything else neutral */
+  --ink: #12131a;
+  --ink-soft: #5b6472;
+  --paper: #ffffff;
+  --paper-warm: #fbf9f7;
+  --paper-tint: #f4f1ed;
+  --line: #eceae6;
+  --red: #e5484d;
+  --red-deep: #c23238;
+  --red-tint: #fdeceb;
+  --gold: #f0a83c;
+  --teal: #2a9d8f;
+  --navy: #1e2a4a;
+  --shadow-soft: 0 20px 45px -25px rgba(18, 19, 26, 0.25);
+  --shadow-card: 0 1px 0 rgba(18,19,26,0.04), 0 12px 30px -18px rgba(18,19,26,0.18);
+}
+
 body {
   font-family: 'Inter', sans-serif;
-  background: #ffffff;
-  color: #0b0d12;
+  background: var(--paper);
+  color: var(--ink);
   overflow-x: hidden;
 }
+
+/* Reusable dotted-grid corner ornament — the signature accent across sections */
+.dot-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 9px;
+  width: 108px;
+  pointer-events: none;
+  opacity: 0.9;
+}
+.dot-grid span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #d8d4cd;
+}
+.dot-grid--red span:nth-child(4n) { background: var(--red); opacity: 0.55; }
 
 .section-eyebrow {
   display: inline-block;
   font-size: 0.72rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #e5484d;
-  font-weight: 600;
+  color: var(--red);
+  font-weight: 700;
   margin-bottom: 0.75rem;
 }
 
 .section-title {
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   font-weight: 800;
-  color: #0b0d12;
+  color: var(--ink);
   letter-spacing: -0.03em;
   line-height: 1.1;
 }
 
+.section-title .accent-red { color: var(--red); }
+
 .section-sub {
-  color: #5b6472;
+  color: var(--ink-soft);
   margin-top: 0.75rem;
   font-size: 0.95rem;
   max-width: 520px;

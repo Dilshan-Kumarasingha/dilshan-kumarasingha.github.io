@@ -2,43 +2,26 @@ import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import '../styles/Testimonials.css'
 
-// Placeholder content — swap in real names, quotes and photos later.
 const TESTIMONIALS = [
   {
     id: 't1',
     quote:
-      "Really easy to work with and explains things clearly. I understood exactly what was being built at every step, and the final result matched what we'd discussed from the start.",
-    name: 'Client Name',
-    role: 'Role / Company',
-    date: 'Month Year',
-    initials: 'CN',
+      "This is a course that imparts basic knowledge well. I was able to better understand all the explanations, this helped me to gain more knowledge. And all the teaching was done in a friendly manner. I have to say to those who are going to join this course in the future, it will definitely be able to gather a lot of knowledge to join this course.",
+    name: 'Mr. Kasun Danajaya',
+    role: 'University of Vavuniya',
+    date: 'Nov 28, 2021',
+    initials: 'KD',
+    ring: 'red',
   },
   {
     id: 't2',
     quote:
-      'Delivered on time and communicated well throughout. Any issues that came up were sorted quickly, and the code was left in a state that was easy to hand over.',
-    name: 'Client Name',
-    role: 'Role / Company',
-    date: 'Month Year',
-    initials: 'CN',
-  },
-  {
-    id: 't3',
-    quote:
-      'Took a vague idea and turned it into something that actually worked well for the team. Would happily work together again on the next project.',
-    name: 'Client Name',
-    role: 'Role / Company',
-    date: 'Month Year',
-    initials: 'CN',
-  },
-  {
-    id: 't4',
-    quote:
-      'Solid technical grounding and good instincts about what to build versus what to skip. Kept scope realistic without cutting corners.',
-    name: 'Client Name',
-    role: 'Role / Company',
-    date: 'Month Year',
-    initials: 'CN',
+      'Completed project on-time and best help service. Also got my whole project completed in just one week. Unbelievable and super fast and not only that, it exactly what I asked for. Also he was beside me the entire way and helped me with any problems I had. Highly recommended!',
+    name: 'Mr. Bathiya Jayawardana',
+    role: 'BSc. (Hons) Computer Networks, University of Plymouth',
+    date: '',
+    initials: 'BJ',
+    ring: 'gold',
   },
 ]
 
@@ -50,12 +33,19 @@ function Testimonials() {
   return (
     <section className="testimonials" id="testimonials">
       <div className="testimonials-inner">
-        <span className="section-eyebrow">what people say</span>
-        <h2 className="section-title">
-          Feedback from people
-          <br />
-          <span className="testimonials-title-accent">I've worked with.</span>
-        </h2>
+        <div className="testimonials-heading-row">
+          <div>
+            <span className="section-eyebrow">what people say</span>
+            <h2 className="section-title">
+              Feedback from people
+              <br />
+              <span className="testimonials-title-accent">I've worked with.</span>
+            </h2>
+          </div>
+          <div className="dot-grid dot-grid--red" aria-hidden="true">
+            {Array.from({ length: 24 }).map((_, i) => <span key={i} />)}
+          </div>
+        </div>
 
         {/* Featured quote — large card, mirrors the reference layout */}
         <motion.div
@@ -74,11 +64,11 @@ function Testimonials() {
             <div className="testimonial-attribution">
               <span className="testimonial-name">{featured.name}</span>
               <span className="testimonial-role">{featured.role}</span>
-              <span className="testimonial-date">{featured.date}</span>
+              {featured.date && <span className="testimonial-date">{featured.date}</span>}
             </div>
           </div>
 
-          <div className="testimonial-featured-photo" aria-hidden="true">
+          <div className={`testimonial-featured-photo testimonial-featured-photo--${featured.ring}`} aria-hidden="true">
             <span>{featured.initials}</span>
           </div>
         </motion.div>
@@ -89,7 +79,7 @@ function Testimonials() {
             <button
               key={t.id}
               type="button"
-              className={`testimonial-thumb ${i === active ? 'testimonial-thumb--active' : ''}`}
+              className={`testimonial-thumb testimonial-thumb--${t.ring} ${i === active ? 'testimonial-thumb--active' : ''}`}
               onClick={() => setActive(i)}
               data-cursor="hover"
             >
@@ -101,10 +91,6 @@ function Testimonials() {
             </button>
           ))}
         </div>
-
-        <p className="testimonials-note">
-          Placeholder testimonials — real client quotes and photos go here.
-        </p>
       </div>
     </section>
   )

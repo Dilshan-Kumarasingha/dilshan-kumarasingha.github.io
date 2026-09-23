@@ -223,16 +223,21 @@ function Projects() {
           viewport={{ once: true, margin: '-120px' }}
           variants={headerVariants}
         >
-          <span className="projects-eyebrow">selected work</span>
-          <h2 className="projects-title">
-            Systems that scale.
-            <br />
-            <span className="projects-title-accent">Built with complete rigor.</span>
-          </h2>
-          <p className="projects-subtitle">
-            Enterprise-ready implementations featuring isolated backend services,
-            multi-tier automated verification, and deterministic layouts.
-          </p>
+          <div className="projects-header-text">
+            <span className="projects-eyebrow">selected work</span>
+            <h2 className="projects-title">
+              Systems that scale.
+              <br />
+              <span className="projects-title-accent">Built with complete rigor.</span>
+            </h2>
+            <p className="projects-subtitle">
+              Enterprise-ready implementations featuring isolated backend services,
+              multi-tier automated verification, and deterministic layouts.
+            </p>
+          </div>
+          <div className="dot-grid dot-grid--red" aria-hidden="true">
+            {Array.from({ length: 24 }).map((_, i) => <span key={i} />)}
+          </div>
         </motion.div>
 
         <div className="projects-grid">
