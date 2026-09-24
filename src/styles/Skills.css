@@ -110,7 +110,7 @@
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--ink-dim);
-  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .category-dial__icon {
@@ -123,13 +123,11 @@
   background: color-mix(in srgb, var(--accent) 14%, white);
   color: var(--accent);
   flex-shrink: 0;
-  transition: transform 0.25s ease;
 }
 
 .category-dial__btn:hover {
   border-color: var(--accent);
   color: var(--ink);
-  transform: translateY(-2px);
 }
 
 .category-dial__btn.is-active {
@@ -141,7 +139,6 @@
 .category-dial__btn.is-active .category-dial__icon {
   background: var(--accent);
   color: #fff;
-  transform: scale(1.08);
 }
 
 /* ---------- Radial stage ---------- */
@@ -177,6 +174,50 @@
   opacity: 0.7;
 }
 
+/* Slow continuous rotation so the stage always feels alive */
+.radial-ring--outer {
+  animation: spin-cw 34s linear infinite;
+}
+
+.radial-ring--inner {
+  animation: spin-ccw 22s linear infinite;
+}
+
+.radial-ring--sweep {
+  width: 84%;
+  height: 84%;
+  border: none;
+  background: conic-gradient(
+    from 0deg,
+    color-mix(in srgb, var(--accent, var(--signal)) 35%, transparent) 0deg,
+    transparent 46deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
+  animation: spin-cw 6s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes spin-cw {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes spin-ccw {
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+/* ---------- Connector lines from hub to each item ---------- */
+.radial-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 1.5px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--ink) 22%, transparent), transparent);
+  transform-origin: left center;
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* ---------- Hub ---------- */
 .radial-hub {
   position: absolute;
@@ -210,6 +251,31 @@
   color: var(--ink);
   letter-spacing: -0.01em;
   line-height: 1.1;
+  position: relative;
+}
+
+.radial-hub__pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  animation: hub-pulse 2.2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes hub-pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  80% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
 }
 
 .radial-hub__count {
@@ -242,11 +308,10 @@
   font-size: 1.5rem;
   border: 1px solid color-mix(in srgb, var(--brand, var(--ink)) 30%, white);
   box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease;
 }
 
 .radial-item:hover .radial-item__icon {
-  transform: scale(1.14);
   box-shadow: 0 14px 28px rgba(15, 23, 42, 0.16);
 }
 
@@ -358,5 +423,12 @@
   .category-dial__icon,
   .category-dial__btn {
     transition: none;
+  }
+
+  .radial-ring--outer,
+  .radial-ring--inner,
+  .radial-ring--sweep,
+  .radial-hub__pulse {
+    animation: none;
   }
 }

@@ -74,27 +74,67 @@ function radiusFor(count) {
 
 function polarPosition(index, total, radius) {
   const angle = (index / total) * 2 * Math.PI - Math.PI / 2; // start at top, go clockwise
+  const angleDeg = (angle * 180) / Math.PI;
   const x = 50 + radius * Math.cos(angle);
   const y = 50 + radius * Math.sin(angle);
-  return { left: `${x}%`, top: `${y}%` };
+  return { left: `${x}%`, top: `${y}%`, angleDeg };
+}
+
+function ConnectorLine({ angleDeg, radius, index, reduceMotion }) {
+  return (
+    <motion.div
+      className="radial-line"
+      style={{ width: `${radius}%`, transform: `rotate(${angleDeg}deg)` }}
+      initial={reduceMotion ? false : { scaleX: 0, opacity: 0 }}
+      animate={{ scaleX: 1, opacity: 1 }}
+      exit={reduceMotion ? undefined : { scaleX: 0, opacity: 0, transition: { duration: 0.12 } }}
+      transition={
+        reduceMotion
+          ? { duration: 0 }
+          : { duration: 0.35, delay: index * 0.045, ease: [0.16, 1, 0.3, 1] }
+      }
+    />
+  );
 }
 
 function RadialItem({ skill, index, total, radius, reduceMotion }) {
   const Icon = skill.Icon;
   const pos = polarPosition(index, total, radius);
+  const floatDelay = index * 0.15;
 
   return (
     <motion.div
       className="radial-item"
       style={{ left: pos.left, top: pos.top, '--brand': skill.color }}
       initial={reduceMotion ? false : { opacity: 0, scale: 0.2, x: "-50%", y: "-50%" }}
-      animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+      animate={
+        reduceMotion
+          ? { opacity: 1, scale: 1, x: "-50%", y: "-50%" }
+          : {
+              opacity: 1,
+              scale: 1,
+              x: "-50%",
+              y: ["-50%", "-58%", "-50%"],
+            }
+      }
       exit={reduceMotion ? undefined : { opacity: 0, scale: 0.2, transition: { duration: 0.15 } }}
       transition={
         reduceMotion
           ? { duration: 0 }
-          : { type: "spring", stiffness: 340, damping: 20, delay: index * 0.045 }
+          : {
+              scale: { type: "spring", stiffness: 340, damping: 20, delay: index * 0.045 },
+              opacity: { duration: 0.25, delay: index * 0.045 },
+              x: { type: "spring", stiffness: 340, damping: 20, delay: index * 0.045 },
+              y: {
+                duration: 2.4,
+                repeat: Infinity,
+                repeatType: "loop",
+                ease: "easeInOut",
+                delay: index * 0.045 + 0.4 + floatDelay,
+              },
+            }
       }
+      whileHover={reduceMotion ? undefined : { scale: 1.12, transition: { duration: 0.2 } }}
       data-cursor="hover"
     >
       <div className="radial-item__icon">
@@ -147,12 +187,23 @@ export default function Skills() {
         </motion.header>
 
         {/* ---------- Category dial — the "weapon wheel" selector ---------- */}
-        <div className="category-dial" role="tablist" aria-label="Skill categories">
+        <motion.div
+          className="category-dial"
+          role="tablist"
+          aria-label="Skill categories"
+          initial={reduceMotion ? false : "hidden"}
+          whileInView={reduceMotion ? undefined : "visible"}
+          viewport={{ once: true, amount: 0.4 }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
+          }}
+        >
           {CATEGORIES.map((category) => {
             const CatIcon = CATEGORY_META[category].Icon;
             const isActive = category === activeCategory;
             return (
-              <button
+              <motion.button
                 key={category}
                 type="button"
                 role="tab"
@@ -161,33 +212,61 @@ export default function Skills() {
                 style={{ '--accent': CATEGORY_META[category].accent }}
                 onClick={() => setActiveCategory(category)}
                 data-cursor="hover"
+                variants={{
+                  hidden: { opacity: 0, y: 14, scale: 0.9 },
+                  visible: { opacity: 1, y: 0, scale: 1 },
+                }}
+                transition={{ type: "spring", stiffness: 320, damping: 22 }}
+                whileHover={reduceMotion ? undefined : { y: -2 }}
+                whileTap={reduceMotion ? undefined : { scale: 0.94 }}
               >
-                <span className="category-dial__icon">
+                <motion.span
+                  className="category-dial__icon"
+                  animate={isActive && !reduceMotion ? { rotate: [0, -12, 0] } : { rotate: 0 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                >
                   <CatIcon size={18} strokeWidth={2} />
-                </span>
+                </motion.span>
                 <span className="category-dial__label">{category}</span>
-              </button>
+              </motion.button>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* ---------- Radial stage — hub + orbiting tool icons ---------- */}
         <div className="radial-stage">
           <div className="radial-rings" aria-hidden="true">
             <span className="radial-ring radial-ring--outer" />
             <span className="radial-ring radial-ring--inner" />
+            <span className="radial-ring radial-ring--sweep" style={{ '--accent': meta.accent }} />
           </div>
+
+          <AnimatePresence mode="popLayout">
+            {activeSkills.map((skill, index) => {
+              const { angleDeg } = polarPosition(index, activeSkills.length, radius);
+              return (
+                <ConnectorLine
+                  key={`line-${activeCategory}-${skill.name}`}
+                  angleDeg={angleDeg}
+                  radius={radius}
+                  index={index}
+                  reduceMotion={reduceMotion}
+                />
+              );
+            })}
+          </AnimatePresence>
 
           <AnimatePresence mode="popLayout">
             <motion.div
               key={activeCategory}
               className="radial-hub"
               style={{ '--accent': meta.accent }}
-              initial={reduceMotion ? false : { opacity: 0, scale: 0.6 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={reduceMotion ? undefined : { opacity: 0, scale: 0.6 }}
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.6, rotate: -30 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              exit={reduceMotion ? undefined : { opacity: 0, scale: 0.6, rotate: 30 }}
               transition={{ type: "spring", stiffness: 300, damping: 22 }}
             >
+              <span className="radial-hub__pulse" aria-hidden="true" />
               <HubIcon size={30} strokeWidth={1.8} />
               <span className="radial-hub__label">{activeCategory}</span>
               <span className="radial-hub__count">{activeSkills.length} tools</span>
