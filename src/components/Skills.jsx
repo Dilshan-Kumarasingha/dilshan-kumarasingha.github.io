@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
+import { Server, LayoutPanelTop, Database, ShieldCheck, Wrench } from "lucide-react";
 import {
   SiDotnet, SiSpringboot, SiPython, SiDjango, SiReact, SiJavascript,
   SiTypescript, SiHtml5, SiTailwindcss, SiFramer, SiPostgresql, SiMysql,
@@ -53,101 +54,72 @@ const SKILLS = [
   { name: "IntelliJ IDEA", category: "DevOps & Tools", tier: "Working", Icon: SiIntellijidea, color: "#FE315D" },
 ];
 
-const CATEGORIES = [
-  "All",
-  "Backend",
-  "Frontend",
-  "Databases",
-  "QA & Testing",
-  "DevOps & Tools",
-];
-
 const CATEGORY_META = {
-  Backend: { number: "01", description: "Application logic, APIs and server-side systems." },
-  Frontend: { number: "02", description: "Interfaces, interactions and client-side experiences." },
-  Databases: { number: "03", description: "Relational data storage and persistence." },
-  "QA & Testing": { number: "04", description: "Automation, validation and software quality." },
-  "DevOps & Tools": { number: "05", description: "Development workflow, delivery and engineering tools." },
+  Backend: { Icon: Server, accent: "#e5484d", description: "Application logic, APIs and server-side systems." },
+  Frontend: { Icon: LayoutPanelTop, accent: "#3178C6", description: "Interfaces, interactions and client-side experiences." },
+  Databases: { Icon: Database, accent: "#4169E1", description: "Relational data storage and persistence." },
+  "QA & Testing": { Icon: ShieldCheck, accent: "#43B02A", description: "Automation, validation and software quality." },
+  "DevOps & Tools": { Icon: Wrench, accent: "#F05032", description: "Development workflow, delivery and engineering tools." },
 };
 
-function TechnologyCard({ skill, index }) {
-  const Icon = skill.Icon;
-  return (
-    <motion.article
-      className={`technology-card technology-card--${skill.tier.toLowerCase()}`}
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.45, delay: Math.min(index * 0.035, 0.18) }}
-      data-cursor="hover"
-    >
-      <div
-        className="technology-card__icon"
-        style={{ '--brand': skill.color }}
-      >
-        <Icon />
-      </div>
+const CATEGORIES = Object.keys(CATEGORY_META);
 
-      <div className="technology-card__content">
-        <span className="technology-card__category">{skill.category}</span>
-        <h3>{skill.name}</h3>
-        <span className={`technology-card__tier technology-card__tier--${skill.tier.toLowerCase()}`}>
-          {skill.tier}
-        </span>
-      </div>
-    </motion.article>
-  );
+// Radius (as % of the stage box) at which items orbit the hub.
+// Fewer items sit slightly closer in so the ring doesn't look sparse.
+function radiusFor(count) {
+  if (count <= 3) return 34;
+  if (count <= 5) return 37;
+  return 40;
 }
 
-function SkillCategory({ category, skills }) {
-  const meta = CATEGORY_META[category];
+function polarPosition(index, total, radius) {
+  const angle = (index / total) * 2 * Math.PI - Math.PI / 2; // start at top, go clockwise
+  const x = 50 + radius * Math.cos(angle);
+  const y = 50 + radius * Math.sin(angle);
+  return { left: `${x}%`, top: `${y}%` };
+}
+
+function RadialItem({ skill, index, total, radius, reduceMotion }) {
+  const Icon = skill.Icon;
+  const pos = polarPosition(index, total, radius);
 
   return (
-    <motion.section
-      className="skill-category"
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.5 }}
+    <motion.div
+      className="radial-item"
+      style={{ left: pos.left, top: pos.top, '--brand': skill.color }}
+      initial={reduceMotion ? false : { opacity: 0, scale: 0.2, x: "-50%", y: "-50%" }}
+      animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+      exit={reduceMotion ? undefined : { opacity: 0, scale: 0.2, transition: { duration: 0.15 } }}
+      transition={
+        reduceMotion
+          ? { duration: 0 }
+          : { type: "spring", stiffness: 340, damping: 20, delay: index * 0.045 }
+      }
+      data-cursor="hover"
     >
-      <div className="skill-category__header">
-        <div className="skill-category__index">{meta.number}</div>
-
-        <div>
-          <p className="skill-category__eyebrow">SYSTEM / {meta.number}</p>
-          <h3>{category}</h3>
-          <p className="skill-category__description">{meta.description}</p>
-        </div>
+      <div className="radial-item__icon">
+        <Icon />
       </div>
-
-      <div className="technology-grid">
-        {skills.map((skill, index) => (
-          <TechnologyCard key={skill.name} skill={skill} index={index} />
-        ))}
-      </div>
-    </motion.section>
+      <span className="radial-item__label">{skill.name}</span>
+      <span className={`radial-item__tier radial-item__tier--${skill.tier.toLowerCase()}`}>
+        {skill.tier}
+      </span>
+    </motion.div>
   );
 }
 
 export default function Skills() {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const shouldReduceMotion = useReducedMotion();
+  const [activeCategory, setActiveCategory] = useState("Backend");
+  const reduceMotion = useReducedMotion();
 
-  const visibleSkills = useMemo(() => {
-    if (activeCategory === "All") return SKILLS;
-    return SKILLS.filter((skill) => skill.category === activeCategory);
-  }, [activeCategory]);
+  const activeSkills = useMemo(
+    () => SKILLS.filter((s) => s.category === activeCategory),
+    [activeCategory]
+  );
 
-  const groupedSkills = useMemo(() => {
-    return visibleSkills.reduce((groups, skill) => {
-      if (!groups[skill.category]) groups[skill.category] = [];
-      groups[skill.category].push(skill);
-      return groups;
-    }, {});
-  }, [visibleSkills]);
-
-  const visibleCategories =
-    activeCategory === "All" ? Object.keys(CATEGORY_META) : [activeCategory];
+  const meta = CATEGORY_META[activeCategory];
+  const HubIcon = meta.Icon;
+  const radius = radiusFor(activeSkills.length);
 
   return (
     <section className="skills-section" id="skills">
@@ -158,54 +130,85 @@ export default function Skills() {
       <div className="skills-section__container">
         <motion.header
           className="skills-header"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
-          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.55 }}
         >
           <span className="skills-eyebrow">technical skills</span>
-
           <h2>
             Built with
             <span> precision.</span>
           </h2>
-
           <p>
-            A practical technology stack spanning backend engineering, modern
-            interfaces, databases, automated testing and development tooling.
+            Pick a system to load its stack — the related tools cycle into
+            view around the hub, like an inventory select.
           </p>
         </motion.header>
 
-        <nav className="skills-filters" aria-label="Filter technologies by category">
-          {CATEGORIES.map((category) => (
-            <button
-              key={category}
-              type="button"
-              className={activeCategory === category ? "skills-filter is-active" : "skills-filter"}
-              onClick={() => setActiveCategory(category)}
-              aria-pressed={activeCategory === category}
-              data-cursor="hover"
-            >
-              <span>{category}</span>
-            </button>
-          ))}
-        </nav>
+        {/* ---------- Category dial — the "weapon wheel" selector ---------- */}
+        <div className="category-dial" role="tablist" aria-label="Skill categories">
+          {CATEGORIES.map((category) => {
+            const CatIcon = CATEGORY_META[category].Icon;
+            const isActive = category === activeCategory;
+            return (
+              <button
+                key={category}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                className={`category-dial__btn ${isActive ? "is-active" : ""}`}
+                style={{ '--accent': CATEGORY_META[category].accent }}
+                onClick={() => setActiveCategory(category)}
+                data-cursor="hover"
+              >
+                <span className="category-dial__icon">
+                  <CatIcon size={18} strokeWidth={2} />
+                </span>
+                <span className="category-dial__label">{category}</span>
+              </button>
+            );
+          })}
+        </div>
 
-        <div className="skills-categories">
-          <AnimatePresence mode="wait">
+        {/* ---------- Radial stage — hub + orbiting tool icons ---------- */}
+        <div className="radial-stage">
+          <div className="radial-rings" aria-hidden="true">
+            <span className="radial-ring radial-ring--outer" />
+            <span className="radial-ring radial-ring--inner" />
+          </div>
+
+          <AnimatePresence mode="popLayout">
             <motion.div
               key={activeCategory}
-              initial={shouldReduceMotion ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={shouldReduceMotion ? undefined : { opacity: 0 }}
-              transition={{ duration: 0.25 }}
+              className="radial-hub"
+              style={{ '--accent': meta.accent }}
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={reduceMotion ? undefined : { opacity: 0, scale: 0.6 }}
+              transition={{ type: "spring", stiffness: 300, damping: 22 }}
             >
-              {visibleCategories.map((category) => (
-                <SkillCategory key={category} category={category} skills={groupedSkills[category] || []} />
-              ))}
+              <HubIcon size={30} strokeWidth={1.8} />
+              <span className="radial-hub__label">{activeCategory}</span>
+              <span className="radial-hub__count">{activeSkills.length} tools</span>
             </motion.div>
           </AnimatePresence>
+
+          <AnimatePresence mode="popLayout">
+            {activeSkills.map((skill, index) => (
+              <RadialItem
+                key={`${activeCategory}-${skill.name}`}
+                skill={skill}
+                index={index}
+                total={activeSkills.length}
+                radius={radius}
+                reduceMotion={reduceMotion}
+              />
+            ))}
+          </AnimatePresence>
         </div>
+
+        <p className="radial-caption">{meta.description}</p>
       </div>
     </section>
   );
