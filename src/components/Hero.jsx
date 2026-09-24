@@ -286,16 +286,15 @@ function Hero() {
           >
             <span className="hero-eyebrow">
               <span className="hero-status-dot" aria-hidden="true" />
-              Available for work
+              Building beyond the obvious
             </span>
 
-            <p className="hero-subhead">
-              I build backend services in{' '}
-              <code>C# / ASP.NET Core</code> and the{' '}
-              <code>React</code> interfaces on top of them — with the
-              state machines, SLA logic, and test coverage that keep
-              them reliable after they ship.
-            </p>
+           <p className="hero-subhead">
+            I spend most of my time between <code>C# / ASP.NET Core</code> and{' '}
+            <code>React</code> — writing the APIs, building the UI, and using AI as
+            another tool while still taking care of the things nobody notices until
+            they break.
+          </p>
 
             <div className="hero-actions">
               <button
