@@ -180,13 +180,13 @@ function About() {
 
               <div
                 className="about-photo-badge"
-                aria-label="Full-stack engineer"
+                aria-label="Full-stack engineer with DevOps and cloud focus"
               >
                 <span
                   className="about-photo-badge-dot"
                   aria-hidden="true"
                 />
-                Full-stack Engineer
+                Full-stack Engineer · DevOps/Cloud
               </div>
             </motion.div>
           </motion.div>
@@ -218,10 +218,10 @@ function About() {
               }}
               data-cursor="text"
             >
-              Built with the discipline of
+              Built for reliable
               <br />
               <span className="about-headline-accent">
-                production, not practice.
+                systems in production.
               </span>
             </motion.h2>
 
@@ -233,25 +233,33 @@ function About() {
               }}
             >
               <p className="about-text">
-                My experience as a Software Developer Intern at
-                Bank of Ceylon, and my current role as a Jr. System
-                Administrator &amp; Lab Demonstrator at Lyceum
-                International Schools, gave me a foundation in both
-                software development and enterprise IT operations —
-                building things that hold up under real, everyday use.
+                My experience as a Software Developer Intern at Bank of Ceylon and as a
+                Jr. System Administrator and Lab Demonstrator at Lyceum International
+                Schools has given me a strong foundation in software development,
+                infrastructure, and enterprise IT operations. I use that foundation to
+                build reliable applications and develop the systems that support them.
               </p>
 
               <p className="about-text">
-                That's the bar I build to: clean test suites,
-                predictable database parameters, scalable deployment.
-                Full-stack systems backed by real architecture — not
-                interfaces I ship and hope stay up.
+                I believe production-ready software requires more than a working
+                interface. It needs clean code, meaningful tests, containerized
+                environments, automated delivery, monitoring, and infrastructure that
+                teams can operate with confidence.
               </p>
 
               <p className="about-text">
-                Currently looking for a full-time Software Engineer,
-                Backend Developer, or System Administrator role —
-                somewhere I can keep building things that hold weight.
+                My current focus is a structured transition into DevOps and cloud
+                engineering. I am developing hands-on skills in Linux, networking, Bash,
+                Python, Docker, Kubernetes, Helm, Istio, Terraform, AWS, and CI/CD
+                automation while building on my full-stack development and infrastructure
+                experience.
+              </p>
+
+              <p className="about-text">
+                I am currently seeking opportunities as a Software Engineer, DevOps
+                Engineer, Cloud Engineer, or Platform Engineer where I can combine
+                application development with infrastructure automation to build reliable,
+                scalable, and maintainable systems.
               </p>
             </motion.div>
 

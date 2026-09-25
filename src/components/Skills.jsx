@@ -6,9 +6,10 @@ import {
   SiDotnet, SiSpringboot, SiPython, SiDjango, SiReact, SiJavascript,
   SiTypescript, SiHtml5, SiTailwindcss, SiFramer, SiPostgresql, SiMysql,
   SiSelenium, SiPostman, SiGit, SiGithubactions, SiDocker, SiIntellijidea,
+  SiTerraform, SiLinux, SiKubernetes,
 } from "react-icons/si";
 import { DiJava, DiCss3, DiMsqlServer, DiVisualstudio } from "react-icons/di";
-import { TbBrandCSharp, TbBrandVscode, TbApi, TbFlaskFilled, TbRobot } from "react-icons/tb";
+import { TbBrandCSharp, TbBrandVscode, TbApi, TbFlaskFilled, TbRobot, TbBrandAws } from "react-icons/tb";
 
 import "../styles/Skills.css";
 
@@ -49,6 +50,10 @@ const SKILLS = [
   { name: "Git", category: "DevOps & Tools", tier: "Core", Icon: SiGit, color: "#F05032" },
   { name: "GitHub Actions", category: "DevOps & Tools", tier: "Working", Icon: SiGithubactions, color: "#2088FF" },
   { name: "Docker", category: "DevOps & Tools", tier: "Working", Icon: SiDocker, color: "#2496ED" },
+  { name: "Linux", category: "DevOps & Tools", tier: "Familiar", Icon: SiLinux, color: "#FCC624" },
+  { name: "AWS", category: "DevOps & Tools", tier: "Learning", Icon: TbBrandAws, color: "#FF9900" },
+  { name: "Terraform", category: "DevOps & Tools", tier: "Learning", Icon: SiTerraform, color: "#7B42BC" },
+  { name: "Kubernetes", category: "DevOps & Tools", tier: "Learning", Icon: SiKubernetes, color: "#326CE5" },
   { name: "Visual Studio", category: "DevOps & Tools", tier: "Core", Icon: DiVisualstudio, color: "#5C2D91" },
   { name: "VS Code", category: "DevOps & Tools", tier: "Core", Icon: TbBrandVscode, color: "#007ACC" },
   { name: "IntelliJ IDEA", category: "DevOps & Tools", tier: "Working", Icon: SiIntellijidea, color: "#FE315D" },
@@ -59,7 +64,7 @@ const CATEGORY_META = {
   Frontend: { Icon: LayoutPanelTop, accent: "#3178C6", description: "Interfaces, interactions and client-side experiences." },
   Databases: { Icon: Database, accent: "#4169E1", description: "Relational data storage and persistence." },
   "QA & Testing": { Icon: ShieldCheck, accent: "#43B02A", description: "Automation, validation and software quality." },
-  "DevOps & Tools": { Icon: Wrench, accent: "#F05032", description: "Development workflow, delivery and engineering tools." },
+  "DevOps & Tools": { Icon: Wrench, accent: "#F05032", description: "Development workflow, containerization, CI/CD, and cloud fundamentals." },
 };
 
 const CATEGORIES = Object.keys(CATEGORY_META);

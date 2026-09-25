@@ -81,10 +81,10 @@ const ArrowDownIcon = () => (
 const TAGS = [
   'ASP.NET Core',
   'React',
-  'SQL Server',
+  'Docker',
+  'CI/CD',
+  'PostgreSQL',
   'REST APIs',
-  'System Design',
-  'Testing',
 ]
 
 const revealUpVariants = (reducedMotion) => ({
@@ -286,14 +286,14 @@ function Hero() {
           >
             <span className="hero-eyebrow">
               <span className="hero-status-dot" aria-hidden="true" />
-              Building beyond the obvious
+              Engineering reliable cloud-native platforms
             </span>
 
-           <p className="hero-subhead">
-            I spend most of my time between <code>C# / ASP.NET Core</code> and{' '}
-            <code>React</code> — writing the APIs, building the UI, and using AI as
-            another tool while still taking care of the things nobody notices until
-            they break.
+          <p className="hero-subhead">
+            I build full-stack systems with <code>C# / ASP.NET Core</code> and{' '}
+            <code>React</code>, while specializing in <code>Docker</code>,{' '}
+            <code>Kubernetes</code>, <code>Terraform</code>, and cloud-native{' '}
+            <code>CI/CD</code>.
           </p>
 
             <div className="hero-actions">
