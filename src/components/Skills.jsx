@@ -1,76 +1,336 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
-import { Server, LayoutPanelTop, Database, ShieldCheck, Wrench } from "lucide-react";
 import {
-  SiDotnet, SiSpringboot, SiPython, SiDjango, SiReact, SiJavascript,
-  SiTypescript, SiHtml5, SiTailwindcss, SiFramer, SiPostgresql, SiMysql,
-  SiSelenium, SiPostman, SiGit, SiGithubactions, SiDocker, SiIntellijidea,
-  SiTerraform, SiLinux, SiKubernetes,
+  Code2,
+  Cloud,
+  Container,
+  GitBranch,
+  Activity,
+} from "lucide-react";
+
+import {
+  SiDotnet,
+  SiPython,
+  SiReact,
+  SiJavascript,
+  SiTypescript,
+  SiHtml5,
+  SiTailwindcss,
+  SiPostgresql,
+  SiMysql,
+  SiGit,
+  SiGithubactions,
+  SiDocker,
+  SiTerraform,
+  SiLinux,
+  SiKubernetes,
+  SiPrometheus,
+  SiGrafana,
 } from "react-icons/si";
-import { DiJava, DiCss3, DiMsqlServer, DiVisualstudio } from "react-icons/di";
-import { TbBrandCSharp, TbBrandVscode, TbApi, TbFlaskFilled, TbRobot, TbBrandAws } from "react-icons/tb";
+
+import { DiJava, DiCss3, DiMsqlServer } from "react-icons/di";
+
+import {
+  TbBrandCSharp,
+  TbBrandAws,
+  TbApi,
+} from "react-icons/tb";
 
 import "../styles/Skills.css";
 
 const SKILLS = [
-  // Backend
-  { name: "C#", category: "Backend", tier: "Core", Icon: TbBrandCSharp, color: "#9B4F96" },
-  { name: ".NET", category: "Backend", tier: "Core", Icon: SiDotnet, color: "#512BD4" },
-  { name: "Java", category: "Backend", tier: "Core", Icon: DiJava, color: "#f89820" },
-  { name: "Spring Boot", category: "Backend", tier: "Working", Icon: SiSpringboot, color: "#6DB33F" },
-  { name: "Python", category: "Backend", tier: "Working", Icon: SiPython, color: "#3776AB" },
-  { name: "Django", category: "Backend", tier: "Familiar", Icon: SiDjango, color: "#0C4B33" },
-  { name: "REST APIs", category: "Backend", tier: "Core", Icon: TbApi, color: "#e5484d" },
+  // Software Engineering
+  {
+    name: "C#",
+    category: "Software Engineering",
+    tier: "Core",
+    Icon: TbBrandCSharp,
+    color: "#9B4F96",
+  },
+  {
+    name: ".NET",
+    category: "Software Engineering",
+    tier: "Core",
+    Icon: SiDotnet,
+    color: "#512BD4",
+  },
+  {
+    name: "Python",
+    category: "Software Engineering",
+    tier: "Core",
+    Icon: SiPython,
+    color: "#3776AB",
+  },
+  {
+    name: "Java",
+    category: "Software Engineering",
+    tier: "Working",
+    Icon: DiJava,
+    color: "#f89820",
+  },
+  {
+    name: "REST APIs",
+    category: "Software Engineering",
+    tier: "Core",
+    Icon: TbApi,
+    color: "#e5484d",
+  },
+  {
+    name: "React",
+    category: "Software Engineering",
+    tier: "Core",
+    Icon: SiReact,
+    color: "#61DAFB",
+  },
+  {
+    name: "JavaScript",
+    category: "Software Engineering",
+    tier: "Core",
+    Icon: SiJavascript,
+    color: "#F7DF1E",
+  },
+  {
+    name: "TypeScript",
+    category: "Software Engineering",
+    tier: "Working",
+    Icon: SiTypescript,
+    color: "#3178C6",
+  },
+  {
+    name: "HTML",
+    category: "Software Engineering",
+    tier: "Core",
+    Icon: SiHtml5,
+    color: "#E34F26",
+  },
+  {
+    name: "CSS",
+    category: "Software Engineering",
+    tier: "Core",
+    Icon: DiCss3,
+    color: "#1572B6",
+  },
+  {
+    name: "Tailwind CSS",
+    category: "Software Engineering",
+    tier: "Working",
+    Icon: SiTailwindcss,
+    color: "#06B6D4",
+  },
+  {
+    name: "PostgreSQL",
+    category: "Software Engineering",
+    tier: "Working",
+    Icon: SiPostgresql,
+    color: "#4169E1",
+  },
+  {
+    name: "MySQL",
+    category: "Software Engineering",
+    tier: "Working",
+    Icon: SiMysql,
+    color: "#4479A1",
+  },
+  {
+    name: "SQL Server",
+    category: "Software Engineering",
+    tier: "Working",
+    Icon: DiMsqlServer,
+    color: "#CC2927",
+  },
 
-  // Frontend
-  { name: "React", category: "Frontend", tier: "Core", Icon: SiReact, color: "#61DAFB" },
-  { name: "JavaScript", category: "Frontend", tier: "Core", Icon: SiJavascript, color: "#F7DF1E" },
-  { name: "TypeScript", category: "Frontend", tier: "Working", Icon: SiTypescript, color: "#3178C6" },
-  { name: "HTML", category: "Frontend", tier: "Core", Icon: SiHtml5, color: "#E34F26" },
-  { name: "CSS", category: "Frontend", tier: "Core", Icon: DiCss3, color: "#1572B6" },
-  { name: "Tailwind CSS", category: "Frontend", tier: "Working", Icon: SiTailwindcss, color: "#06B6D4" },
-  { name: "Framer Motion", category: "Frontend", tier: "Working", Icon: SiFramer, color: "#0055FF" },
+  // Cloud & Infrastructure
+  {
+    name: "Linux",
+    category: "Cloud & Infrastructure",
+    tier: "Working",
+    Icon: SiLinux,
+    color: "#FCC624",
+  },
+  {
+    name: "Bash",
+    category: "Cloud & Infrastructure",
+    tier: "Working",
+    Icon: SiLinux,
+    color: "#4EAA25",
+  },
+  {
+    name: "Python Automation",
+    category: "Cloud & Infrastructure",
+    tier: "Working",
+    Icon: SiPython,
+    color: "#3776AB",
+  },
+  {
+    name: "YAML",
+    category: "Cloud & Infrastructure",
+    tier: "Working",
+    Icon: GitBranch,
+    color: "#CB171E",
+  },
+  {
+    name: "AWS",
+    category: "Cloud & Infrastructure",
+    tier: "Learning",
+    Icon: TbBrandAws,
+    color: "#FF9900",
+  },
+  {
+    name: "Terraform",
+    category: "Cloud & Infrastructure",
+    tier: "Learning",
+    Icon: SiTerraform,
+    color: "#7B42BC",
+  },
+  {
+    name: "Networking",
+    category: "Cloud & Infrastructure",
+    tier: "Learning",
+    Icon: Cloud,
+    color: "#2563EB",
+  },
 
-  // Databases
-  { name: "PostgreSQL", category: "Databases", tier: "Working", Icon: SiPostgresql, color: "#4169E1" },
-  { name: "MySQL", category: "Databases", tier: "Working", Icon: SiMysql, color: "#4479A1" },
-  { name: "SQL Server", category: "Databases", tier: "Working", Icon: DiMsqlServer, color: "#CC2927" },
+  // Containers & Kubernetes
+  {
+    name: "Docker",
+    category: "Containers & Kubernetes",
+    tier: "Working",
+    Icon: SiDocker,
+    color: "#2496ED",
+  },
+  {
+    name: "Kubernetes",
+    category: "Containers & Kubernetes",
+    tier: "Learning",
+    Icon: SiKubernetes,
+    color: "#326CE5",
+  },
+  {
+    name: "Helm",
+    category: "Containers & Kubernetes",
+    tier: "Learning",
+    Icon: Container,
+    color: "#0F1689",
+  },
+  {
+    name: "Istio",
+    category: "Containers & Kubernetes",
+    tier: "Learning",
+    Icon: Container,
+    color: "#466BB0",
+  },
+  {
+    name: "Ingress",
+    category: "Containers & Kubernetes",
+    tier: "Learning",
+    Icon: Container,
+    color: "#F59E0B",
+  },
 
-  // QA & Testing
-  { name: "Selenium", category: "QA & Testing", tier: "Core", Icon: SiSelenium, color: "#43B02A" },
-  { name: "NUnit", category: "QA & Testing", tier: "Working", Icon: TbFlaskFilled, color: "#7C3AED" },
-  { name: "TestNG", category: "QA & Testing", tier: "Working", Icon: TbFlaskFilled, color: "#EF4444" },
-  { name: "Rest Assured", category: "QA & Testing", tier: "Working", Icon: TbApi, color: "#e5484d" },
-  { name: "Postman", category: "QA & Testing", tier: "Core", Icon: SiPostman, color: "#FF6C37" },
-  { name: "API Testing", category: "QA & Testing", tier: "Core", Icon: TbApi, color: "#e5484d" },
-  { name: "UI Automation", category: "QA & Testing", tier: "Core", Icon: TbRobot, color: "#0EA5E9" },
+  // CI/CD & GitOps
+  {
+    name: "Git",
+    category: "CI/CD & GitOps",
+    tier: "Core",
+    Icon: SiGit,
+    color: "#F05032",
+  },
+  {
+    name: "GitHub Actions",
+    category: "CI/CD & GitOps",
+    tier: "Working",
+    Icon: SiGithubactions,
+    color: "#2088FF",
+  },
+  {
+    name: "CI/CD",
+    category: "CI/CD & GitOps",
+    tier: "Working",
+    Icon: GitBranch,
+    color: "#E5484D",
+  },
+  {
+    name: "Argo CD",
+    category: "CI/CD & GitOps",
+    tier: "Learning",
+    Icon: GitBranch,
+    color: "#EF7B4D",
+  },
+  {
+    name: "GitOps",
+    category: "CI/CD & GitOps",
+    tier: "Learning",
+    Icon: GitBranch,
+    color: "#22C55E",
+  },
 
-  // DevOps & Tools
-  { name: "Git", category: "DevOps & Tools", tier: "Core", Icon: SiGit, color: "#F05032" },
-  { name: "GitHub Actions", category: "DevOps & Tools", tier: "Working", Icon: SiGithubactions, color: "#2088FF" },
-  { name: "Docker", category: "DevOps & Tools", tier: "Working", Icon: SiDocker, color: "#2496ED" },
-  { name: "Linux", category: "DevOps & Tools", tier: "Familiar", Icon: SiLinux, color: "#FCC624" },
-  { name: "AWS", category: "DevOps & Tools", tier: "Learning", Icon: TbBrandAws, color: "#FF9900" },
-  { name: "Terraform", category: "DevOps & Tools", tier: "Learning", Icon: SiTerraform, color: "#7B42BC" },
-  { name: "Kubernetes", category: "DevOps & Tools", tier: "Learning", Icon: SiKubernetes, color: "#326CE5" },
-  { name: "Visual Studio", category: "DevOps & Tools", tier: "Core", Icon: DiVisualstudio, color: "#5C2D91" },
-  { name: "VS Code", category: "DevOps & Tools", tier: "Core", Icon: TbBrandVscode, color: "#007ACC" },
-  { name: "IntelliJ IDEA", category: "DevOps & Tools", tier: "Working", Icon: SiIntellijidea, color: "#FE315D" },
+  // Observability & SRE
+  {
+    name: "Prometheus",
+    category: "Observability & SRE",
+    tier: "Learning",
+    Icon: SiPrometheus,
+    color: "#E6522C",
+  },
+  {
+    name: "Grafana",
+    category: "Observability & SRE",
+    tier: "Learning",
+    Icon: SiGrafana,
+    color: "#F46800",
+  },
+  {
+    name: "Logging",
+    category: "Observability & SRE",
+    tier: "Learning",
+    Icon: Activity,
+    color: "#0EA5E9",
+  },
+  {
+    name: "Alerting",
+    category: "Observability & SRE",
+    tier: "Learning",
+    Icon: Activity,
+    color: "#EF4444",
+  },
 ];
 
 const CATEGORY_META = {
-  Backend: { Icon: Server, accent: "#e5484d", description: "Application logic, APIs and server-side systems." },
-  Frontend: { Icon: LayoutPanelTop, accent: "#3178C6", description: "Interfaces, interactions and client-side experiences." },
-  Databases: { Icon: Database, accent: "#4169E1", description: "Relational data storage and persistence." },
-  "QA & Testing": { Icon: ShieldCheck, accent: "#43B02A", description: "Automation, validation and software quality." },
-  "DevOps & Tools": { Icon: Wrench, accent: "#F05032", description: "Development workflow, containerization, CI/CD, and cloud fundamentals." },
+  "Software Engineering": {
+    Icon: Code2,
+    accent: "#3178C6",
+    description:
+      "Full-stack application development using C#, .NET, Python, React, and relational databases.",
+  },
+  "Cloud & Infrastructure": {
+    Icon: Cloud,
+    accent: "#FF9900",
+    description:
+      "Linux, cloud services, networking, scripting, and infrastructure automation.",
+  },
+  "Containers & Kubernetes": {
+    Icon: Container,
+    accent: "#2496ED",
+    description:
+      "Containerized applications, Kubernetes fundamentals, Helm, and service mesh technologies.",
+  },
+  "CI/CD & GitOps": {
+    Icon: GitBranch,
+    accent: "#2088FF",
+    description:
+      "Version control, automated delivery pipelines, GitOps workflows, and deployment automation.",
+  },
+  "Observability & SRE": {
+    Icon: Activity,
+    accent: "#E6522C",
+    description:
+      "Metrics, dashboards, centralized logging, and alerting for reliable systems.",
+  },
 };
 
 const CATEGORIES = Object.keys(CATEGORY_META);
 
-// Radius (as % of the stage box) at which items orbit the hub.
-// Fewer items sit slightly closer in so the ring doesn't look sparse.
 function radiusFor(count) {
   if (count <= 3) return 34;
   if (count <= 5) return 37;
@@ -78,25 +338,45 @@ function radiusFor(count) {
 }
 
 function polarPosition(index, total, radius) {
-  const angle = (index / total) * 2 * Math.PI - Math.PI / 2; // start at top, go clockwise
+  const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
   const angleDeg = (angle * 180) / Math.PI;
   const x = 50 + radius * Math.cos(angle);
   const y = 50 + radius * Math.sin(angle);
-  return { left: `${x}%`, top: `${y}%`, angleDeg };
+
+  return {
+    left: `${x}%`,
+    top: `${y}%`,
+    angleDeg,
+  };
 }
 
 function ConnectorLine({ angleDeg, radius, index, reduceMotion }) {
   return (
     <motion.div
       className="radial-line"
-      style={{ width: `${radius}%`, transform: `rotate(${angleDeg}deg)` }}
+      style={{
+        width: `${radius}%`,
+        transform: `rotate(${angleDeg}deg)`,
+      }}
       initial={reduceMotion ? false : { scaleX: 0, opacity: 0 }}
       animate={{ scaleX: 1, opacity: 1 }}
-      exit={reduceMotion ? undefined : { scaleX: 0, opacity: 0, transition: { duration: 0.12 } }}
+      exit={
+        reduceMotion
+          ? undefined
+          : {
+              scaleX: 0,
+              opacity: 0,
+              transition: { duration: 0.12 },
+            }
+      }
       transition={
         reduceMotion
           ? { duration: 0 }
-          : { duration: 0.35, delay: index * 0.045, ease: [0.16, 1, 0.3, 1] }
+          : {
+              duration: 0.35,
+              delay: index * 0.045,
+              ease: [0.16, 1, 0.3, 1],
+            }
       }
     />
   );
@@ -110,11 +390,29 @@ function RadialItem({ skill, index, total, radius, reduceMotion }) {
   return (
     <motion.div
       className="radial-item"
-      style={{ left: pos.left, top: pos.top, '--brand': skill.color }}
-      initial={reduceMotion ? false : { opacity: 0, scale: 0.2, x: "-50%", y: "-50%" }}
+      style={{
+        left: pos.left,
+        top: pos.top,
+        "--brand": skill.color,
+      }}
+      initial={
+        reduceMotion
+          ? false
+          : {
+              opacity: 0,
+              scale: 0.2,
+              x: "-50%",
+              y: "-50%",
+            }
+      }
       animate={
         reduceMotion
-          ? { opacity: 1, scale: 1, x: "-50%", y: "-50%" }
+          ? {
+              opacity: 1,
+              scale: 1,
+              x: "-50%",
+              y: "-50%",
+            }
           : {
               opacity: 1,
               scale: 1,
@@ -122,14 +420,35 @@ function RadialItem({ skill, index, total, radius, reduceMotion }) {
               y: ["-50%", "-58%", "-50%"],
             }
       }
-      exit={reduceMotion ? undefined : { opacity: 0, scale: 0.2, transition: { duration: 0.15 } }}
+      exit={
+        reduceMotion
+          ? undefined
+          : {
+              opacity: 0,
+              scale: 0.2,
+              transition: { duration: 0.15 },
+            }
+      }
       transition={
         reduceMotion
           ? { duration: 0 }
           : {
-              scale: { type: "spring", stiffness: 340, damping: 20, delay: index * 0.045 },
-              opacity: { duration: 0.25, delay: index * 0.045 },
-              x: { type: "spring", stiffness: 340, damping: 20, delay: index * 0.045 },
+              scale: {
+                type: "spring",
+                stiffness: 340,
+                damping: 20,
+                delay: index * 0.045,
+              },
+              opacity: {
+                duration: 0.25,
+                delay: index * 0.045,
+              },
+              x: {
+                type: "spring",
+                stiffness: 340,
+                damping: 20,
+                delay: index * 0.045,
+              },
               y: {
                 duration: 2.4,
                 repeat: Infinity,
@@ -139,14 +458,25 @@ function RadialItem({ skill, index, total, radius, reduceMotion }) {
               },
             }
       }
-      whileHover={reduceMotion ? undefined : { scale: 1.12, transition: { duration: 0.2 } }}
+      whileHover={
+        reduceMotion
+          ? undefined
+          : {
+              scale: 1.12,
+              transition: { duration: 0.2 },
+            }
+      }
       data-cursor="hover"
     >
       <div className="radial-item__icon">
         <Icon />
       </div>
+
       <span className="radial-item__label">{skill.name}</span>
-      <span className={`radial-item__tier radial-item__tier--${skill.tier.toLowerCase()}`}>
+
+      <span
+        className={`radial-item__tier radial-item__tier--${skill.tier.toLowerCase()}`}
+      >
         {skill.tier}
       </span>
     </motion.div>
@@ -154,11 +484,15 @@ function RadialItem({ skill, index, total, radius, reduceMotion }) {
 }
 
 export default function Skills() {
-  const [activeCategory, setActiveCategory] = useState("Backend");
+  const [activeCategory, setActiveCategory] =
+    useState("Software Engineering");
   const reduceMotion = useReducedMotion();
 
   const activeSkills = useMemo(
-    () => SKILLS.filter((s) => s.category === activeCategory),
+    () =>
+      SKILLS.filter(
+        (skill) => skill.category === activeCategory
+      ),
     [activeCategory]
   );
 
@@ -168,87 +502,158 @@ export default function Skills() {
 
   return (
     <section className="skills-section" id="skills">
-      <div className="dot-grid dot-grid--red skills-section__dots" aria-hidden="true">
-        {Array.from({ length: 24 }).map((_, i) => <span key={i} />)}
+      <div
+        className="dot-grid dot-grid--red skills-section__dots"
+        aria-hidden="true"
+      >
+        {Array.from({ length: 24 }).map((_, index) => (
+          <span key={index} />
+        ))}
       </div>
 
       <div className="skills-section__container">
         <motion.header
           className="skills-header"
           initial={reduceMotion ? false : { opacity: 0, y: 24 }}
-          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+          whileInView={
+            reduceMotion ? undefined : { opacity: 1, y: 0 }
+          }
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.55 }}
         >
-          <span className="skills-eyebrow">technical skills</span>
+          <span className="skills-eyebrow">
+            technical skills
+          </span>
+
           <h2>
             Built with
             <span> precision.</span>
           </h2>
+
           <p>
-            Pick a system to load its stack — the related tools cycle into
-            view around the hub, like an inventory select.
+            A practical stack across software engineering, cloud
+            infrastructure, Kubernetes, automation, and production
+            reliability.
           </p>
         </motion.header>
 
-        {/* ---------- Category dial — the "weapon wheel" selector ---------- */}
+        {/* Category selector */}
         <motion.div
           className="category-dial"
           role="tablist"
           aria-label="Skill categories"
           initial={reduceMotion ? false : "hidden"}
-          whileInView={reduceMotion ? undefined : "visible"}
+          whileInView={
+            reduceMotion ? undefined : "visible"
+          }
           viewport={{ once: true, amount: 0.4 }}
           variants={{
             hidden: {},
-            visible: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
+            visible: {
+              transition: {
+                staggerChildren: 0.06,
+                delayChildren: 0.1,
+              },
+            },
           }}
         >
           {CATEGORIES.map((category) => {
-            const CatIcon = CATEGORY_META[category].Icon;
+            const CategoryIcon =
+              CATEGORY_META[category].Icon;
             const isActive = category === activeCategory;
+
             return (
               <motion.button
                 key={category}
                 type="button"
                 role="tab"
                 aria-selected={isActive}
-                className={`category-dial__btn ${isActive ? "is-active" : ""}`}
-                style={{ '--accent': CATEGORY_META[category].accent }}
+                className={`category-dial__btn ${
+                  isActive ? "is-active" : ""
+                }`}
+                style={{
+                  "--accent": CATEGORY_META[category].accent,
+                }}
                 onClick={() => setActiveCategory(category)}
                 data-cursor="hover"
                 variants={{
-                  hidden: { opacity: 0, y: 14, scale: 0.9 },
-                  visible: { opacity: 1, y: 0, scale: 1 },
+                  hidden: {
+                    opacity: 0,
+                    y: 14,
+                    scale: 0.9,
+                  },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                  },
                 }}
-                transition={{ type: "spring", stiffness: 320, damping: 22 }}
-                whileHover={reduceMotion ? undefined : { y: -2 }}
-                whileTap={reduceMotion ? undefined : { scale: 0.94 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 320,
+                  damping: 22,
+                }}
+                whileHover={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        y: -2,
+                      }
+                }
+                whileTap={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        scale: 0.94,
+                      }
+                }
               >
                 <motion.span
                   className="category-dial__icon"
-                  animate={isActive && !reduceMotion ? { rotate: [0, -12, 0] } : { rotate: 0 }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  animate={
+                    isActive && !reduceMotion
+                      ? {
+                          rotate: [0, -12, 0],
+                        }
+                      : {
+                          rotate: 0,
+                        }
+                  }
+                  transition={{
+                    duration: 0.4,
+                    ease: "easeInOut",
+                  }}
                 >
-                  <CatIcon size={18} strokeWidth={2} />
+                  <CategoryIcon size={18} strokeWidth={2} />
                 </motion.span>
-                <span className="category-dial__label">{category}</span>
+
+                <span className="category-dial__label">
+                  {category}
+                </span>
               </motion.button>
             );
           })}
         </motion.div>
 
-        {/* ---------- Radial stage — hub + orbiting tool icons ---------- */}
+        {/* Radial skill stage */}
         <div className="radial-stage">
           <div className="radial-rings" aria-hidden="true">
             <span className="radial-ring radial-ring--outer" />
             <span className="radial-ring radial-ring--inner" />
-            <span className="radial-ring radial-ring--sweep" style={{ '--accent': meta.accent }} />
+            <span
+              className="radial-ring radial-ring--sweep"
+              style={{ "--accent": meta.accent }}
+            />
           </div>
 
           <AnimatePresence mode="popLayout">
             {activeSkills.map((skill, index) => {
-              const { angleDeg } = polarPosition(index, activeSkills.length, radius);
+              const { angleDeg } = polarPosition(
+                index,
+                activeSkills.length,
+                radius
+              );
+
               return (
                 <ConnectorLine
                   key={`line-${activeCategory}-${skill.name}`}
@@ -265,16 +670,50 @@ export default function Skills() {
             <motion.div
               key={activeCategory}
               className="radial-hub"
-              style={{ '--accent': meta.accent }}
-              initial={reduceMotion ? false : { opacity: 0, scale: 0.6, rotate: -30 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              exit={reduceMotion ? undefined : { opacity: 0, scale: 0.6, rotate: 30 }}
-              transition={{ type: "spring", stiffness: 300, damping: 22 }}
+              style={{ "--accent": meta.accent }}
+              initial={
+                reduceMotion
+                  ? false
+                  : {
+                      opacity: 0,
+                      scale: 0.6,
+                      rotate: -30,
+                    }
+              }
+              animate={{
+                opacity: 1,
+                scale: 1,
+                rotate: 0,
+              }}
+              exit={
+                reduceMotion
+                  ? undefined
+                  : {
+                      opacity: 0,
+                      scale: 0.6,
+                      rotate: 30,
+                    }
+              }
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 22,
+              }}
             >
-              <span className="radial-hub__pulse" aria-hidden="true" />
+              <span
+                className="radial-hub__pulse"
+                aria-hidden="true"
+              />
+
               <HubIcon size={30} strokeWidth={1.8} />
-              <span className="radial-hub__label">{activeCategory}</span>
-              <span className="radial-hub__count">{activeSkills.length} tools</span>
+
+              <span className="radial-hub__label">
+                {activeCategory}
+              </span>
+
+              <span className="radial-hub__count">
+                {activeSkills.length} tools
+              </span>
             </motion.div>
           </AnimatePresence>
 
