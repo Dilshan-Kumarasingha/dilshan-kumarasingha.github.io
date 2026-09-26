@@ -10,6 +10,7 @@ import AIAssistant from './AIAssistant'
 import profileCutout from '../assets/profile-cutout.png'
 import '../styles/Hero.css'
 
+
 const GithubIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -26,6 +27,7 @@ const GithubIcon = () => (
     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
   </svg>
 )
+
 
 const LinkedinIcon = () => (
   <svg
@@ -46,6 +48,7 @@ const LinkedinIcon = () => (
   </svg>
 )
 
+
 const ArrowRightIcon = () => (
   <svg
     width="15"
@@ -61,6 +64,7 @@ const ArrowRightIcon = () => (
     <path d="M5 12h14M13 5l7 7-7 7" />
   </svg>
 )
+
 
 const ArrowDownIcon = () => (
   <svg
@@ -78,14 +82,16 @@ const ArrowDownIcon = () => (
   </svg>
 )
 
+
 const TAGS = [
-  'ASP.NET Core',
-  'React',
+  'Kubernetes',
   'Docker',
+  'Terraform',
   'CI/CD',
-  'PostgreSQL',
-  'REST APIs',
+  'AWS',
+  'Azure',
 ]
+
 
 const revealUpVariants = (reducedMotion) => ({
   hidden: {
@@ -102,26 +108,27 @@ const revealUpVariants = (reducedMotion) => ({
   },
 })
 
+
 function Hero() {
   const [isAiOpen, setIsAiOpen] = useState(false)
 
+
   const heroRef = useRef(null)
   const prefersReducedMotion = useReducedMotion()
+
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
   })
 
-  /*
-   * Subtle scroll effects.
-   * These completely stop when reduced motion is enabled.
-   */
+
   const contentOpacity = useTransform(
     scrollYProgress,
     [0, 0.65],
     [1, 0]
   )
+
 
   const contentY = useTransform(
     scrollYProgress,
@@ -129,11 +136,13 @@ function Hero() {
     [0, prefersReducedMotion ? 0 : -55]
   )
 
+
   const photoY = useTransform(
     scrollYProgress,
     [0, 1],
     [0, prefersReducedMotion ? 0 : 35]
   )
+
 
   const photoScale = useTransform(
     scrollYProgress,
@@ -141,11 +150,13 @@ function Hero() {
     [1, prefersReducedMotion ? 1 : 0.96]
   )
 
+
   const backgroundY = useTransform(
     scrollYProgress,
     [0, 1],
     [0, prefersReducedMotion ? 0 : 70]
   )
+
 
   const containerVariants = {
     hidden: {
@@ -160,22 +171,29 @@ function Hero() {
     },
   }
 
+
   const revealVariants = revealUpVariants(prefersReducedMotion)
+
 
   const scrollToContact = (event) => {
     event.preventDefault()
 
+
     const contactSection = document.querySelector('#contact')
 
+
     if (!contactSection) return
+
 
     contactSection.scrollIntoView({
       behavior: prefersReducedMotion ? 'auto' : 'smooth',
       block: 'start',
     })
 
+
     window.history.replaceState(null, '', '#contact')
   }
+
 
   return (
     <section
@@ -191,9 +209,11 @@ function Hero() {
           style={{ y: backgroundY }}
         />
 
+
         <div className="hero-bg-orb hero-bg-orb--one" />
         <div className="hero-bg-orb hero-bg-orb--two" />
       </div>
+
 
       {/* Decorative grid */}
       <div
@@ -204,6 +224,7 @@ function Hero() {
           <span key={index} />
         ))}
       </div>
+
 
       <motion.div
         className="hero-frame"
@@ -232,6 +253,7 @@ function Hero() {
             <GithubIcon />
           </a>
 
+
           <a
             href="https://linkedin.com/in/dilshan-kumarasingha"
             target="_blank"
@@ -243,6 +265,7 @@ function Hero() {
             <LinkedinIcon />
           </a>
         </motion.nav>
+
 
         {/* Profile image */}
         <motion.div
@@ -257,6 +280,7 @@ function Hero() {
           <span className="hero-photo-glow" />
           <span className="hero-photo-ring" />
 
+
           <img
             src={profileCutout}
             alt=""
@@ -264,6 +288,7 @@ function Hero() {
             draggable="false"
           />
         </motion.div>
+
 
         {/* Main heading */}
         <div className="hero-mask-overflow">
@@ -278,6 +303,7 @@ function Hero() {
           </motion.h1>
         </div>
 
+
         {/* Main content */}
         <div className="hero-bottom-row">
           <motion.div
@@ -286,15 +312,18 @@ function Hero() {
           >
             <span className="hero-eyebrow">
               <span className="hero-status-dot" aria-hidden="true" />
-              Engineering reliable cloud-native platforms
+              DevOps & Platform Engineer
             </span>
 
-          <p className="hero-subhead">
-            I build full-stack systems with <code>C# / ASP.NET Core</code> and{' '}
-            <code>React</code>, while specializing in <code>Docker</code>,{' '}
-            <code>Kubernetes</code>, <code>Terraform</code>, and cloud-native{' '}
-            <code>CI/CD</code>.
-          </p>
+
+            <p className="hero-subhead">
+              I design and automate cloud-native infrastructure with{' '}
+              <code>Kubernetes</code>, <code>Docker</code>, and{' '}
+              <code>Terraform</code>, while building robust{' '}
+              <code>CI/CD</code> pipelines and platform tooling for{' '}
+              <code>AWS</code> and <code>Azure</code> environments.
+            </p>
+
 
             <div className="hero-actions">
               <button
@@ -314,6 +343,7 @@ function Hero() {
             </div>
           </motion.div>
 
+
           <motion.a
             href="#contact"
             className="hero-btn-primary"
@@ -327,6 +357,7 @@ function Hero() {
           </motion.a>
         </div>
 
+
         {/* Technology strip */}
         <motion.div
           className="hero-tag-strip"
@@ -334,6 +365,7 @@ function Hero() {
           aria-label="Core technologies"
         >
           <span className="hero-tag-label">Working with</span>
+
 
           <div className="hero-tags">
             {TAGS.map((tag) => (
@@ -343,6 +375,7 @@ function Hero() {
             ))}
           </div>
         </motion.div>
+
 
         {/* Scroll cue */}
         <motion.a
@@ -357,6 +390,7 @@ function Hero() {
         </motion.a>
       </motion.div>
 
+
       {/* AI Assistant */}
       <AnimatePresence mode="wait">
         {isAiOpen && (
@@ -368,5 +402,6 @@ function Hero() {
     </section>
   )
 }
+
 
 export default Hero

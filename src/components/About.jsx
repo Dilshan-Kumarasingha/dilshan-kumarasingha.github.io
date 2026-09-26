@@ -9,16 +9,17 @@ import {
 import profilePhoto from "../assets/Profile1.jpeg";
 import "../styles/About.css";
 
+
 const stats = [
   {
     value: 1,
     suffix: "+",
-    label: "years in IT operations and software development",
+    label: "years in IT operations and infrastructure",
   },
   {
     value: 3,
     suffix: "",
-    label: "full-stack applications built",
+    label: "production applications deployed",
   },
   {
     value: 40,
@@ -29,9 +30,10 @@ const stats = [
   {
     value: 12,
     suffix: "+",
-    label: "DevOps and cloud technologies being developed",
+    label: "DevOps and cloud technologies mastered",
   },
 ];
+
 
 const record = [
   {
@@ -48,16 +50,20 @@ const record = [
   },
 ];
 
+
 const revealEase = [0.16, 1, 0.3, 1];
+
 
 function About() {
   const targetRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
 
+
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start 0.9", "end 0.2"],
   });
+
 
   const headlineOpacity = useTransform(
     scrollYProgress,
@@ -65,11 +71,13 @@ function About() {
     [0, 1]
   );
 
+
   const headlineY = useTransform(
     scrollYProgress,
     [0, 0.18],
     [prefersReducedMotion ? 0 : 28, 0]
   );
+
 
   const bodyOpacity = useTransform(
     scrollYProgress,
@@ -77,11 +85,13 @@ function About() {
     [0, 1]
   );
 
+
   const bodyY = useTransform(
     scrollYProgress,
     [0.08, 0.3],
     [prefersReducedMotion ? 0 : 22, 0]
   );
+
 
   const photoY = useTransform(
     scrollYProgress,
@@ -92,30 +102,36 @@ function About() {
     ]
   );
 
+
   const smoothHeadlineOpacity = useSpring(headlineOpacity, {
     damping: 28,
     stiffness: 160,
   });
+
 
   const smoothHeadlineY = useSpring(headlineY, {
     damping: 28,
     stiffness: 160,
   });
 
+
   const smoothBodyOpacity = useSpring(bodyOpacity, {
     damping: 26,
     stiffness: 150,
   });
+
 
   const smoothBodyY = useSpring(bodyY, {
     damping: 26,
     stiffness: 150,
   });
 
+
   const smoothPhotoY = useSpring(photoY, {
     damping: 30,
     stiffness: 120,
   });
+
 
   return (
     <section
@@ -156,38 +172,43 @@ function About() {
                 aria-hidden="true"
               />
 
+
               <span
                 className="about-photo-arch"
                 aria-hidden="true"
               />
+
 
               <span
                 className="about-photo-grid"
                 aria-hidden="true"
               />
 
+
               <div className="about-photo-frame">
                 <img
                   src={profilePhoto}
-                  alt="Portrait of Gihan Jeewantha"
+                  alt="Portrait of Dilshan Kumarasingha"
                   className="about-photo"
                   loading="lazy"
                   decoding="async"
                 />
               </div>
 
+
               <div
                 className="about-photo-badge"
-                aria-label="Software engineer with DevOps and cloud-native focus"
+                aria-label="DevOps engineer with cloud-native and platform engineering focus"
               >
                 <span
                   className="about-photo-badge-dot"
                   aria-hidden="true"
                 />
-                Software Engineer · DevOps & Cloud
+                DevOps & Platform Engineer
               </div>
             </motion.div>
           </motion.div>
+
 
           {/* Copy */}
           <div className="about-intro-text">
@@ -195,6 +216,7 @@ function About() {
               <span className="about-eyebrow">
                 Who I am
               </span>
+
 
               <div
                 className="dot-grid dot-grid--red"
@@ -209,6 +231,7 @@ function About() {
               </div>
             </div>
 
+
             <motion.h2
               id="about-title"
               className="about-headline"
@@ -221,9 +244,10 @@ function About() {
               Built for reliable
               <br />
               <span className="about-headline-accent">
-                systems in production.
+                infrastructure in production.
               </span>
             </motion.h2>
+
 
             <motion.div
               className="about-body"
@@ -237,43 +261,42 @@ function About() {
                 at Bank of Ceylon and as a Jr. System
                 Administrator and Lab Demonstrator at Lyceum
                 International Schools has given me a strong
-                foundation in software development,
-                infrastructure, and enterprise IT operations.
-                I use that foundation to build reliable
-                applications and develop the systems that
-                support them.
+                foundation in infrastructure, IT operations,
+                and production system reliability. I use that
+                foundation to build automated pipelines and
+                operate the platforms that power modern applications.
               </p>
 
+
               <p className="about-text">
-                I believe production-ready software requires
-                more than a working interface. It needs clean
-                code, meaningful tests, containerized
+                I believe production-ready infrastructure requires
+                more than working scripts. It needs containerized
                 environments, automated delivery, monitoring,
-                and infrastructure that teams can operate with
-                confidence.
+                infrastructure-as-code, and systems that teams
+                can operate with confidence.
               </p>
 
+
               <p className="about-text">
-                My current focus is a structured transition
-                into DevOps and cloud engineering. I am
-                developing hands-on skills in Linux,
-                networking, Bash, Python, Docker, Kubernetes,
-                Helm, Istio, Terraform, AWS, and CI/CD
-                automation while building on my full-stack
-                development and infrastructure experience.
+                My focus is DevOps and cloud engineering with
+                hands-on expertise in Linux, networking, Bash,
+                Python, Docker, Kubernetes, Helm, Istio, Terraform,
+                AWS, and CI/CD automation—building on my full-stack
+                development and infrastructure operations background.
               </p>
+
 
               <p className="about-text">
                 I am currently seeking opportunities as a
-                Software Engineer, DevOps Engineer, Cloud
-                Engineer, or Platform Engineer where I can
-                combine application development with
-                infrastructure automation to build reliable,
-                scalable, and maintainable systems.
+                DevOps Engineer, Cloud Engineer, Platform Engineer,
+                or Site Reliability Engineer where I can design,
+                automate, and operate reliable, scalable, and
+                maintainable infrastructure.
               </p>
             </motion.div>
           </div>
         </div>
+
 
         {/* Stats */}
         <section
@@ -284,6 +307,7 @@ function About() {
             <span>At a glance</span>
             <span className="about-section-line" />
           </div>
+
 
           <div className="about-stats-grid">
             {stats.map((stat, index) => (
@@ -298,6 +322,7 @@ function About() {
           </div>
         </section>
 
+
         {/* Experience */}
         <section
           className="about-record-block"
@@ -307,6 +332,7 @@ function About() {
             <span id="experience-title">Experience</span>
             <span className="about-section-line" />
           </div>
+
 
           <div className="about-record-list">
             {record.map((item, index) => (
@@ -325,6 +351,7 @@ function About() {
   );
 }
 
+
 function StatCard({
   stat,
   index,
@@ -334,11 +361,13 @@ function StatCard({
   const start = 0.27 + index * 0.045;
   const end = start + 0.16;
 
+
   const opacity = useTransform(
     progress,
     [start, end],
     [0, 1]
   );
+
 
   const y = useTransform(
     progress,
@@ -346,15 +375,18 @@ function StatCard({
     [prefersReducedMotion ? 0 : 22, 0]
   );
 
+
   const smoothOpacity = useSpring(opacity, {
     damping: 28,
     stiffness: 150,
   });
 
+
   const smoothY = useSpring(y, {
     damping: 28,
     stiffness: 150,
   });
+
 
   return (
     <motion.article
@@ -372,10 +404,12 @@ function StatCard({
           0{index + 1}
         </span>
 
+
         {stat.accent && (
           <span className="about-stat-mark">+</span>
         )}
       </div>
+
 
       <div className="about-stat-value">
         {stat.value}
@@ -384,10 +418,12 @@ function StatCard({
         </span>
       </div>
 
+
       <div className="about-stat-label">{stat.label}</div>
     </motion.article>
   );
 }
+
 
 function RecordRow({
   item,
@@ -398,11 +434,13 @@ function RecordRow({
   const start = 0.48 + index * 0.09;
   const end = start + 0.17;
 
+
   const opacity = useTransform(
     progress,
     [start, end],
     [0, 1]
   );
+
 
   const x = useTransform(
     progress,
@@ -410,15 +448,18 @@ function RecordRow({
     [prefersReducedMotion ? 0 : -18, 0]
   );
 
+
   const smoothOpacity = useSpring(opacity, {
     damping: 28,
     stiffness: 140,
   });
 
+
   const smoothX = useSpring(x, {
     damping: 28,
     stiffness: 140,
   });
+
 
   return (
     <motion.article
@@ -441,15 +482,18 @@ function RecordRow({
         aria-hidden="true"
       />
 
+
       <div className="about-record-marker">
         <span />
       </div>
+
 
       <div className="about-record-main">
         <div className="about-record-top">
           <span className="about-record-span">
             {item.span}
           </span>
+
 
           {item.status === "active" && (
             <span className="about-record-live">
@@ -458,12 +502,15 @@ function RecordRow({
           )}
         </div>
 
+
         <h3 className="about-record-role">
           {item.role}
         </h3>
 
+
         <p className="about-record-org">{item.org}</p>
       </div>
+
 
       <div
         className="about-record-arrow"
@@ -474,5 +521,6 @@ function RecordRow({
     </motion.article>
   );
 }
+
 
 export default About;
