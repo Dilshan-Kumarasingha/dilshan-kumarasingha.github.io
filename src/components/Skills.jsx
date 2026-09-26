@@ -1,26 +1,23 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
-
 import {
   Code2,
   Cloud,
   Container,
   GitBranch,
   Activity,
+  Shield,
+  Server,
 } from "lucide-react";
-
 
 import {
   SiDotnet,
   SiPython,
   SiReact,
   SiJavascript,
-  SiTypescript,
   SiHtml5,
-  SiTailwindcss,
   SiPostgresql,
-  SiMysql,
   SiGit,
   SiGithubactions,
   SiDocker,
@@ -29,11 +26,13 @@ import {
   SiKubernetes,
   SiPrometheus,
   SiGrafana,
+  SiNginx,
+  SiJenkins,
+  SiAnsible,
+  SiArgo,
 } from "react-icons/si";
 
-
 import { DiJava, DiCss3, DiMsqlServer } from "react-icons/di";
-
 
 import {
   TbBrandCSharp,
@@ -41,18 +40,30 @@ import {
   TbApi,
 } from "react-icons/tb";
 
-
 import "../styles/Skills.css";
 
-
 const SKILLS = [
-  // Cloud & Infrastructure (moved to top - your core focus)
+  // Cloud & Infrastructure
   {
     name: "Linux",
     category: "Cloud & Infrastructure",
     tier: "Core",
     Icon: SiLinux,
     color: "#FCC624",
+  },
+  {
+    name: "Ubuntu",
+    category: "Cloud & Infrastructure",
+    tier: "Core",
+    Icon: SiLinux,
+    color: "#E95420",
+  },
+  {
+    name: "Fedora",
+    category: "Cloud & Infrastructure",
+    tier: "Learning",
+    Icon: SiLinux,
+    color: "#51A2DA",
   },
   {
     name: "Bash",
@@ -90,6 +101,20 @@ const SKILLS = [
     color: "#7B42BC",
   },
   {
+    name: "Ansible",
+    category: "Cloud & Infrastructure",
+    tier: "Learning",
+    Icon: SiAnsible,
+    color: "#EE0000",
+  },
+  {
+    name: "Nginx",
+    category: "Cloud & Infrastructure",
+    tier: "Working",
+    Icon: SiNginx,
+    color: "#009639",
+  },
+  {
     name: "Networking",
     category: "Cloud & Infrastructure",
     tier: "Working",
@@ -97,7 +122,7 @@ const SKILLS = [
     color: "#2563EB",
   },
 
-  // Containers & Kubernetes (your differentiator)
+  // Containers & Kubernetes
   {
     name: "Docker",
     category: "Containers & Kubernetes",
@@ -113,7 +138,21 @@ const SKILLS = [
     color: "#326CE5",
   },
   {
+    name: "Kubernetes RBAC",
+    category: "Containers & Kubernetes",
+    tier: "Learning",
+    Icon: Shield,
+    color: "#326CE5",
+  },
+  {
     name: "Helm",
+    category: "Containers & Kubernetes",
+    tier: "Working",
+    Icon: Container,
+    color: "#0F1689",
+  },
+  {
+    name: "Helm Charts",
     category: "Containers & Kubernetes",
     tier: "Working",
     Icon: Container,
@@ -134,7 +173,7 @@ const SKILLS = [
     color: "#F59E0B",
   },
 
-  // CI/CD & GitOps (critical DevOps skill)
+  // CI/CD & GitOps
   {
     name: "Git",
     category: "CI/CD & GitOps",
@@ -150,6 +189,13 @@ const SKILLS = [
     color: "#2088FF",
   },
   {
+    name: "Jenkins",
+    category: "CI/CD & GitOps",
+    tier: "Learning",
+    Icon: SiJenkins,
+    color: "#D33833",
+  },
+  {
     name: "CI/CD",
     category: "CI/CD & GitOps",
     tier: "Core",
@@ -160,7 +206,14 @@ const SKILLS = [
     name: "Argo CD",
     category: "CI/CD & GitOps",
     tier: "Working",
-    Icon: GitBranch,
+    Icon: SiArgo,
+    color: "#EF7B4D",
+  },
+  {
+    name: "Argo Workflows",
+    category: "CI/CD & GitOps",
+    tier: "Learning",
+    Icon: SiArgo,
     color: "#EF7B4D",
   },
   {
@@ -171,7 +224,7 @@ const SKILLS = [
     color: "#22C55E",
   },
 
-  // Observability & SRE (production reliability)
+  // Observability & SRE
   {
     name: "Prometheus",
     category: "Observability & SRE",
@@ -187,6 +240,13 @@ const SKILLS = [
     color: "#F46800",
   },
   {
+    name: "Loki",
+    category: "Observability & SRE",
+    tier: "Learning",
+    Icon: Activity,
+    color: "#F2A413",
+  },
+  {
     name: "Logging",
     category: "Observability & SRE",
     tier: "Working",
@@ -200,8 +260,15 @@ const SKILLS = [
     Icon: Activity,
     color: "#EF4444",
   },
+  {
+    name: "System Reliability",
+    category: "Observability & SRE",
+    tier: "Working",
+    Icon: Server,
+    color: "#22C55E",
+  },
 
-  // Software Engineering (supporting skill - moved last)
+  // Software Engineering
   {
     name: "C#",
     category: "Software Engineering",
@@ -252,13 +319,6 @@ const SKILLS = [
     color: "#F7DF1E",
   },
   {
-    name: "TypeScript",
-    category: "Software Engineering",
-    tier: "Learning",
-    Icon: SiTypescript,
-    color: "#3178C6",
-  },
-  {
     name: "HTML",
     category: "Software Engineering",
     tier: "Working",
@@ -273,25 +333,11 @@ const SKILLS = [
     color: "#1572B6",
   },
   {
-    name: "Tailwind CSS",
-    category: "Software Engineering",
-    tier: "Learning",
-    Icon: SiTailwindcss,
-    color: "#06B6D4",
-  },
-  {
     name: "PostgreSQL",
     category: "Software Engineering",
     tier: "Working",
     Icon: SiPostgresql,
     color: "#4169E1",
-  },
-  {
-    name: "MySQL",
-    category: "Software Engineering",
-    tier: "Working",
-    Icon: SiMysql,
-    color: "#4479A1",
   },
   {
     name: "SQL Server",
@@ -302,43 +348,40 @@ const SKILLS = [
   },
 ];
 
-
 const CATEGORY_META = {
   "Cloud & Infrastructure": {
     Icon: Cloud,
     accent: "#FF9900",
     description:
-      "Linux administration, cloud platforms, networking, scripting, and infrastructure-as-code with Terraform.",
+      "Linux administration, Ubuntu and Fedora, Bash automation, cloud platforms, networking, Nginx, Ansible, and Terraform.",
   },
   "Containers & Kubernetes": {
     Icon: Container,
     accent: "#2496ED",
     description:
-      "Containerized applications, Kubernetes orchestration, Helm package management, and service mesh with Istio.",
+      "Docker, Kubernetes, Helm, RBAC, Ingress, and Istio service mesh for scalable cloud-native workloads.",
   },
   "CI/CD & GitOps": {
     Icon: GitBranch,
     accent: "#2088FF",
     description:
-      "Version control, automated delivery pipelines, GitOps workflows with Argo CD, and deployment automation.",
+      "Git, GitHub Actions, Jenkins, CI/CD pipelines, GitOps, Argo CD, and Argo Workflows.",
   },
   "Observability & SRE": {
     Icon: Activity,
     accent: "#E6522C",
     description:
-      "Metrics collection, dashboards, centralized logging, and alerting for production system reliability.",
+      "Prometheus, Grafana, Loki, centralized logging, alerting, dashboards, and production reliability.",
   },
   "Software Engineering": {
     Icon: Code2,
     accent: "#3178C6",
     description:
-      "Full-stack development with C#, .NET, Python, React, and relational databases for building production applications.",
+      "Backend and frontend development with C#, .NET, Python, Java, React, REST APIs, PostgreSQL, and SQL Server.",
   },
 };
 
-
 const CATEGORIES = Object.keys(CATEGORY_META);
-
 
 function radiusFor(count) {
   if (count <= 3) return 34;
@@ -346,13 +389,11 @@ function radiusFor(count) {
   return 40;
 }
 
-
 function polarPosition(index, total, radius) {
   const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
   const angleDeg = (angle * 180) / Math.PI;
   const x = 50 + radius * Math.cos(angle);
   const y = 50 + radius * Math.sin(angle);
-
 
   return {
     left: `${x}%`,
@@ -360,7 +401,6 @@ function polarPosition(index, total, radius) {
     angleDeg,
   };
 }
-
 
 function ConnectorLine({ angleDeg, radius, index, reduceMotion }) {
   return (
@@ -394,12 +434,10 @@ function ConnectorLine({ angleDeg, radius, index, reduceMotion }) {
   );
 }
 
-
 function RadialItem({ skill, index, total, radius, reduceMotion }) {
   const Icon = skill.Icon;
   const pos = polarPosition(index, total, radius);
   const floatDelay = index * 0.15;
-
 
   return (
     <motion.div
@@ -486,9 +524,7 @@ function RadialItem({ skill, index, total, radius, reduceMotion }) {
         <Icon />
       </div>
 
-
       <span className="radial-item__label">{skill.name}</span>
-
 
       <span
         className={`radial-item__tier radial-item__tier--${skill.tier.toLowerCase()}`}
@@ -499,26 +535,20 @@ function RadialItem({ skill, index, total, radius, reduceMotion }) {
   );
 }
 
-
 export default function Skills() {
   const [activeCategory, setActiveCategory] =
     useState("Cloud & Infrastructure");
   const reduceMotion = useReducedMotion();
 
-
   const activeSkills = useMemo(
     () =>
-      SKILLS.filter(
-        (skill) => skill.category === activeCategory
-      ),
+      SKILLS.filter((skill) => skill.category === activeCategory),
     [activeCategory]
   );
-
 
   const meta = CATEGORY_META[activeCategory];
   const HubIcon = meta.Icon;
   const radius = radiusFor(activeSkills.length);
-
 
   return (
     <section className="skills-section" id="skills">
@@ -531,7 +561,6 @@ export default function Skills() {
         ))}
       </div>
 
-
       <div className="skills-section__container">
         <motion.header
           className="skills-header"
@@ -542,23 +571,18 @@ export default function Skills() {
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.55 }}
         >
-          <span className="skills-eyebrow">
-            technical skills
-          </span>
-
+          <span className="skills-eyebrow">technical skills</span>
 
           <h2>
             Built with
             <span> precision.</span>
           </h2>
 
-
           <p>
             A DevOps-first stack across cloud infrastructure, Kubernetes,
             automation, CI/CD, observability, and production reliability.
           </p>
         </motion.header>
-
 
         {/* Category selector */}
         <motion.div
@@ -581,10 +605,8 @@ export default function Skills() {
           }}
         >
           {CATEGORIES.map((category) => {
-            const CategoryIcon =
-              CATEGORY_META[category].Icon;
+            const CategoryIcon = CATEGORY_META[category].Icon;
             const isActive = category === activeCategory;
-
 
             return (
               <motion.button
@@ -651,7 +673,6 @@ export default function Skills() {
                   <CategoryIcon size={18} strokeWidth={2} />
                 </motion.span>
 
-
                 <span className="category-dial__label">
                   {category}
                 </span>
@@ -659,7 +680,6 @@ export default function Skills() {
             );
           })}
         </motion.div>
-
 
         {/* Radial skill stage */}
         <div className="radial-stage">
@@ -672,7 +692,6 @@ export default function Skills() {
             />
           </div>
 
-
           <AnimatePresence mode="popLayout">
             {activeSkills.map((skill, index) => {
               const { angleDeg } = polarPosition(
@@ -680,7 +699,6 @@ export default function Skills() {
                 activeSkills.length,
                 radius
               );
-
 
               return (
                 <ConnectorLine
@@ -693,7 +711,6 @@ export default function Skills() {
               );
             })}
           </AnimatePresence>
-
 
           <AnimatePresence mode="popLayout">
             <motion.div
@@ -740,21 +757,17 @@ export default function Skills() {
                 aria-hidden="true"
               />
 
-
               <HubIcon size={30} strokeWidth={1.8} />
-
 
               <span className="radial-hub__label">
                 {activeCategory}
               </span>
-
 
               <span className="radial-hub__count">
                 {activeSkills.length} tools
               </span>
             </motion.div>
           </AnimatePresence>
-
 
           <AnimatePresence mode="popLayout">
             {activeSkills.map((skill, index) => (
@@ -769,7 +782,6 @@ export default function Skills() {
             ))}
           </AnimatePresence>
         </div>
-
 
         <p className="radial-caption">{meta.description}</p>
       </div>
