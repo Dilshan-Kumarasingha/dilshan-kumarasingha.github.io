@@ -25,6 +25,7 @@ function Navbar() {
   const [activeSection, setActiveSection] = useState('')
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0)
 
   const menuButtonRef = useRef(null)
   const mobilePanelRef = useRef(null)
@@ -41,6 +42,11 @@ function Navbar() {
 
     const updateScrollState = () => {
       setIsScrolled(window.scrollY > 20)
+
+      const doc = document.documentElement
+      const max = doc.scrollHeight - doc.clientHeight
+      setScrollProgress(max > 0 ? Math.min(1, window.scrollY / max) : 0)
+
       frameId = null
     }
 
@@ -55,9 +61,11 @@ function Navbar() {
     window.addEventListener('scroll', handleScroll, {
       passive: true,
     })
+    window.addEventListener('resize', handleScroll)
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
 
       if (frameId !== null) {
         window.cancelAnimationFrame(frameId)
@@ -303,10 +311,10 @@ function Navbar() {
           onClick={handleLogoClick}
           aria-label="Dilshan K. — Back to top"
         >
-          <span
-            className="dash-logo-dot"
-            aria-hidden="true"
-          />
+          <span className="dash-logo-dot" aria-hidden="true">
+            <span className="dash-logo-dot-core" />
+            <span className="dash-logo-dot-wave" />
+          </span>
 
           <span>Dilshan K.</span>
         </a>
@@ -396,6 +404,14 @@ function Navbar() {
           />
         </button>
       </div>
+
+      {/* Scroll progress rail */}
+      <span className="dash-navbar-progress" aria-hidden="true">
+        <span
+          className="dash-navbar-progress-fill"
+          style={{ transform: `scaleX(${scrollProgress})` }}
+        />
+      </span>
 
       {/* Mobile Navigation */}
       <AnimatePresence>

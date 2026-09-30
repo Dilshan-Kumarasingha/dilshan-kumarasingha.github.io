@@ -1,19 +1,25 @@
 /* ============================================================
    NAVBAR
-   Responsive floating navigation system
+   Responsive floating navigation, matched to the Hero/About/
+   Projects/Contact palette — warm light theme, red-to-gold accent.
    ============================================================ */
 
 .dash-navbar {
-  --void: #ffffff;
-  --panel: #f5f6f8;
-  --line: #e3e5ea;
+  --bg: #fbfaf8;
+  --panel: #f6f4f1;
 
-  --ink: #0b0d12;
-  --ink-dim: #5b6472;
-  --ink-faint: #94a0b0;
+  --line: #e6e3de;
+  --line-strong: #d3cfc8;
+
+  --ink: #14161b;
+  --ink-dim: #5a616d;
+  --ink-faint: #8b93a1;
 
   --signal: #e5484d;
-  --signal-dim: #b3181d;
+  --signal-dark: #b3181d;
+  --signal-soft: rgba(229, 72, 77, 0.1);
+
+  --gold: #f0a83c;
 
   --navbar-max-width: 1180px;
   --navbar-radius: 999px;
@@ -27,8 +33,7 @@
 
   background: transparent;
 
-  transition:
-    top 0.3s ease;
+  transition: top 0.3s ease;
 }
 
 .dash-navbar-scrolled {
@@ -40,6 +45,8 @@
    ============================================================ */
 
 .dash-navbar-inner {
+  position: relative;
+
   width: 100%;
   max-width: var(--navbar-max-width);
 
@@ -57,7 +64,7 @@
 
   background: rgba(255, 255, 255, 0.86);
 
-  border: 1px solid rgba(227, 229, 234, 0.9);
+  border: 1px solid var(--line);
 
   border-radius: var(--navbar-radius);
 
@@ -65,14 +72,15 @@
   -webkit-backdrop-filter: blur(20px) saturate(150%);
 
   box-shadow:
-    0 12px 32px rgba(15, 23, 42, 0.06),
-    0 2px 8px rgba(15, 23, 42, 0.025);
+    0 12px 32px rgba(20, 22, 27, 0.06),
+    0 2px 8px rgba(20, 22, 27, 0.025);
 
   transition:
     min-height 0.3s ease,
     padding 0.3s ease,
     box-shadow 0.3s ease,
-    background-color 0.3s ease;
+    background-color 0.3s ease,
+    border-radius 0.3s ease;
 }
 
 .dash-navbar-scrolled .dash-navbar-inner {
@@ -81,11 +89,46 @@
   padding-top: 0.65rem;
   padding-bottom: 0.65rem;
 
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
 
   box-shadow:
-    0 16px 40px rgba(15, 23, 42, 0.09),
-    0 4px 12px rgba(15, 23, 42, 0.035);
+    0 16px 40px rgba(20, 22, 27, 0.1),
+    0 4px 12px rgba(20, 22, 27, 0.04);
+}
+
+/* ============================================================
+   SCROLL PROGRESS RAIL
+   ============================================================ */
+
+.dash-navbar-progress {
+  position: absolute;
+  left: 1.4rem;
+  right: 1.4rem;
+  bottom: -1px;
+
+  display: block;
+  height: 2px;
+
+  border-radius: 999px;
+  background: transparent;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+.dash-navbar-progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  transform-origin: left center;
+  transform: scaleX(0);
+
+  background: linear-gradient(90deg, var(--signal), var(--gold));
+  border-radius: 999px;
+
+  transition: transform 120ms ease-out;
 }
 
 /* ============================================================
@@ -99,7 +142,7 @@
   display: inline-flex;
   align-items: center;
 
-  gap: 8px;
+  gap: 9px;
 
   min-height: 44px;
 
@@ -124,7 +167,7 @@
 }
 
 .dash-navbar-logo:hover {
-  color: var(--signal);
+  color: var(--signal-dark);
 }
 
 .dash-navbar-logo:active {
@@ -137,16 +180,41 @@
 }
 
 .dash-logo-dot {
-  width: 7px;
-  height: 7px;
-
+  position: relative;
+  width: 8px;
+  height: 8px;
   flex: 0 0 auto;
+}
+
+.dash-logo-dot-core {
+  display: block;
+  width: 8px;
+  height: 8px;
 
   background: var(--signal);
 
   border-radius: 50%;
 
-  box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.1);
+  box-shadow: 0 0 0 3px var(--signal-soft);
+}
+
+.dash-logo-dot-wave {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+
+  width: 14px;
+  height: 14px;
+
+  border-radius: 50%;
+  background: var(--signal-soft);
+
+  animation: dashLogoPulse 2.6s infinite cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dashLogoPulse {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(1.7); opacity: 0; }
 }
 
 /* ============================================================
@@ -172,7 +240,7 @@
 
   padding: 3px;
 
-  background: rgba(245, 246, 248, 0.9);
+  background: var(--panel);
 
   border: 1px solid var(--line);
 
@@ -230,7 +298,7 @@
 }
 
 .dash-nav-link-active {
-  color: var(--void);
+  color: #fff;
   font-weight: 600;
 }
 
@@ -245,12 +313,11 @@
 
   z-index: 1;
 
-  background: var(--signal);
+  background: linear-gradient(120deg, var(--signal), var(--signal-dark));
 
   border-radius: 999px;
 
-  box-shadow:
-    0 3px 10px rgba(229, 72, 77, 0.18);
+  box-shadow: 0 3px 10px rgba(229, 72, 77, 0.22);
 }
 
 /* ============================================================
@@ -270,7 +337,7 @@
 
   box-sizing: border-box;
 
-  background: var(--signal);
+  background: var(--ink);
 
   color: #ffffff;
 
@@ -283,8 +350,7 @@
   border: 1px solid transparent;
   border-radius: 999px;
 
-  box-shadow:
-    0 4px 12px rgba(229, 72, 77, 0.14);
+  box-shadow: 0 10px 22px -10px rgba(20, 22, 27, 0.5);
 
   transition:
     background-color 0.2s ease,
@@ -293,12 +359,11 @@
 }
 
 .dash-contact-nav-btn:hover {
-  background: var(--signal-dim);
+  background: var(--signal);
 
   transform: translateY(-1px);
 
-  box-shadow:
-    0 7px 16px rgba(179, 24, 29, 0.18);
+  box-shadow: 0 12px 26px -10px rgba(229, 72, 77, 0.5);
 }
 
 .dash-contact-nav-btn:active {
@@ -313,6 +378,11 @@
 .dash-contact-arrow {
   font-size: 0.95rem;
   line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.dash-contact-nav-btn:hover .dash-contact-arrow {
+  transform: translate(1px, -1px);
 }
 
 /* ============================================================
@@ -406,7 +476,7 @@
 
   border: 0;
 
-  background: rgba(11, 13, 18, 0.42);
+  background: rgba(20, 22, 27, 0.42);
 
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -447,8 +517,7 @@
 
   border-radius: 28px 0 0 28px;
 
-  box-shadow:
-    -20px 0 60px rgba(15, 23, 42, 0.14);
+  box-shadow: -20px 0 60px rgba(20, 22, 27, 0.16);
 
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -479,20 +548,22 @@
 
   width: fit-content;
 
-  color: var(--signal);
+  padding: 0.3rem 0.75rem 0.3rem 0.6rem;
 
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.72rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+
+  color: var(--ink-dim);
+
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.78rem;
   font-weight: 500;
-
-  letter-spacing: 0.08em;
-
-  text-transform: uppercase;
 }
 
 .dash-eyebrow-dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 
   flex: 0 0 auto;
 
@@ -500,8 +571,7 @@
 
   border-radius: 50%;
 
-  box-shadow:
-    0 0 0 3px rgba(229, 72, 77, 0.1);
+  box-shadow: 0 0 0 3px var(--signal-soft);
 }
 
 /* ============================================================
@@ -540,7 +610,7 @@
 }
 
 .dash-mobile-close:hover {
-  background: var(--ink);
+  background: var(--signal);
   color: #ffffff;
 
   transform: rotate(90deg);
@@ -606,7 +676,7 @@
 .dash-mobile-link-active {
   padding-left: 6px;
 
-  color: var(--signal);
+  color: var(--signal-dark);
 }
 
 .dash-mobile-link:focus-visible {
@@ -650,7 +720,7 @@
 
   box-sizing: border-box;
 
-  background: var(--signal);
+  background: var(--ink);
 
   color: #ffffff;
 
@@ -663,8 +733,7 @@
 
   border-radius: 999px;
 
-  box-shadow:
-    0 8px 20px rgba(229, 72, 77, 0.16);
+  box-shadow: 0 12px 26px -12px rgba(20, 22, 27, 0.55);
 
   transition:
     background-color 0.2s ease,
@@ -673,12 +742,11 @@
 }
 
 .dash-mobile-cta:hover {
-  background: var(--signal-dim);
+  background: var(--signal);
 
   transform: translateY(-1px);
 
-  box-shadow:
-    0 10px 24px rgba(179, 24, 29, 0.2);
+  box-shadow: 0 14px 30px -12px rgba(229, 72, 77, 0.55);
 }
 
 .dash-mobile-cta:active {
@@ -744,21 +812,18 @@
   .dash-navbar-inner {
     min-height: 56px;
 
-    padding:
-      0.6rem
-      0.75rem
-      0.6rem
-      1rem;
+    padding: 0.6rem 0.75rem 0.6rem 1rem;
   }
 
   .dash-navbar-scrolled .dash-navbar-inner {
     min-height: 52px;
 
-    padding:
-      0.5rem
-      0.75rem
-      0.5rem
-      1rem;
+    padding: 0.5rem 0.75rem 0.5rem 1rem;
+  }
+
+  .dash-navbar-progress {
+    left: 1rem;
+    right: 1rem;
   }
 }
 
@@ -813,9 +878,9 @@
     font-size: 0.86rem;
   }
 
-  .dash-logo-dot {
-    width: 6px;
-    height: 6px;
+  .dash-logo-dot-core {
+    width: 7px;
+    height: 7px;
   }
 }
 
@@ -829,13 +894,20 @@
   .dash-navbar-logo,
   .dash-nav-link,
   .dash-contact-nav-btn,
+  .dash-contact-arrow,
   .dash-menu-toggle,
   .dash-toggle-bar,
   .dash-mobile-link,
   .dash-mobile-link-arrow,
   .dash-mobile-close,
-  .dash-mobile-cta {
+  .dash-mobile-cta,
+  .dash-navbar-progress-fill {
     transition: none;
+  }
+
+  .dash-logo-dot-wave {
+    animation: none;
+    display: none;
   }
 }
 
@@ -863,5 +935,9 @@
   .dash-mobile-cta {
     background: Highlight;
     color: HighlightText;
+  }
+
+  .dash-navbar-progress-fill {
+    background: Highlight;
   }
 }
