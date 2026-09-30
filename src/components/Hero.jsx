@@ -3,7 +3,9 @@ import {
   motion,
   AnimatePresence,
   useReducedMotion,
+  useMotionValue,
   useScroll,
+  useSpring,
   useTransform,
 } from 'framer-motion'
 import AIAssistant from './AIAssistant'
@@ -51,12 +53,16 @@ const CheckIcon = () => (
 // Illustrative release pipeline: each stage floats around the portrait.
 // Positions are % of the visual area; delay sets the order they appear in.
 const CHIPS = [
-  { label: 'Build', tool: 'Docker', style: { top: '16%', left: '2%' }, delay: 0.9, float: 0 },
-  { label: 'Deploy', tool: 'Kubernetes', style: { top: '5%', right: '-1%' }, delay: 1.5, float: 1.2 },
-  { label: 'Provision', tool: 'Terraform', style: { top: '47%', left: '-2%' }, delay: 2.1, float: 0.6 },
-  { label: 'Test', tool: 'CI/CD', style: { top: '33%', right: '-3%' }, delay: 2.7, float: 1.8 },
-  { label: 'Live', tool: 'AWS · Azure', style: { bottom: '14%', left: '6%' }, delay: 3.3, float: 0.3 },
+  { label: 'Build', tool: 'Docker', style: { top: '16%', left: '2%' }, delay: 1.5, float: 0 },
+  { label: 'Deploy', tool: 'Kubernetes', style: { top: '5%', right: '-1%' }, delay: 2.1, float: 1.2 },
+  { label: 'Provision', tool: 'Terraform', style: { top: '47%', left: '-2%' }, delay: 2.7, float: 0.6 },
+  { label: 'Test', tool: 'CI/CD', style: { top: '33%', right: '-3%' }, delay: 3.3, float: 1.8 },
+  { label: 'Live', tool: 'AWS · Azure', style: { bottom: '14%', left: '6%' }, delay: 3.9, float: 0.3 },
 ]
+
+// Title split into lines so each can rise into frame on its own beat,
+// like a title card settling into place.
+const NAME_LINES = ['Dilshan', 'Kumarasingha']
 
 function Hero() {
   const [isAiOpen, setIsAiOpen] = useState(false)
@@ -69,6 +75,28 @@ function Hero() {
   })
 
   const photoY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 40])
+  const sceneScale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 1.06])
+  const sceneOpacity = useTransform(scrollYProgress, [0, 0.85], [1, reduce ? 1 : 0.4])
+
+  // Cursor-driven spotlight — a subtle cinematic key-light that
+  // follows the pointer across the whole frame.
+  const spotX = useMotionValue(50)
+  const spotY = useMotionValue(35)
+  const spotXSmooth = useSpring(spotX, { stiffness: 60, damping: 20 })
+  const spotYSmooth = useSpring(spotY, { stiffness: 60, damping: 20 })
+
+  const spotlightBackground = useTransform(
+    [spotXSmooth, spotYSmooth],
+    ([x, y]) =>
+      `radial-gradient(600px circle at ${x}% ${y}%, rgba(255, 255, 255, 0.55), transparent 60%)`
+  )
+
+  const handlePointerMove = (event) => {
+    if (reduce || !heroRef.current) return
+    const rect = heroRef.current.getBoundingClientRect()
+    spotX.set(((event.clientX - rect.left) / rect.width) * 100)
+    spotY.set(((event.clientY - rect.top) / rect.height) * 100)
+  }
 
   const rise = (delay = 0) => ({
     initial: { opacity: 0, y: reduce ? 0 : 20 },
@@ -96,134 +124,204 @@ function Hero() {
       className="hero"
       id="top"
       ref={heroRef}
+      onPointerMove={handlePointerMove}
       aria-labelledby="hero-title"
     >
       <div className="hero-bg" aria-hidden="true" />
+      <div className="hero-grain" aria-hidden="true" />
 
-      <div className="hero-inner">
-        {/* ---------- Left: copy ---------- */}
-        <div className="hero-copy">
-          <motion.p className="hero-status" {...rise(0)}>
-            <span className="hero-status-dot" aria-hidden="true" />
-            DevOps &amp; Platform Engineer
-          </motion.p>
+      {/* Decorative geometric layer — visible shapes that give the
+          scene depth instead of a flat gradient backdrop. */}
+      <div className="hero-shapes" aria-hidden="true">
+        <span className="hero-shape hero-shape--ring" />
+        <span className="hero-shape hero-shape--square" />
+        <span className="hero-shape hero-shape--dot-grid">
+          {Array.from({ length: 24 }, (_, i) => (
+            <span key={i} />
+          ))}
+        </span>
+        <span className="hero-shape hero-shape--line" />
+        <span className="hero-shape hero-shape--triangle" />
+      </div>
 
-          <motion.h1
-            id="hero-title"
-            className="hero-title"
-            data-cursor="text"
-            {...rise(0.08)}
-          >
-            <span>Dilshan</span>
-            <span>Kumarasingha</span>
-          </motion.h1>
+      {!reduce && (
+        <motion.div
+          className="hero-spotlight"
+          aria-hidden="true"
+          style={{ background: spotlightBackground }}
+        />
+      )}
 
-          <motion.p className="hero-lede" {...rise(0.16)}>
-            I build the infrastructure and delivery pipelines that let teams
-            ship to production safely, using Kubernetes, Docker and Terraform
-            on AWS and Azure.
-          </motion.p>
+      {/* Letterbox bars — settle in on load, giving the opening beat
+          a widescreen, title-card feel, then stay as a subtle frame. */}
+      <motion.span
+        className="hero-bar hero-bar--top"
+        initial={{ scaleY: reduce ? 1 : 0 }}
+        animate={{ scaleY: 1 }}
+        transition={{ duration: reduce ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] }}
+        aria-hidden="true"
+      />
+      <motion.span
+        className="hero-bar hero-bar--bottom"
+        initial={{ scaleY: reduce ? 1 : 0 }}
+        animate={{ scaleY: 1 }}
+        transition={{ duration: reduce ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] }}
+        aria-hidden="true"
+      />
 
-          <motion.div className="hero-actions" {...rise(0.24)}>
-            <a
-              href="#contact"
-              className="hero-btn hero-btn--primary"
-              onClick={scrollToContact}
-              data-cursor="hover"
-              data-cursor-label="Go"
-            >
-              <span>Book a free call</span>
-              <ArrowRightIcon />
-            </a>
+      <motion.div
+        className="hero-scene"
+        style={{ scale: sceneScale, opacity: sceneOpacity }}
+      >
+        <div className="hero-inner">
+          {/* ---------- Left: copy ---------- */}
+          <div className="hero-copy">
+            <motion.p className="hero-status" {...rise(0.2)}>
+              <span className="hero-status-dot" aria-hidden="true" />
+              DevOps &amp; Platform Engineer
+            </motion.p>
 
-            <button
-              type="button"
-              className="hero-btn hero-btn--ghost"
-              onClick={() => setIsAiOpen(true)}
-              data-cursor="hover"
-              data-cursor-label="Ask"
-              aria-haspopup="dialog"
-              aria-expanded={isAiOpen}
-            >
-              Ask my assistant
-            </button>
-
-            <span className="hero-socials">
-              <a
-                href="https://github.com/Dilshan-Kumarasingha"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hero-social"
-                data-cursor="hover"
-                aria-label="Visit GitHub profile"
-              >
-                <GithubIcon />
-              </a>
-              <a
-                href="https://linkedin.com/in/dilshan-kumarasingha"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hero-social"
-                data-cursor="hover"
-                aria-label="Visit LinkedIn profile"
-              >
-                <LinkedinIcon />
-              </a>
-            </span>
-          </motion.div>
-        </div>
-
-        {/* ---------- Right: photo + pipeline ---------- */}
-        <div className="hero-visual">
-          <motion.div
-            className="hero-portrait"
-            style={{ y: photoY }}
-            initial={{ opacity: 0, y: reduce ? 0 : 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: reduce ? 0 : 0.9,
-              delay: reduce ? 0 : 0.1,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            aria-hidden="true"
-          >
-            <span className="hero-portrait-arch" />
-            <img
-              src={profileCutout}
-              alt=""
-              className="hero-portrait-img"
-              draggable="false"
-            />
-          </motion.div>
-
-          {CHIPS.map(({ label, tool, style, delay, float }) => (
-            <motion.div
-              className="hero-chip"
-              key={label}
-              style={style}
-              initial={{ opacity: 0, scale: reduce ? 1 : 0.4 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 320,
-                damping: 18,
-                delay: reduce ? 0 : delay,
-              }}
-            >
-              <span
-                className="hero-chip-inner"
-                style={{ animationDelay: `${float}s` }}
-              >
-                <span className="hero-chip-check">
-                  <CheckIcon />
+            <h1 id="hero-title" className="hero-title" data-cursor="text">
+              {NAME_LINES.map((line, lineIndex) => (
+                <span className="hero-title-line-mask" key={line}>
+                  <motion.span
+                    className="hero-title-line"
+                    initial={{ y: reduce ? 0 : '120%' }}
+                    animate={{ y: 0 }}
+                    transition={{
+                      duration: reduce ? 0 : 0.9,
+                      delay: reduce ? 0 : 0.35 + lineIndex * 0.12,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  >
+                    {line}
+                  </motion.span>
                 </span>
-                <span className="hero-chip-label">{label}</span>
-                <span className="hero-chip-tool">{tool}</span>
+              ))}
+            </h1>
+
+            <motion.p className="hero-lede" {...rise(0.62)}>
+              I build the infrastructure and delivery pipelines that let teams
+              ship to production safely, using Kubernetes, Docker and Terraform
+              on AWS and Azure.
+            </motion.p>
+
+            <motion.div className="hero-actions" {...rise(0.7)}>
+              <a
+                href="#contact"
+                className="hero-btn hero-btn--primary"
+                onClick={scrollToContact}
+                data-cursor="hover"
+                data-cursor-label="Go"
+              >
+                <span>Book a free call</span>
+                <ArrowRightIcon />
+              </a>
+
+              <button
+                type="button"
+                className="hero-btn hero-btn--ghost"
+                onClick={() => setIsAiOpen(true)}
+                data-cursor="hover"
+                data-cursor-label="Ask"
+                aria-haspopup="dialog"
+                aria-expanded={isAiOpen}
+              >
+                Ask my assistant
+              </button>
+
+              <span className="hero-socials">
+                <a
+                  href="https://github.com/Dilshan-Kumarasingha"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-social"
+                  data-cursor="hover"
+                  aria-label="Visit GitHub profile"
+                >
+                  <GithubIcon />
+                </a>
+                <a
+                  href="https://linkedin.com/in/dilshan-kumarasingha"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-social"
+                  data-cursor="hover"
+                  aria-label="Visit LinkedIn profile"
+                >
+                  <LinkedinIcon />
+                </a>
               </span>
             </motion.div>
-          ))}
+          </div>
+
+          {/* ---------- Right: photo + pipeline ---------- */}
+          <div className="hero-visual">
+            <motion.div
+              className="hero-portrait"
+              style={{ y: photoY }}
+              initial={{ opacity: 0, y: reduce ? 0 : 40, scale: reduce ? 1 : 1.05 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{
+                duration: reduce ? 0 : 1.1,
+                delay: reduce ? 0 : 0.3,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              aria-hidden="true"
+            >
+              <span className="hero-portrait-arch" />
+              <span className="hero-portrait-rim" />
+              <img
+                src={profileCutout}
+                alt=""
+                className="hero-portrait-img"
+                draggable="false"
+              />
+            </motion.div>
+
+            {CHIPS.map(({ label, tool, style, delay, float }) => (
+              <motion.div
+                className="hero-chip"
+                key={label}
+                style={style}
+                initial={{ opacity: 0, scale: reduce ? 1 : 0.4, y: reduce ? 0 : 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 320,
+                  damping: 18,
+                  delay: reduce ? 0 : delay,
+                }}
+              >
+                <span
+                  className="hero-chip-inner"
+                  style={{ animationDelay: `${float}s` }}
+                >
+                  <span className="hero-chip-check">
+                    <CheckIcon />
+                  </span>
+                  <span className="hero-chip-label">{label}</span>
+                  <span className="hero-chip-tool">{tool}</span>
+                </span>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </div>
+      </motion.div>
+
+      <motion.a
+        href="#about"
+        className="hero-scrollcue"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 1.6 }}
+        aria-label="Scroll to About section"
+      >
+        <span className="hero-scrollcue-track">
+          <span className="hero-scrollcue-dot" />
+        </span>
+        <span className="hero-scrollcue-text">Scroll</span>
+      </motion.a>
 
       <AnimatePresence mode="wait">
         {isAiOpen && <AIAssistant onClose={() => setIsAiOpen(false)} />}
