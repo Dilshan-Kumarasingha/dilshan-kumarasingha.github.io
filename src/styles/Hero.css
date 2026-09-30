@@ -216,6 +216,7 @@
 .hero-copy {
   position: relative;
   z-index: 2;
+  min-width: 0;
   padding-bottom: 5.5rem;
 }
 
@@ -245,7 +246,7 @@
 .hero-title {
   margin: 0 0 1.75rem;
   font-family: 'Familjen Grotesk', sans-serif;
-  font-size: clamp(3.4rem, 8.4vw, 7.6rem);
+  font-size: clamp(3.2rem, 7.4vw, 6.6rem);
   font-weight: 700;
   line-height: 0.9;
   letter-spacing: -0.045em;
@@ -257,8 +258,8 @@
 .hero-title-line-mask {
   display: block;
   overflow: hidden;
-  padding-right: 0.08em;
-  margin-right: -0.08em;
+  padding: 0.1em 0.08em 0.14em 0;
+  margin: -0.1em -0.08em -0.14em 0;
 }
 
 .hero-title-line {
@@ -399,6 +400,7 @@
 
 .hero-visual {
   position: relative;
+  z-index: 1;
   height: clamp(500px, 78vh, 680px);
   display: flex;
   justify-content: flex-end;
@@ -520,52 +522,6 @@
 }
 
 /* ============================================================
-   SCROLL CUE
-   ============================================================ */
-
-.hero-scrollcue {
-  position: absolute;
-  left: 50%;
-  bottom: 2.2rem;
-  transform: translateX(-50%);
-  z-index: 4;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  color: var(--ink-faint);
-  text-decoration: none;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.hero-scrollcue-track {
-  width: 22px;
-  height: 34px;
-  border: 1.5px solid var(--line-strong);
-  border-radius: 999px;
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
-  box-sizing: border-box;
-}
-
-.hero-scrollcue-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--signal);
-  animation: hero-scrolldot 1.8s ease-in-out infinite;
-}
-
-@keyframes hero-scrolldot {
-  0% { transform: translateY(0); opacity: 1; }
-  70% { transform: translateY(14px); opacity: 0; }
-  100% { transform: translateY(14px); opacity: 0; }
-}
-
-/* ============================================================
    TABLET
    ============================================================ */
 
@@ -596,10 +552,6 @@
   .hero-shape--square,
   .hero-shape--triangle,
   .hero-shape--line {
-    display: none;
-  }
-
-  .hero-scrollcue {
     display: none;
   }
 }
