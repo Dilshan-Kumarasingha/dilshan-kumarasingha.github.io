@@ -84,17 +84,25 @@ export function Contact() {
     mouseY.set(0)
   }
 
+  const reveal = (delay = 0) => ({
+    initial: { opacity: 0, y: 25 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: '-100px' },
+    transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] },
+  })
+
   return (
-    <section className="dash-contact-section" id="contact">
-      <div className="dash-contact-container">
-        <span className="dash-contact-eyebrow">
-          <span className="dash-eyebrow-dot" />
-          connection workspace
-        </span>
+    <section className="contact-section" id="contact">
+      <div className="contact-bg" aria-hidden="true" />
 
-        <div className="dash-contact-split">
+      <div className="contact-container">
+        <motion.span className="contact-kicker" {...reveal(0)}>
+          <span className="contact-kicker-dot" aria-hidden="true" />
+          Connection workspace
+        </motion.span>
 
-          {/* Terminal window card */}
+        <div className="contact-split">
+          {/* Status card */}
           <motion.div
             ref={cardRef}
             onMouseMove={handleMouseMove}
@@ -104,162 +112,143 @@ export function Contact() {
               rotateY: springRotateY,
               transformStyle: 'preserve-3d',
             }}
-            className="dash-diagnostics-window"
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="contact-status-card"
+            {...reveal(0)}
           >
             {!prefersReducedMotion && (
               <motion.div
-                className="dash-window-specular-pass"
+                className="contact-card-glow"
                 style={{
                   background: useTransform(
                     [glowX, glowY],
-                    ([latestX, latestY]) => `radial-gradient(380px circle at ${latestX + 240}px ${latestY + 180}px, rgba(255, 138, 66, 0.06), transparent 70%)`
-                  )
+                    ([latestX, latestY]) =>
+                      `radial-gradient(380px circle at ${latestX + 240}px ${latestY + 180}px, rgba(229, 72, 77, 0.1), transparent 70%)`
+                  ),
                 }}
               />
             )}
 
-            <div className="dash-window-header-ui">
-              <div className="dash-window-controls-dot">
-                <span className="dash-dot dash-dot-close" />
-                <span className="dash-dot dash-dot-minimize" />
-                <span className="dash-dot dash-dot-expand" />
-              </div>
-              <span className="dash-window-system-title">terminal — diagnostics.sh</span>
-            </div>
+            <span className="contact-card-arch" aria-hidden="true" />
 
-            <div className="dash-window-terminal-body">
-              <div className="dash-terminal-shell-line">
-                <span className="dash-shell-prompt">guest@portfolio ~ %</span>
-                <span className="dash-shell-command"> ./get_network_coordinates.sh</span>
-              </div>
-
-              <div className="dash-terminal-payload-output">
-                <p className="dash-payload-title">// persistent comms matrix</p>
-                <div className="dash-payload-row">
-                  <span className="dash-payload-key">LOC:</span>
-                  <span className="dash-payload-val">Colombo, LK (UTC +05:30)</span>
-                </div>
-                <div className="dash-payload-row">
-                  <span className="dash-payload-key">AVAILABILITY:</span>
-                  <span className="dash-payload-val dash-token-success">Active // Remote Ops</span>
-                </div>
-                <div className="dash-payload-row">
-                  <span className="dash-payload-key">ROLES:</span>
-                  <span className="dash-payload-val">Full-Stack Dev / QA Automation</span>
-                </div>
-              </div>
-
-              <div className="dash-terminal-system-status">
-                <div className="dash-status-ping-beacon">
-                  <span className="dash-beacon-core" />
-                  <span className="dash-beacon-wave" />
-                </div>
-                <span className="dash-status-message">
-                  {status === 'drafted'
-                    ? 'Message drafted — check your mail client'
-                    : 'Listening for webhooks...'}
+            <header className="contact-status-head">
+              <span className="contact-status-badge">
+                <span className="contact-beacon" aria-hidden="true">
+                  <span className="contact-beacon-core" />
+                  <span className="contact-beacon-wave" />
                 </span>
+                Available for work
+              </span>
+            </header>
+
+            <dl className="contact-status-list">
+              <div className="contact-status-row">
+                <dt>Location</dt>
+                <dd>Colombo, Sri Lanka (UTC +05:30)</dd>
               </div>
-            </div>
+              <div className="contact-status-row">
+                <dt>Availability</dt>
+                <dd className="contact-status-ok">Open to remote roles</dd>
+              </div>
+              <div className="contact-status-row">
+                <dt>Focus</dt>
+                <dd>DevOps &amp; Platform Engineering</dd>
+              </div>
+            </dl>
+
+            <footer className="contact-status-foot">
+              {status === 'drafted'
+                ? 'Message drafted — check your mail client'
+                : 'Usually replies within a day'}
+            </footer>
           </motion.div>
 
           {/* Form card */}
-          <motion.div
-            className="dash-dispatch-card"
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div className="dash-dispatch-header-group">
-              <h3 className="dash-dispatch-card-heading">Initiate transmission</h3>
-              <p className="dash-dispatch-card-description">
-                Drop an architectural query below to push a record into my workspace logs.
-              </p>
+          <motion.div className="contact-form-card" {...reveal(0.08)}>
+            <div className="contact-form-head">
+              <h3>Send a message</h3>
+              <p>Have a role, project or question in mind? Drop a note below.</p>
             </div>
 
-            <form className="dash-dispatch-form" onSubmit={handleSubmit}>
-              <div className="dash-form-input-container">
+            <form className="contact-form" onSubmit={handleSubmit}>
+              <div className="contact-field">
                 <input
                   type="text"
                   id="sender-identity"
                   name="name"
                   required
                   placeholder=" "
-                  className="dash-form-field"
+                  className="contact-input"
                   value={formData.name}
                   onChange={handleChange}
                 />
-                <label htmlFor="sender-identity" className="dash-form-label">Your name</label>
+                <label htmlFor="sender-identity">Your name</label>
               </div>
 
-              <div className="dash-form-input-container">
+              <div className="contact-field">
                 <input
                   type="email"
                   id="sender-endpoint"
                   name="email"
                   required
                   placeholder=" "
-                  className="dash-form-field"
+                  className="contact-input"
                   value={formData.email}
                   onChange={handleChange}
                 />
-                <label htmlFor="sender-endpoint" className="dash-form-label">Email endpoint</label>
+                <label htmlFor="sender-endpoint">Email address</label>
               </div>
 
-              <div className="dash-form-input-container">
+              <div className="contact-field">
                 <textarea
                   id="transmission-body"
                   name="message"
                   rows={3}
                   required
                   placeholder=" "
-                  className="dash-form-field dash-field-textarea"
+                  className="contact-input contact-textarea"
                   value={formData.message}
                   onChange={handleChange}
                 />
-                <label htmlFor="transmission-body" className="dash-form-label">Message string</label>
+                <label htmlFor="transmission-body">Message</label>
               </div>
 
-              <div className="dash-form-actions-row">
-                <button type="submit" className="dash-action-btn-primary">
-                  <Mail size={14} />
-                  <span>Send transmission</span>
+              <div className="contact-actions">
+                <button type="submit" className="contact-btn contact-btn--primary" data-cursor="hover">
+                  <Mail size={15} />
+                  <span>Send message</span>
                 </button>
 
                 <a
                   href="https://linkedin.com/in/dilshan-kumarasingha"
                   target="_blank"
                   rel="noreferrer"
-                  className="dash-action-btn-secondary"
+                  className="contact-btn contact-btn--ghost"
+                  data-cursor="hover"
                 >
                   <LinkedinIcon size={14} />
-                  <span>LinkedIn link</span>
+                  <span>LinkedIn</span>
                 </a>
               </div>
             </form>
 
-            <div className="dash-alternative-routes">
+            <div className="contact-alt-route">
               <a
                 href="https://github.com/Dilshan-Kumarasingha"
                 target="_blank"
                 rel="noreferrer"
-                className="dash-sub-archival-link"
+                className="contact-alt-link"
+                data-cursor="hover"
               >
                 <GithubIcon size={13} />
-                <span>Repository archive</span>
+                <span>View repositories</span>
               </a>
             </div>
           </motion.div>
         </div>
 
-        <div className="dash-footer-metadata">
-          <span className="dash-metadata-copyright">&copy; {new Date().getFullYear()} Dilshan Kumarasingha. All rights reserved.</span>
-          <span className="dash-metadata-spec">Built with React &bull; Framer Motion</span>
+        <div className="contact-footer">
+          <span>&copy; {new Date().getFullYear()} Dilshan Kumarasingha. All rights reserved.</span>
+          <span>Built with React &bull; Framer Motion</span>
         </div>
       </div>
     </section>
