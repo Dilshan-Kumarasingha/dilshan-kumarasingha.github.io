@@ -759,6 +759,11 @@
   gap: 0.8rem;
 }
 
+/* NOTE: intentionally no `overflow: hidden` here — the previous
+   version clipped it, which cut off .about-record-marker::after,
+   the vertical line meant to connect this row's dot to the next
+   row's dot. The rounded corners don't need clipping since the
+   background already respects border-radius on its own. */
 .about-record-row {
   position: relative;
 
@@ -779,8 +784,6 @@
     var(--line);
 
   border-radius: 16px;
-
-  overflow: hidden;
 
   will-change: transform, opacity;
 
@@ -807,6 +810,8 @@
   flex: 0 0 auto;
 
   background: var(--line-strong);
+
+  border-radius: 16px 0 0 16px;
 
   transition:
     background-color 220ms ease;

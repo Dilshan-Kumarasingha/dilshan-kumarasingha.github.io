@@ -27,7 +27,6 @@ function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
 
-  const menuButtonRef = useRef(null)
   const mobilePanelRef = useRef(null)
   const previousActiveElementRef = useRef(null)
 
@@ -381,7 +380,6 @@ function Navbar() {
         {/* Mobile Menu Toggle */}
         <button
           type="button"
-          ref={menuButtonRef}
           className={`dash-menu-toggle ${
             isMenuOpen ? 'dash-menu-toggle-open' : ''
           }`}
@@ -403,15 +401,15 @@ function Navbar() {
             aria-hidden="true"
           />
         </button>
-      </div>
 
-      {/* Scroll progress rail */}
-      <span className="dash-navbar-progress" aria-hidden="true">
-        <span
-          className="dash-navbar-progress-fill"
-          style={{ transform: `scaleX(${scrollProgress})` }}
-        />
-      </span>
+        {/* Scroll progress rail */}
+        <span className="dash-navbar-progress" aria-hidden="true">
+          <span
+            className="dash-navbar-progress-fill"
+            style={{ transform: `scaleX(${scrollProgress})` }}
+          />
+        </span>
+      </div>
 
       {/* Mobile Navigation */}
       <AnimatePresence>
