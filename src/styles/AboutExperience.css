@@ -1,0 +1,685 @@
+/* ============================================================
+   ABOUT — EXPERIENCE (redesigned)
+   Timeline with the dates on the left and a clean card on the
+   right. Uses the tokens already defined on .about.
+   Import AFTER About.css.
+   ============================================================ */
+
+.about-experience {
+  position: relative;
+}
+
+.xp-list {
+  --xp-when: 170px;
+  --xp-gap: 2.75rem;
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Vertical line running through all nodes */
+.xp-list::before {
+  content: '';
+
+  position: absolute;
+
+  top: 1.9rem;
+  bottom: 1.9rem;
+  left: calc(var(--xp-when) + (var(--xp-gap) / 2));
+
+  width: 1px;
+
+  background: linear-gradient(
+    to bottom,
+    var(--signal),
+    var(--line-strong) 45%,
+    var(--line-strong)
+  );
+}
+
+/* ---------- Row ---------- */
+
+.xp-item {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: var(--xp-when) minmax(0, 1fr);
+  column-gap: var(--xp-gap);
+
+  align-items: start;
+}
+
+/* ---------- Left: dates ---------- */
+
+.xp-when {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+
+  padding-top: 1.55rem;
+
+  text-align: right;
+}
+
+.xp-span {
+  color: var(--ink);
+
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  font-weight: 500;
+
+  letter-spacing: 0.02em;
+}
+
+.xp-duration {
+  color: var(--ink-faint);
+
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.66rem;
+
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.xp-item--active .xp-duration {
+  color: var(--signal);
+}
+
+/* ---------- Timeline node ---------- */
+
+.xp-node {
+  position: absolute;
+
+  top: 1.7rem;
+  left: calc(var(--xp-when) + (var(--xp-gap) / 2) - 6px);
+
+  width: 13px;
+  height: 13px;
+
+  box-sizing: border-box;
+
+  border-radius: 50%;
+
+  background: var(--void);
+  border: 2px solid var(--line-strong);
+
+  z-index: 2;
+}
+
+.xp-item--active .xp-node {
+  background: var(--signal);
+  border-color: var(--signal);
+
+  box-shadow: 0 0 0 5px rgba(229, 72, 77, 0.14);
+
+  animation: xp-pulse 2.4s ease-out infinite;
+}
+
+@keyframes xp-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(229, 72, 77, 0.35); }
+  70%  { box-shadow: 0 0 0 10px rgba(229, 72, 77, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(229, 72, 77, 0); }
+}
+
+/* ---------- Right: card ---------- */
+
+.xp-card {
+  position: relative;
+
+  min-width: 0;
+
+  padding: 1.6rem 1.75rem 1.5rem;
+
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px 20px 20px 5px;
+
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.xp-card:hover {
+  transform: translateY(-3px);
+
+  border-color: var(--line-strong);
+
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.07);
+}
+
+.xp-item--active .xp-card {
+  background: var(--panel-hi);
+
+  border-color: rgba(229, 72, 77, 0.35);
+
+  box-shadow:
+    0 1px 0 rgba(229, 72, 77, 0.5) inset,
+    0 18px 38px -18px rgba(229, 72, 77, 0.28);
+}
+
+.xp-item--active .xp-card:hover {
+  border-color: rgba(229, 72, 77, 0.55);
+}
+
+/* Header row: monogram + titles + badge */
+
+.xp-card-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.xp-mark {
+  flex: 0 0 auto;
+
+  width: 46px;
+  height: 46px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px 14px 14px 4px;
+
+  background: var(--ink);
+  color: #fff;
+
+  font-family: 'Familjen Grotesk', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  letter-spacing: 0.02em;
+}
+
+.xp-item--active .xp-mark {
+  background: linear-gradient(160deg, var(--signal), var(--signal-dim));
+}
+
+.xp-titles {
+  min-width: 0;
+  flex: 1;
+}
+
+.xp-role {
+  margin: 0;
+
+  color: var(--ink);
+
+  font-family: 'Familjen Grotesk', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.xp-org {
+  margin: 0.2rem 0 0;
+
+  color: var(--ink-dim);
+
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.9rem;
+}
+
+.xp-badge {
+  flex: 0 0 auto;
+
+  padding: 0.28rem 0.65rem;
+
+  border-radius: 999px;
+
+  background: var(--signal);
+  color: #fff;
+
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* Summary */
+
+.xp-summary {
+  margin: 1.15rem 0 0;
+
+  max-width: 620px;
+
+  color: var(--ink-dim);
+
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.95rem;
+
+  line-height: 1.7;
+}
+
+/* Tags */
+
+.xp-tags {
+  list-style: none;
+  margin: 1.1rem 0 0;
+  padding: 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.xp-tags li {
+  padding: 0.3rem 0.7rem;
+
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+
+  background: var(--void);
+  color: var(--ink-dim);
+
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.66rem;
+  font-weight: 500;
+
+  letter-spacing: 0.02em;
+}
+
+.xp-item--active .xp-tags li {
+  border-color: rgba(229, 72, 77, 0.28);
+  color: var(--signal-dim);
+}
+
+/* Optional link (only renders when item.href exists) */
+
+.xp-link {
+  display: inline-block;
+
+  margin-top: 1rem;
+
+  color: var(--signal);
+
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+
+  text-decoration: none;
+}
+
+.xp-link:hover {
+  text-decoration: underline;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .xp-list {
+    --xp-when: 130px;
+    --xp-gap: 2.25rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .xp-list {
+    gap: 1.75rem;
+  }
+
+  /* Line moves to the far left, dates sit above each card */
+  .xp-list::before {
+    left: 6px;
+    top: 0.6rem;
+    bottom: 0.6rem;
+  }
+
+  .xp-item {
+    grid-template-columns: minmax(0, 1fr);
+
+    padding-left: 1.9rem;
+    row-gap: 0.75rem;
+  }
+
+  .xp-when {
+    padding-top: 0;
+
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+
+    text-align: left;
+  }
+
+  .xp-node {
+    top: 0.2rem;
+    left: 0;
+  }
+
+  .xp-card {
+    padding: 1.3rem 1.2rem 1.25rem;
+  }
+
+  .xp-role {
+    font-size: 1.08rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .xp-card-head {
+    flex-wrap: wrap;
+  }
+
+  .xp-badge {
+    order: -1;
+  }
+
+  .xp-mark {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION / FORCED COLORS
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-item--active .xp-node {
+    animation: none;
+  }
+
+  .xp-card {
+    transition: none;
+  }
+
+  .xp-card:hover {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .xp-card,
+  .xp-tags li {
+    border: 1px solid CanvasText;
+  }
+
+  .xp-node {
+    background: CanvasText;
+    border-color: CanvasText;
+  }
+
+  .xp-list::before {
+    background: CanvasText;
+  }
+}
+
+/* ============================================================
+   ABOUT — AT A GLANCE (redesigned)
+   2x2 grid. Big numeral on the left, title / detail / tool
+   chips on the right.
+   ============================================================ */
+
+.about .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.gl-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.gl-card {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  column-gap: 1.5rem;
+
+  padding: 1.6rem 1.6rem 1.5rem;
+
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 22px 22px 22px 5px;
+
+  overflow: hidden;
+
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.gl-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--line-strong);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.07);
+}
+
+/* Alternate corner shapes keep the site's playful rhythm */
+.gl-card:nth-child(2) { border-radius: 22px 22px 5px 22px; }
+.gl-card:nth-child(3) { border-radius: 22px 5px 22px 22px; }
+.gl-card:nth-child(4) { border-radius: 5px 22px 22px 22px; }
+
+/* ---------- Number column ---------- */
+
+.gl-number {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.2rem;
+
+  padding-right: 1.5rem;
+  border-right: 1px solid var(--line);
+}
+
+.gl-index {
+  color: var(--ink-faint);
+
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+.gl-value {
+  color: var(--ink);
+
+  font-family: 'Familjen Grotesk', sans-serif;
+  font-size: clamp(3.4rem, 5vw, 4.4rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+/* ---------- Content column ---------- */
+
+.gl-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.gl-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.gl-title {
+  margin: 0;
+
+  color: var(--ink);
+
+  font-family: 'Familjen Grotesk', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.gl-kind {
+  flex: 0 0 auto;
+
+  padding: 0.24rem 0.6rem;
+
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+
+  background: var(--void);
+  color: var(--ink-dim);
+
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.gl-detail {
+  margin: 0.55rem 0 0;
+
+  color: var(--ink-dim);
+
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.gl-chips {
+  list-style: none;
+  margin: auto 0 0;
+  padding: 1.1rem 0 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.gl-chips li {
+  padding: 0.28rem 0.65rem;
+
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+
+  background: var(--void);
+  color: var(--ink);
+
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.66rem;
+  font-weight: 500;
+}
+
+/* ---------- Accent card (CI pipelines) ---------- */
+
+.gl-card--accent {
+  background: linear-gradient(150deg, var(--signal), var(--signal-dim));
+  border-color: var(--signal);
+  box-shadow: 0 18px 38px rgba(229, 72, 77, 0.2);
+}
+
+.gl-card--accent:hover {
+  border-color: var(--signal);
+  box-shadow: 0 22px 44px rgba(229, 72, 77, 0.28);
+}
+
+.gl-card--accent .gl-number { border-right-color: rgba(255, 255, 255, 0.28); }
+
+.gl-card--accent .gl-index,
+.gl-card--accent .gl-value,
+.gl-card--accent .gl-title,
+.gl-card--accent .gl-detail {
+  color: #fff;
+}
+
+.gl-card--accent .gl-detail { opacity: 0.9; }
+
+.gl-card--accent .gl-kind {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+
+.gl-card--accent .gl-chips li {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+
+/* ---------- "In progress" card uses dashed outlines ---------- */
+
+.gl-card--learning {
+  border-style: dashed;
+  border-color: var(--line-strong);
+}
+
+.gl-card--learning .gl-value {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--ink);
+}
+
+.gl-card--learning .gl-chips li {
+  border-style: dashed;
+}
+
+.gl-card--learning .gl-kind {
+  color: var(--signal);
+  border-color: rgba(229, 72, 77, 0.35);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 960px) {
+  .gl-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+  .gl-card {
+    grid-template-columns: 1fr;
+    row-gap: 1rem;
+    padding: 1.3rem 1.2rem;
+  }
+
+  .gl-number {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    padding: 0 0 0.9rem;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .gl-card--accent .gl-number { border-bottom-color: rgba(255, 255, 255, 0.28); }
+
+  .gl-value { font-size: 3.2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gl-card { transition: none; }
+  .gl-card:hover { transform: none; }
+}
+
+@media (forced-colors: active) {
+  .gl-card,
+  .gl-chips li,
+  .gl-kind {
+    border: 1px solid CanvasText;
+  }
+}

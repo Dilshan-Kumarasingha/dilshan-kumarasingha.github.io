@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import profilePhoto from "../assets/Profile1.jpeg";
 import "../styles/About.css";
+import "../styles/AboutExperience.css"; // NEW: styles for the redesigned Experience block
 
 /*
   CONTENT RULES FOR THIS FILE
@@ -19,24 +20,33 @@ import "../styles/About.css";
 const stats = [
   {
     value: 5,
-    suffix: "",
-    label: "DevOps tools used hands-on: Docker, Actions, Git, Linux, Bash",
+    kind: "Hands-on",
+    title: "DevOps tools",
+    detail: "Used hands-on across my projects.",
+    chips: ["Docker", "GitHub Actions", "Git", "Linux", "Bash"],
   },
   {
     value: 2,
-    suffix: "",
-    label: "CI pipelines on GitHub with automated test gates",
+    kind: "Automated",
+    title: "CI pipelines on GitHub",
+    detail: "Every push runs through automated test gates.",
+    chips: ["GitHub Actions", "Test gates"],
     accent: true,
   },
   {
     value: 3,
-    suffix: "",
-    label: "cloud tools in progress: AWS, Kubernetes, Terraform",
+    kind: "Learning",
+    title: "Cloud tools in progress",
+    detail: "Currently building projects to practise them.",
+    chips: ["AWS", "Kubernetes", "Terraform"],
+    learning: true,
   },
   {
     value: 1,
-    suffix: "",
-    label: "regulated banking team: UAT and release validation",
+    kind: "Regulated",
+    title: "Banking team",
+    detail: "UAT and release validation in a regulated environment.",
+    chips: ["UAT", "Release validation"],
   },
 ];
 
@@ -44,18 +54,24 @@ const record = [
   {
     // TODO: replace with your real start month and year
     span: "2026 — Present",
+    duration: "Current role",
     role: "IT Lab Demonstrator",
     org: "Lyceum International Schools",
+    mark: "LI",
     summary:
       "Teach practical Python and C. Administer lab systems, deploy the school IMS and monitor uptime.",
+    tags: ["Python", "C", "Lab systems", "IMS deployment", "Uptime"],
     status: "active",
   },
   {
     span: "Aug 2023 — Feb 2024",
+    duration: "6 months",
     role: "Software Developer Intern",
     org: "Bank of Ceylon, Head Office",
+    mark: "BC",
     summary:
       "React Native and SQLite features, UAT and regression checks on a regulated payment platform.",
+    tags: ["React Native", "SQLite", "UAT", "Regression testing"],
     status: "resolved",
   },
 ];
@@ -231,22 +247,21 @@ function About() {
             <span className="about-section-line" />
           </div>
 
-          <div className="about-stats-grid">
+          <div className="gl-grid">
             {stats.map((stat, index) => (
               <StatCard
-                key={stat.label}
+                key={stat.title}
                 stat={stat}
                 index={index}
-                progress={scrollYProgress}
                 prefersReducedMotion={prefersReducedMotion}
               />
             ))}
           </div>
         </section>
 
-        {/* Experience */}
+        {/* Experience (redesigned) */}
         <section
-          className="about-record-block"
+          className="about-experience"
           aria-labelledby="experience-title"
         >
           <div className="about-section-heading">
@@ -254,130 +269,132 @@ function About() {
             <span className="about-section-line" />
           </div>
 
-          <div className="about-record-list">
+          <ol className="xp-list">
             {record.map((item, index) => (
-              <RecordRow
+              <ExperienceItem
                 key={`${item.org}-${item.span}`}
                 item={item}
                 index={index}
-                progress={scrollYProgress}
                 prefersReducedMotion={prefersReducedMotion}
               />
             ))}
-          </div>
+          </ol>
         </section>
       </div>
     </section>
   );
 }
 
-function StatCard({ stat, index, progress, prefersReducedMotion }) {
-  const start = 0.27 + index * 0.045;
-  const end = start + 0.16;
-
-  const opacity = useTransform(
-    progress,
-    [start, end],
-    [prefersReducedMotion ? 1 : 0, 1]
-  );
-  const y = useTransform(
-    progress,
-    [start, end],
-    [prefersReducedMotion ? 0 : 22, 0]
-  );
-
-  const smoothOpacity = useSpring(opacity, { damping: 28, stiffness: 150 });
-  const smoothY = useSpring(y, { damping: 28, stiffness: 150 });
+function StatCard({ stat, index, prefersReducedMotion }) {
+  const classes = [
+    "gl-card",
+    stat.accent ? "gl-card--accent" : "",
+    stat.learning ? "gl-card--learning" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <motion.article
-      className={`about-stat-card ${
-        stat.accent ? "about-stat-card--accent" : ""
-      }`}
-      style={{ opacity: smoothOpacity, y: smoothY }}
+      className={classes}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{
+        duration: prefersReducedMotion ? 0 : 0.6,
+        delay: prefersReducedMotion ? 0 : index * 0.07,
+        ease: revealEase,
+      }}
       data-cursor="hover"
     >
-      <div className="about-stat-top">
-        <span className="about-stat-index">0{index + 1}</span>
-        {stat.accent && <span className="about-stat-mark">+</span>}
+      <div className="gl-number" aria-hidden="true">
+        <span className="gl-index">0{index + 1}</span>
+        <span className="gl-value">{stat.value}</span>
       </div>
 
-      <div className="about-stat-value">
-        {stat.value}
-        <span className="about-stat-suffix">{stat.suffix}</span>
-      </div>
+      <div className="gl-content">
+        <div className="gl-top">
+          <h3 className="gl-title">{stat.title}</h3>
+          <span className="gl-kind">{stat.kind}</span>
+        </div>
 
-      <div className="about-stat-label">{stat.label}</div>
+        <p className="gl-detail">
+          <span className="sr-only">{stat.value} </span>
+          {stat.detail}
+        </p>
+
+        <ul className="gl-chips" aria-label="Tools">
+          {stat.chips.map((chip) => (
+            <li key={chip}>{chip}</li>
+          ))}
+        </ul>
+      </div>
     </motion.article>
   );
 }
 
-function RecordRow({ item, index, progress, prefersReducedMotion }) {
-  const start = 0.48 + index * 0.09;
-  const end = start + 0.17;
-
-  const opacity = useTransform(
-    progress,
-    [start, end],
-    [prefersReducedMotion ? 1 : 0, 1]
-  );
-  const x = useTransform(
-    progress,
-    [start, end],
-    [prefersReducedMotion ? 0 : -18, 0]
-  );
-
-  const smoothOpacity = useSpring(opacity, { damping: 28, stiffness: 140 });
-  const smoothX = useSpring(x, { damping: 28, stiffness: 140 });
+function ExperienceItem({ item, index, prefersReducedMotion }) {
+  const isActive = item.status === "active";
 
   return (
-    <motion.article
-      className={`about-record-row ${
-        item.status === "active" ? "about-record-row--active" : ""
-      }`}
-      style={{ opacity: smoothOpacity, x: smoothX }}
-      data-cursor="hover"
-      data-cursor-label={item.status === "active" ? "Now" : undefined}
+    <motion.li
+      className={`xp-item ${isActive ? "xp-item--active" : ""}`}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{
+        duration: prefersReducedMotion ? 0 : 0.6,
+        delay: prefersReducedMotion ? 0 : index * 0.08,
+        ease: revealEase,
+      }}
     >
-      <div className="about-record-edge" aria-hidden="true" />
-
-      <div className="about-record-marker">
-        <span />
+      {/* Left: when */}
+      <div className="xp-when">
+        <span className="xp-span">{item.span}</span>
+        <span className="xp-duration">{item.duration}</span>
       </div>
 
-      <div className="about-record-main">
-        <div className="about-record-top">
-          <span className="about-record-span">{item.span}</span>
+      {/* Timeline node */}
+      <span className="xp-node" aria-hidden="true" />
 
-          {item.status === "active" && (
-            <span className="about-record-live">Current</span>
-          )}
-        </div>
+      {/* Right: card */}
+      <article className="xp-card" data-cursor="hover">
+        <header className="xp-card-head">
+          <span className="xp-mark" aria-hidden="true">
+            {item.mark}
+          </span>
 
-        <h3 className="about-record-role">{item.role}</h3>
+          <div className="xp-titles">
+            <h3 className="xp-role">{item.role}</h3>
+            <p className="xp-org">{item.org}</p>
+          </div>
 
-        <p className="about-record-org">{item.org}</p>
+          {isActive && <span className="xp-badge">Current</span>}
+        </header>
 
-        {item.summary && (
-          <p className="about-record-org" style={{ marginTop: "0.45rem" }}>
-            {item.summary}
-          </p>
+        {item.summary && <p className="xp-summary">{item.summary}</p>}
+
+        {item.tags?.length > 0 && (
+          <ul className="xp-tags" aria-label="Skills used">
+            {item.tags.map((tag) => (
+              <li key={tag}>{tag}</li>
+            ))}
+          </ul>
         )}
-      </div>
 
-      {/* The arrow only appears when a row actually links somewhere */}
-      {item.href && (
-        <a
-          className="about-record-arrow"
-          href={item.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`Open ${item.org}`}
-        >
-          ↗
-        </a>
-      )}
-    </motion.article>
+        {item.href && (
+          <a
+            className="xp-link"
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Open ${item.org}`}
+          >
+            Visit ↗
+          </a>
+        )}
+      </article>
+    </motion.li>
   );
 }
 
