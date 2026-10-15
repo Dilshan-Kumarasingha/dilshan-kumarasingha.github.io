@@ -207,30 +207,33 @@ function About() {
               }}
             >
               <p className="about-text">
-                I am a software engineer with a background in backend and
-                mobile development, now moving into DevOps and cloud
-                engineering. As a Software Developer Intern at Bank of Ceylon,
-                I worked in a regulated banking environment where UAT,
-                regression checks and structured releases were part of every
-                sprint. At Lyceum International Schools I teach practical
-                Python and C, and I also look after lab systems, IMS
-                deployment and uptime.
+                At Bank of Ceylon, I worked as a Software Developer Intern in a regulated banking environment. 
+                I was part of a release process where every change went through UAT, regression checks, 
+                and structured approvals before reaching production. That experience gave me a strong appreciation for
+                 release safety, traceability, and making sure changes can be deployed without putting the system at risk.
+
+              At Lyceum International Schools, I handle the operational side of the systems I support. 
+              I deploy and maintain the IMS, manage lab systems, monitor uptime, and troubleshoot issues when services are not working as expected. 
+              I enjoy making these systems more dependable through better deployment practices, monitoring, and automation.
               </p>
 
               <p className="about-text">
-                I believe reliable delivery needs more than working scripts. It
-                needs containerized environments, automated pipelines with test
-                gates, monitoring, and infrastructure as code.
+                I believe reliable delivery needs more than working scripts. 
+                It needs consistent, containerized environments, automated pipelines with test gates, monitoring, 
+                and infrastructure as code.
+
+
               </p>
 
               <p className="about-text">
-                Today I work hands-on with Linux, Bash, Git, Docker and GitHub
-                Actions. I am learning AWS, Kubernetes and Terraform, and I am
-                building projects to put them into practice.
+                These days, I work hands-on with Linux, Bash, Git, Docker, and GitHub Actions. 
+                I’m currently learning AWS, Kubernetes, and Terraform, and building projects to put them into practice.
+
+
               </p>
 
               <p className="about-text">
-                I am open to junior Cloud, DevOps and Platform Engineer roles
+                I’m open to junior Cloud, DevOps, and Platform Engineer roles 
                 where I can help build and run reliable delivery pipelines.
               </p>
             </motion.div>

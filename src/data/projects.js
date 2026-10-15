@@ -88,34 +88,4 @@ export const projects = [
       caseStudy: null,
     },
   },
-
-  {
-    id: "shopqa",
-    name: "ShopQA E-Commerce",
-    status: "development",
-    tagline: "E-commerce platform with automated quality engineering",
-    narrative:
-      "An e-commerce implementation focused on automated end-to-end verification, API testing, reporting, and continuous integration.",
-    highlights: [
-      "Browser automation with Selenium",
-      "API verification with RestAssured",
-      "CI pipeline with GitHub Actions and Allure reporting",
-    ],
-    stack: [
-      "Java 25",
-      "Spring Boot 4.0.6",
-      "PostgreSQL 18",
-      "React 18",
-      "Selenium",
-      "TestNG",
-      "RestAssured",
-      "Allure",
-      "GitHub Actions",
-    ],
-    links: {
-      repository: null,
-      demo: null,
-      caseStudy: null,
-    },
-  },
 ];
