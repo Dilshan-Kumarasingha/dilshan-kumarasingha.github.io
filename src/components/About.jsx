@@ -207,6 +207,9 @@ function About() {
               }}
             >
               <p className="about-text">
+                I have a software engineering background in backend and mobile development, 
+                and I’m now focused on the DevOps and cloud side of software—deployment, automation, reliability, and monitoring.
+
                 At Bank of Ceylon, I worked as a Software Developer Intern in a regulated banking environment. 
                 I was part of a release process where every change went through UAT, regression checks, 
                 and structured approvals before reaching production. That experience gave me a strong appreciation for
