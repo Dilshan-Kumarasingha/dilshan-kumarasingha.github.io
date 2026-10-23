@@ -8,37 +8,33 @@ import {
 } from "framer-motion";
 import profilePhoto from "../assets/Profile1.jpeg";
 import "../styles/About.css";
-import "../styles/AboutExperience.css"; // NEW: styles for the redesigned Experience block
+import "../styles/AboutExperience.css";
 
-/*
-  CONTENT RULES FOR THIS FILE
-  - Every number and tool below must be something you can explain in an interview.
-  - Keep titles, dates and skills identical to LinkedIn, GitHub README and CV.
-  - Move a tool from "learning" to "hands-on" only when a repo proves it.
-*/
+// Keep titles, dates and skills the same as LinkedIn, GitHub and my CV.
+// A tool moves from "learning" to "hands-on" only when a repo proves it.
 
 const stats = [
   {
     value: 5,
     kind: "Hands-on",
     title: "DevOps tools",
-    detail: "Used hands-on across my projects.",
+    detail: "Used across my projects.",
     chips: ["Docker", "GitHub Actions", "Git", "Linux", "Bash"],
   },
   {
-    value: 2,
+    value: 3,
     kind: "Automated",
     title: "CI pipelines on GitHub",
-    detail: "Every push runs through automated test gates.",
-    chips: ["GitHub Actions", "Test gates"],
+    detail: "Builds and tests run on my pull requests and pushes.",
+    chips: ["GitHub Actions", "Automated tests"],
     accent: true,
   },
   {
-    value: 3,
+    value: 5,
     kind: "Learning",
     title: "Cloud tools in progress",
-    detail: "Currently building projects to practise them.",
-    chips: ["AWS", "Kubernetes", "Terraform"],
+    detail: "Building projects to practise them.",
+    chips: ["Kubernetes", "Terraform", "AWS", "Prometheus", "Grafana"],
     learning: true,
   },
   {
@@ -52,8 +48,7 @@ const stats = [
 
 const record = [
   {
-    // TODO: replace with your real start month and year
-    span: "2026 — Present",
+    span: "2026 to Present",
     duration: "Current role",
     role: "IT Lab Demonstrator",
     org: "Lyceum International Schools",
@@ -64,7 +59,7 @@ const record = [
     status: "active",
   },
   {
-    span: "Aug 2023 — Feb 2024",
+    span: "Aug 2023 to Feb 2024",
     duration: "6 months",
     role: "Software Developer Intern",
     org: "Bank of Ceylon, Head Office",
@@ -82,7 +77,7 @@ function About() {
   const targetRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
 
-  // With reduced motion, content is fully visible from the start
+  // with reduced motion the text is fully visible from the start
   const hidden = prefersReducedMotion ? 1 : 0;
 
   const { scrollYProgress } = useScroll({
@@ -133,9 +128,8 @@ function About() {
       aria-labelledby="about-title"
     >
       <div className="about-inner">
-        {/* Intro */}
         <div className="about-intro-split">
-          {/* Photo */}
+          {/* photo */}
           <motion.div
             className="about-photo-column"
             initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
@@ -171,7 +165,7 @@ function About() {
             </motion.div>
           </motion.div>
 
-          {/* Copy */}
+          {/* text */}
           <div className="about-intro-text">
             <div className="about-eyebrow-row">
               <span className="about-eyebrow">Who I am</span>
@@ -195,7 +189,7 @@ function About() {
               From writing code
               <br />
               <span className="about-headline-accent">
-                to running it in production.
+                to shipping it reliably.
               </span>
             </motion.h2>
 
@@ -207,43 +201,41 @@ function About() {
               }}
             >
               <p className="about-text">
-                I have a software engineering background in backend and mobile development, 
-                and I’m now focused on the DevOps and cloud side of software—deployment, automation, reliability, and monitoring.
-
-                At Bank of Ceylon, I worked as a Software Developer Intern in a regulated banking environment. 
-                I was part of a release process where every change went through UAT, regression checks, 
-                and structured approvals before reaching production. That experience gave me a strong appreciation for
-                 release safety, traceability, and making sure changes can be deployed without putting the system at risk.
-
-              At Lyceum International Schools, I handle the operational side of the systems I support. 
-              I deploy and maintain the IMS, manage lab systems, monitor uptime, and troubleshoot issues when services are not working as expected. 
-              I enjoy making these systems more dependable through better deployment practices, monitoring, and automation.
+                I come from backend and mobile development, and I'm now
+                focused on the part that comes after the code: deployment,
+                automation and knowing when something breaks.
               </p>
 
               <p className="about-text">
-                I believe reliable delivery needs more than working scripts. 
-                It needs consistent, containerized environments, automated pipelines with test gates, monitoring, 
-                and infrastructure as code.
-
-
+                At Bank of Ceylon I worked as a Software Developer Intern in a
+                regulated banking environment. Every change went through UAT,
+                regression checks and sign-off before release. That taught me
+                to care about safe releases and a clear trail of what changed.
               </p>
 
               <p className="about-text">
-                These days, I work hands-on with Linux, Bash, Git, Docker, and GitHub Actions. 
-                I’m currently learning AWS, Kubernetes, and Terraform, and building projects to put them into practice.
-
-
+                At Lyceum International Schools I look after the systems I
+                support. I deploy the IMS, manage the lab systems, monitor
+                uptime and troubleshoot when something stops working.
               </p>
 
               <p className="about-text">
-                I’m open to junior Cloud, DevOps, and Platform Engineer roles 
+                Today I work with Linux, Bash, Git, Docker and GitHub Actions.
+                My main project is HelpDeskHQ Platform, a .NET and React app
+                that builds, tests and containerises on every pull request.
+                I'm learning Kubernetes, Terraform, Prometheus, Grafana and
+                AWS, and building projects to practise them.
+              </p>
+
+              <p className="about-text">
+                I'm open to junior Cloud, DevOps and Platform Engineer roles
                 where I can help build and run reliable delivery pipelines.
               </p>
             </motion.div>
           </div>
         </div>
 
-        {/* Stats */}
+        {/* stats */}
         <section
           className="about-stats-section"
           aria-label="Career highlights"
@@ -265,7 +257,7 @@ function About() {
           </div>
         </section>
 
-        {/* Experience (redesigned) */}
+        {/* experience */}
         <section
           className="about-experience"
           aria-labelledby="experience-title"
@@ -354,16 +346,13 @@ function ExperienceItem({ item, index, prefersReducedMotion }) {
         ease: revealEase,
       }}
     >
-      {/* Left: when */}
       <div className="xp-when">
         <span className="xp-span">{item.span}</span>
         <span className="xp-duration">{item.duration}</span>
       </div>
 
-      {/* Timeline node */}
       <span className="xp-node" aria-hidden="true" />
 
-      {/* Right: card */}
       <article className="xp-card" data-cursor="hover">
         <header className="xp-card-head">
           <span className="xp-mark" aria-hidden="true">

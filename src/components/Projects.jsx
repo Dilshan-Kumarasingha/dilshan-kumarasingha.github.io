@@ -122,7 +122,7 @@ function ProjectCard({ project, index, total, direction, reduceMotion, onSwipe }
 
       <div className="project-card__details">
         <div>
-          <span className="project-label">Verified implementations</span>
+          <span className="project-label">What I built</span>
           <motion.ul
             className="project-highlights"
             initial={reduceMotion ? false : 'hidden'}
@@ -180,8 +180,7 @@ export default function Projects() {
 
   const step = useCallback((dir) => goTo(activeIndex + dir, dir), [activeIndex, goTo])
 
-  // Arrow keys work while the slider is focused (no global listener,
-  // so it never hijacks scrolling/typing elsewhere on the page).
+  // Arrow keys only work when the slider is focused, so scrolling elsewhere is not affected.
   const handleKeyDown = (event) => {
     if (event.key === 'ArrowRight') {
       event.preventDefault()
@@ -211,15 +210,15 @@ export default function Projects() {
             Selected work
           </span>
           <h2 id="projects-title">
-            Projects that <span className="projects-title-accent">solve real problems.</span>
+            Things I built, <span className="projects-title-accent">and how I ship them.</span>
           </h2>
           <p>
-            Pick a project to load it — systems built across backend architecture,
-            real-time communication, automation, testing and modern frontend work.
+            Pick a project to see what I built, how it is tested and how it
+            runs. The first one is my main DevOps project.
           </p>
         </motion.header>
 
-        {/* ---------- Project selector ---------- */}
+        {/* project selector */}
         <motion.div
           className="project-dial"
           role="tablist"
@@ -259,7 +258,7 @@ export default function Projects() {
           })}
         </motion.div>
 
-        {/* ---------- Stage ---------- */}
+        {/* card area */}
         <div
           className="project-stage"
           tabIndex={0}
@@ -280,7 +279,6 @@ export default function Projects() {
             />
           </AnimatePresence>
 
-          {/* progress rail beneath the card, echoing the hero pipeline */}
           <div className="project-progress" aria-hidden="true">
             {projects.map((project, index) => (
               <span
@@ -303,7 +301,7 @@ export default function Projects() {
             <span>Previous</span>
           </button>
 
-          <span className="project-controls__hint">drag or use ← → keys</span>
+          <span className="project-controls__hint">drag or use the arrow keys</span>
 
           <button
             type="button"

@@ -50,18 +50,16 @@ const CheckIcon = () => (
   </svg>
 )
 
-// Illustrative release pipeline: each stage floats around the portrait.
-// Positions are % of the visual area; delay sets the order they appear in.
+// Only tools I really use. Add Kubernetes and Terraform when they are in a repo.
 const CHIPS = [
   { label: 'Build', tool: 'Docker', style: { top: '16%', left: '2%' }, delay: 1.5, float: 0 },
-  { label: 'Deploy', tool: 'Kubernetes', style: { top: '5%', right: '-1%' }, delay: 2.1, float: 1.2 },
-  { label: 'Provision', tool: 'Terraform', style: { top: '47%', left: '-2%' }, delay: 2.7, float: 0.6 },
-  { label: 'Test', tool: 'CI/CD', style: { top: '33%', right: '-3%' }, delay: 3.3, float: 1.8 },
-  { label: 'Live', tool: 'AWS · Azure', style: { bottom: '14%', left: '6%' }, delay: 3.9, float: 0.3 },
+  { label: 'Test', tool: 'GitHub Actions', style: { top: '5%', right: '-1%' }, delay: 2.1, float: 1.2 },
+  { label: 'Package', tool: 'Docker Compose', style: { top: '47%', left: '-2%' }, delay: 2.7, float: 0.6 },
+  { label: 'Serve', tool: 'nginx', style: { top: '33%', right: '-3%' }, delay: 3.3, float: 1.8 },
+  { label: 'Script', tool: 'Linux · Bash', style: { bottom: '14%', left: '6%' }, delay: 3.9, float: 0.3 },
 ]
 
-// Title split into lines so each can rise into frame on its own beat,
-// like a title card settling into place.
+// Name is split so each line can slide up on its own
 const NAME_LINES = ['Dilshan', 'Kumarasingha']
 
 function Hero() {
@@ -78,8 +76,7 @@ function Hero() {
   const sceneScale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 1.06])
   const sceneOpacity = useTransform(scrollYProgress, [0, 0.85], [1, reduce ? 1 : 0.4])
 
-  // Cursor-driven spotlight — a subtle cinematic key-light that
-  // follows the pointer across the whole frame.
+  // Spotlight follows the mouse
   const spotX = useMotionValue(50)
   const spotY = useMotionValue(35)
   const spotXSmooth = useSpring(spotX, { stiffness: 60, damping: 20 })
@@ -130,8 +127,7 @@ function Hero() {
       <div className="hero-bg" aria-hidden="true" />
       <div className="hero-grain" aria-hidden="true" />
 
-      {/* Decorative geometric layer — visible shapes that give the
-          scene depth instead of a flat gradient backdrop. */}
+      {/* background shapes, just for depth */}
       <div className="hero-shapes" aria-hidden="true">
         <span className="hero-shape hero-shape--ring" />
         <span className="hero-shape hero-shape--square" />
@@ -152,8 +148,7 @@ function Hero() {
         />
       )}
 
-      {/* Letterbox bars — settle in on load, giving the opening beat
-          a widescreen, title-card feel, then stay as a subtle frame. */}
+      {/* black bars at the top and bottom edge */}
       <motion.span
         className="hero-bar hero-bar--top"
         initial={{ scaleY: reduce ? 1 : 0 }}
@@ -174,11 +169,11 @@ function Hero() {
         style={{ scale: sceneScale, opacity: sceneOpacity }}
       >
         <div className="hero-inner">
-          {/* ---------- Left: copy ---------- */}
+          {/* left side: text */}
           <div className="hero-copy">
             <motion.p className="hero-status" {...rise(0.2)}>
               <span className="hero-status-dot" aria-hidden="true" />
-              DevOps &amp; Platform Engineer
+              Junior Cloud &amp; DevOps Engineer
             </motion.p>
 
             <h1 id="hero-title" className="hero-title" data-cursor="text">
@@ -201,9 +196,9 @@ function Hero() {
             </h1>
 
             <motion.p className="hero-lede" {...rise(0.62)}>
-              I build the infrastructure and delivery pipelines that let teams
-              ship to production safely, using Kubernetes, Docker and Terraform
-              on AWS and Azure.
+              I build and ship software with Docker, GitHub Actions, Linux and
+              Bash, coming from a C#/.NET and Java backend background.
+              Kubernetes, Terraform and monitoring are what I'm building next.
             </motion.p>
 
             <motion.div className="hero-actions" {...rise(0.7)}>
@@ -214,7 +209,7 @@ function Hero() {
                 data-cursor="hover"
                 data-cursor-label="Go"
               >
-                <span>Book a free call</span>
+                <span>Get in touch</span>
                 <ArrowRightIcon />
               </a>
 
@@ -255,7 +250,7 @@ function Hero() {
             </motion.div>
           </div>
 
-          {/* ---------- Right: photo + pipeline ---------- */}
+          {/* right side: photo and tool chips */}
           <div className="hero-visual">
             <motion.div
               className="hero-portrait"

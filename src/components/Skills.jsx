@@ -19,6 +19,7 @@ import {
   SiGit,
   SiGithubactions,
   SiDocker,
+  SiNginx,
   SiTerraform,
   SiLinux,
   SiGnubash,
@@ -35,188 +36,44 @@ import { TbBrandCSharp, TbBrandAws, TbApi } from "react-icons/tb";
 
 import "../styles/Skills.css";
 
-/*
-  SKILL RULES
-  - "Core"     = strongest skills, used in real jobs or projects
-  - "Working"  = used hands-on in a repo or at work
-  - "Learning" = in progress, not yet proven in a repo
-
-  Only list a tool here if you can answer interview questions about it.
-  Move a tool from Learning to Working only when a repo proves it.
-  Keep this file, the README, LinkedIn and the CV identical.
-*/
+// Tiers: Core = strongest, Working = used in a repo or at work, Learning = not proven in a repo yet.
+// Move a tool to Working only when a repo proves it. Keep this list the same as the CV, README and LinkedIn.
 
 const SKILLS = [
   // Cloud & Infrastructure
-  {
-    name: "Linux",
-    category: "Cloud & Infrastructure",
-    tier: "Working",
-    Icon: SiLinux,
-    color: "#FCC624",
-  },
-  {
-    name: "Bash",
-    category: "Cloud & Infrastructure",
-    tier: "Working",
-    Icon: SiGnubash,
-    color: "#4EAA25",
-  },
-  {
-    name: "Networking",
-    category: "Cloud & Infrastructure",
-    tier: "Learning",
-    Icon: Cloud,
-    color: "#2563EB",
-  },
-  {
-    name: "AWS",
-    category: "Cloud & Infrastructure",
-    tier: "Learning",
-    Icon: TbBrandAws,
-    color: "#FF9900",
-  },
-  {
-    name: "Terraform",
-    category: "Cloud & Infrastructure",
-    tier: "Learning",
-    Icon: SiTerraform,
-    color: "#7B42BC",
-  },
+  { name: "Linux", category: "Cloud & Infrastructure", tier: "Working", Icon: SiLinux, color: "#FCC624" },
+  { name: "Bash", category: "Cloud & Infrastructure", tier: "Working", Icon: SiGnubash, color: "#4EAA25" },
+  { name: "Networking", category: "Cloud & Infrastructure", tier: "Learning", Icon: Cloud, color: "#2563EB" },
+  { name: "AWS", category: "Cloud & Infrastructure", tier: "Learning", Icon: TbBrandAws, color: "#FF9900" },
+  { name: "Terraform", category: "Cloud & Infrastructure", tier: "Learning", Icon: SiTerraform, color: "#7B42BC" },
 
   // Containers & Kubernetes
-  {
-    name: "Docker",
-    category: "Containers & Kubernetes",
-    tier: "Working",
-    Icon: SiDocker,
-    color: "#2496ED",
-  },
-  {
-    name: "Kubernetes",
-    category: "Containers & Kubernetes",
-    tier: "Learning",
-    Icon: SiKubernetes,
-    color: "#326CE5",
-  },
+  { name: "Docker", category: "Containers & Kubernetes", tier: "Working", Icon: SiDocker, color: "#2496ED" },
+  { name: "Docker Compose", category: "Containers & Kubernetes", tier: "Working", Icon: SiDocker, color: "#1D63ED" },
+  { name: "nginx", category: "Containers & Kubernetes", tier: "Working", Icon: SiNginx, color: "#009639" },
+  { name: "Kubernetes", category: "Containers & Kubernetes", tier: "Learning", Icon: SiKubernetes, color: "#326CE5" },
 
   // CI/CD & Testing
-  {
-    name: "Git",
-    category: "CI/CD & Testing",
-    tier: "Core",
-    Icon: SiGit,
-    color: "#F05032",
-  },
-  {
-    name: "GitHub Actions",
-    category: "CI/CD & Testing",
-    tier: "Working",
-    Icon: SiGithubactions,
-    color: "#2088FF",
-  },
-  {
-    name: "CI/CD",
-    category: "CI/CD & Testing",
-    tier: "Working",
-    Icon: GitBranch,
-    color: "#E5484D",
-  },
-  {
-    name: "Selenium",
-    category: "CI/CD & Testing",
-    tier: "Working",
-    Icon: SiSelenium,
-    color: "#43B02A",
-  },
+  { name: "Git", category: "CI/CD & Testing", tier: "Core", Icon: SiGit, color: "#F05032" },
+  { name: "GitHub Actions", category: "CI/CD & Testing", tier: "Working", Icon: SiGithubactions, color: "#2088FF" },
+  { name: "CI/CD", category: "CI/CD & Testing", tier: "Working", Icon: GitBranch, color: "#E5484D" },
+  { name: "Selenium", category: "CI/CD & Testing", tier: "Working", Icon: SiSelenium, color: "#43B02A" },
 
   // Monitoring
-  {
-    name: "Uptime Monitoring",
-    category: "Monitoring",
-    tier: "Working",
-    Icon: Server,
-    color: "#22C55E",
-  },
-  {
-    name: "Prometheus",
-    category: "Monitoring",
-    tier: "Learning",
-    Icon: SiPrometheus,
-    color: "#E6522C",
-  },
-  {
-    name: "Grafana",
-    category: "Monitoring",
-    tier: "Learning",
-    Icon: SiGrafana,
-    color: "#F46800",
-  },
+  { name: "Uptime Monitoring", category: "Monitoring", tier: "Working", Icon: Server, color: "#22C55E" },
+  { name: "Prometheus", category: "Monitoring", tier: "Learning", Icon: SiPrometheus, color: "#E6522C" },
+  { name: "Grafana", category: "Monitoring", tier: "Learning", Icon: SiGrafana, color: "#F46800" },
 
   // Software Engineering
-  {
-    name: "C#",
-    category: "Software Engineering",
-    tier: "Core",
-    Icon: TbBrandCSharp,
-    color: "#9B4F96",
-  },
-  {
-    name: ".NET",
-    category: "Software Engineering",
-    tier: "Core",
-    Icon: SiDotnet,
-    color: "#512BD4",
-  },
-  {
-    name: "Java",
-    category: "Software Engineering",
-    tier: "Working",
-    Icon: DiJava,
-    color: "#f89820",
-  },
-  {
-    name: "Spring Boot",
-    category: "Software Engineering",
-    tier: "Working",
-    Icon: SiSpringboot,
-    color: "#6DB33F",
-  },
-  {
-    name: "Python",
-    category: "Software Engineering",
-    tier: "Working",
-    Icon: SiPython,
-    color: "#3776AB",
-  },
-  {
-    name: "JavaScript",
-    category: "Software Engineering",
-    tier: "Working",
-    Icon: SiJavascript,
-    color: "#F7DF1E",
-  },
-  {
-    name: "React",
-    category: "Software Engineering",
-    tier: "Working",
-    Icon: SiReact,
-    color: "#61DAFB",
-  },
-  {
-    name: "REST APIs",
-    category: "Software Engineering",
-    tier: "Working",
-    Icon: TbApi,
-    color: "#e5484d",
-  },
-  {
-    name: "PostgreSQL",
-    category: "Software Engineering",
-    tier: "Working",
-    Icon: SiPostgresql,
-    color: "#4169E1",
-  },
+  { name: "C#", category: "Software Engineering", tier: "Core", Icon: TbBrandCSharp, color: "#9B4F96" },
+  { name: ".NET", category: "Software Engineering", tier: "Core", Icon: SiDotnet, color: "#512BD4" },
+  { name: "Java", category: "Software Engineering", tier: "Working", Icon: DiJava, color: "#f89820" },
+  { name: "Spring Boot", category: "Software Engineering", tier: "Working", Icon: SiSpringboot, color: "#6DB33F" },
+  { name: "Python", category: "Software Engineering", tier: "Working", Icon: SiPython, color: "#3776AB" },
+  { name: "JavaScript", category: "Software Engineering", tier: "Working", Icon: SiJavascript, color: "#F7DF1E" },
+  { name: "React", category: "Software Engineering", tier: "Working", Icon: SiReact, color: "#61DAFB" },
+  { name: "REST APIs", category: "Software Engineering", tier: "Working", Icon: TbApi, color: "#e5484d" },
+  { name: "PostgreSQL", category: "Software Engineering", tier: "Working", Icon: SiPostgresql, color: "#4169E1" },
 ];
 
 const CATEGORY_META = {
@@ -230,13 +87,13 @@ const CATEGORY_META = {
     Icon: Container,
     accent: "#2496ED",
     description:
-      "Docker for packaging applications, with Kubernetes as my next step in orchestration.",
+      "Docker and Docker Compose for packaging apps, nginx as a reverse proxy, and Kubernetes as my next step.",
   },
   "CI/CD & Testing": {
     Icon: GitBranch,
     accent: "#2088FF",
     description:
-      "Git, GitHub Actions pipelines and Selenium test suites that act as quality gates on every push.",
+      "Git and GitHub Actions pipelines that build and test my pull requests, plus Selenium test suites.",
   },
   Monitoring: {
     Icon: Activity,
@@ -441,8 +298,8 @@ export default function Skills() {
           <span className="skills-eyebrow">technical skills</span>
 
           <h2>
-            Built with
-            <span> precision.</span>
+            Tools I use,
+            <span> and what I'm learning.</span>
           </h2>
 
           <p>
@@ -451,7 +308,7 @@ export default function Skills() {
           </p>
         </motion.header>
 
-        {/* Category selector */}
+        {/* category buttons */}
         <motion.div
           className="category-dial"
           role="tablist"
@@ -526,7 +383,7 @@ export default function Skills() {
           })}
         </motion.div>
 
-        {/* Radial skill stage */}
+        {/* circle of skills */}
         <div className="radial-stage">
           <div className="radial-rings" aria-hidden="true">
             <span className="radial-ring radial-ring--outer" />
