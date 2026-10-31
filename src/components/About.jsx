@@ -1,14 +1,7 @@
-import { useRef } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-  useSpring,
-} from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import profilePhoto from "../assets/Profile1.jpeg";
 import "../styles/About.css";
-import "../styles/AboutExperience.css";
+// AboutExperience.css is no longer needed. This file and About.css are self-contained.
 
 // Keep titles, dates and skills the same as LinkedIn, GitHub and my CV.
 // A tool moves from "learning" to "hands-on" only when a repo proves it.
@@ -46,6 +39,8 @@ const stats = [
   },
 ];
 
+// TODO: add one real number to each summary, e.g. users or labs supported,
+// uptime %, number of regression checks. Numbers make these read as results.
 const record = [
   {
     span: "2026 to Present",
@@ -74,80 +69,29 @@ const record = [
 const revealEase = [0.16, 1, 0.3, 1];
 
 function About() {
-  const targetRef = useRef(null);
-  const prefersReducedMotion = useReducedMotion();
+  const reduce = useReducedMotion();
 
-  // with reduced motion the text is fully visible from the start
-  const hidden = prefersReducedMotion ? 1 : 0;
-
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start 0.9", "end 0.2"],
+  // One simple reveal. Text is never tied to scroll progress, so it is
+  // always readable, including when someone lands on #about directly.
+  const reveal = (delay = 0) => ({
+    initial: { opacity: 0, y: reduce ? 0 : 18 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-60px" },
+    transition: {
+      duration: reduce ? 0 : 0.6,
+      delay: reduce ? 0 : delay,
+      ease: revealEase,
+    },
   });
-
-  const headlineOpacity = useTransform(scrollYProgress, [0, 0.18], [hidden, 1]);
-  const headlineY = useTransform(
-    scrollYProgress,
-    [0, 0.18],
-    [prefersReducedMotion ? 0 : 28, 0]
-  );
-
-  const bodyOpacity = useTransform(scrollYProgress, [0.08, 0.3], [hidden, 1]);
-  const bodyY = useTransform(
-    scrollYProgress,
-    [0.08, 0.3],
-    [prefersReducedMotion ? 0 : 22, 0]
-  );
-
-  const photoY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [prefersReducedMotion ? 0 : 14, prefersReducedMotion ? 0 : -14]
-  );
-
-  const smoothHeadlineOpacity = useSpring(headlineOpacity, {
-    damping: 28,
-    stiffness: 160,
-  });
-  const smoothHeadlineY = useSpring(headlineY, {
-    damping: 28,
-    stiffness: 160,
-  });
-  const smoothBodyOpacity = useSpring(bodyOpacity, {
-    damping: 26,
-    stiffness: 150,
-  });
-  const smoothBodyY = useSpring(bodyY, { damping: 26, stiffness: 150 });
-  const smoothPhotoY = useSpring(photoY, { damping: 30, stiffness: 120 });
 
   return (
-    <section
-      className="about"
-      id="about"
-      ref={targetRef}
-      aria-labelledby="about-title"
-    >
+    <section className="about" id="about" aria-labelledby="about-title">
       <div className="about-inner">
-        <div className="about-intro-split">
+        <div className="about-intro">
           {/* photo */}
-          <motion.div
-            className="about-photo-column"
-            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{
-              duration: prefersReducedMotion ? 0 : 0.75,
-              ease: revealEase,
-            }}
-          >
-            <motion.div
-              className="about-photo-stage"
-              style={{ y: smoothPhotoY }}
-            >
-              <span className="about-photo-ring" aria-hidden="true" />
+          <motion.div className="about-photo-column" {...reveal(0)}>
+            <div className="about-photo-stage">
               <span className="about-photo-arch" aria-hidden="true" />
-              <span className="about-photo-grid" aria-hidden="true" />
-
               <div className="about-photo-frame">
                 <img
                   src={profilePhoto}
@@ -157,124 +101,76 @@ function About() {
                   decoding="async"
                 />
               </div>
-
-              <div className="about-photo-badge">
-                <span className="about-photo-badge-dot" aria-hidden="true" />
-                Cloud &amp; DevOps
-              </div>
-            </motion.div>
+            </div>
           </motion.div>
 
           {/* text */}
-          <div className="about-intro-text">
-            <div className="about-eyebrow-row">
-              <span className="about-eyebrow">Who I am</span>
-
-              <div className="dot-grid dot-grid--red" aria-hidden="true">
-                {Array.from({ length: 24 }, (_, index) => (
-                  <span key={index} />
-                ))}
-              </div>
-            </div>
-
-            <motion.h2
-              id="about-title"
-              className="about-headline"
-              style={{
-                opacity: smoothHeadlineOpacity,
-                y: smoothHeadlineY,
-              }}
-              data-cursor="text"
-            >
+          <motion.div className="about-copy" {...reveal(0.1)}>
+            <h2 id="about-title" className="about-headline" data-cursor="text">
               From writing code
               <br />
               <span className="about-headline-accent">
                 to shipping it reliably.
               </span>
-            </motion.h2>
+            </h2>
 
-            <motion.div
-              className="about-body"
-              style={{
-                opacity: smoothBodyOpacity,
-                y: smoothBodyY,
-              }}
-            >
-              <p className="about-text">
-                I come from backend and mobile development, and I'm now
-                focused on the part that comes after the code: deployment,
-                automation and knowing when something breaks.
-              </p>
+            <p className="about-lede">
+              I'm a backend developer (C#/.NET, Java) moving into DevOps. I
+              care about what comes after the code: safe releases, automation
+              and knowing when something breaks.
+            </p>
 
-              <p className="about-text">
-                At Bank of Ceylon I worked as a Software Developer Intern in a
-                regulated banking environment. Every change went through UAT,
-                regression checks and sign-off before release. That taught me
-                to care about safe releases and a clear trail of what changed.
-              </p>
+            <p className="about-text">
+              At Bank of Ceylon I worked in a regulated banking environment
+              where every change went through UAT, regression checks and
+              sign-off before release. At Lyceum International Schools I
+              deploy the IMS, manage the lab systems, monitor uptime and
+              troubleshoot when something stops working.
+            </p>
 
-              <p className="about-text">
-                At Lyceum International Schools I look after the systems I
-                support. I deploy the IMS, manage the lab systems, monitor
-                uptime and troubleshoot when something stops working.
-              </p>
+            <p className="about-text">
+              My main project is HelpDeskHQ Platform, a .NET and React app that
+              builds, tests and containerises on every pull request. I'm
+              learning Kubernetes, Terraform, Prometheus, Grafana and AWS by
+              building projects with them.
+            </p>
 
-              <p className="about-text">
-                Today I work with Linux, Bash, Git, Docker and GitHub Actions.
-                My main project is HelpDeskHQ Platform, a .NET and React app
-                that builds, tests and containerises on every pull request.
-                I'm learning Kubernetes, Terraform, Prometheus, Grafana and
-                AWS, and building projects to practise them.
-              </p>
-
-              <p className="about-text">
-                I'm open to junior Cloud, DevOps and Platform Engineer roles
-                where I can help build and run reliable delivery pipelines.
-              </p>
-            </motion.div>
-          </div>
+            <p className="about-text about-text--cta">
+              I'm open to junior Cloud, DevOps and Platform Engineer roles.{" "}
+              <a href="#projects" className="about-link">
+                See the projects
+              </a>{" "}
+              or{" "}
+              <a href="#contact" className="about-link">
+                get in touch
+              </a>
+              .
+            </p>
+          </motion.div>
         </div>
 
         {/* stats */}
-        <section
-          className="about-stats-section"
-          aria-label="Career highlights"
-        >
-          <div className="about-section-heading">
-            <span>At a glance</span>
-            <span className="about-section-line" />
-          </div>
+        <section className="about-block" aria-labelledby="stats-title">
+          <h3 id="stats-title" className="about-block-title">
+            What I work with
+          </h3>
 
-          <div className="gl-grid">
-            {stats.map((stat, index) => (
-              <StatCard
-                key={stat.title}
-                stat={stat}
-                index={index}
-                prefersReducedMotion={prefersReducedMotion}
-              />
+          <div className="about-stats">
+            {stats.map((stat) => (
+              <StatCard key={stat.title} stat={stat} />
             ))}
           </div>
         </section>
 
         {/* experience */}
-        <section
-          className="about-experience"
-          aria-labelledby="experience-title"
-        >
-          <div className="about-section-heading">
-            <span id="experience-title">Experience</span>
-            <span className="about-section-line" />
-          </div>
+        <section className="about-block" aria-labelledby="experience-title">
+          <h3 id="experience-title" className="about-block-title">
+            Experience
+          </h3>
 
-          <ol className="xp-list">
-            {record.map((item, index) => (
-              <ExperienceItem
-                key={`${item.org}-${item.span}`}
-                item={item}
-                index={index}
-                prefersReducedMotion={prefersReducedMotion}
-              />
+          <ol className="about-timeline">
+            {record.map((item) => (
+              <ExperienceItem key={`${item.org}-${item.span}`} item={item} />
             ))}
           </ol>
         </section>
@@ -283,113 +179,76 @@ function About() {
   );
 }
 
-function StatCard({ stat, index, prefersReducedMotion }) {
+function StatCard({ stat }) {
   const classes = [
-    "gl-card",
-    stat.accent ? "gl-card--accent" : "",
-    stat.learning ? "gl-card--learning" : "",
+    "about-stat",
+    stat.accent ? "about-stat--accent" : "",
+    stat.learning ? "about-stat--learning" : "",
   ]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <motion.article
-      className={classes}
-      initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{
-        duration: prefersReducedMotion ? 0 : 0.6,
-        delay: prefersReducedMotion ? 0 : index * 0.07,
-        ease: revealEase,
-      }}
-      data-cursor="hover"
-    >
-      <div className="gl-number" aria-hidden="true">
-        <span className="gl-index">0{index + 1}</span>
-        <span className="gl-value">{stat.value}</span>
+    <article className={classes}>
+      <div className="about-stat-head">
+        <span className="about-stat-value" aria-hidden="true">
+          {stat.value}
+        </span>
+        <span className="about-stat-kind">{stat.kind}</span>
       </div>
 
-      <div className="gl-content">
-        <div className="gl-top">
-          <h3 className="gl-title">{stat.title}</h3>
-          <span className="gl-kind">{stat.kind}</span>
-        </div>
+      <h4 className="about-stat-title">
+        <span className="about-sr-only">{stat.value} </span>
+        {stat.title}
+      </h4>
+      <p className="about-stat-detail">{stat.detail}</p>
 
-        <p className="gl-detail">
-          <span className="sr-only">{stat.value} </span>
-          {stat.detail}
-        </p>
-
-        <ul className="gl-chips" aria-label="Tools">
-          {stat.chips.map((chip) => (
-            <li key={chip}>{chip}</li>
-          ))}
-        </ul>
-      </div>
-    </motion.article>
+      <ul className="about-chips" aria-label="Tools">
+        {stat.chips.map((chip) => (
+          <li key={chip}>{chip}</li>
+        ))}
+      </ul>
+    </article>
   );
 }
 
-function ExperienceItem({ item, index, prefersReducedMotion }) {
+function ExperienceItem({ item }) {
   const isActive = item.status === "active";
 
   return (
-    <motion.li
-      className={`xp-item ${isActive ? "xp-item--active" : ""}`}
-      initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{
-        duration: prefersReducedMotion ? 0 : 0.6,
-        delay: prefersReducedMotion ? 0 : index * 0.08,
-        ease: revealEase,
-      }}
-    >
-      <div className="xp-when">
-        <span className="xp-span">{item.span}</span>
-        <span className="xp-duration">{item.duration}</span>
+    <li className={`about-job ${isActive ? "about-job--active" : ""}`}>
+      <div className="about-job-when">
+        <span className="about-job-span">{item.span}</span>
+        <span className="about-job-duration">{item.duration}</span>
       </div>
 
-      <span className="xp-node" aria-hidden="true" />
+      <span className="about-job-node" aria-hidden="true" />
 
-      <article className="xp-card" data-cursor="hover">
-        <header className="xp-card-head">
-          <span className="xp-mark" aria-hidden="true">
+      <article className="about-job-card">
+        <header className="about-job-head">
+          <span className="about-job-mark" aria-hidden="true">
             {item.mark}
           </span>
 
-          <div className="xp-titles">
-            <h3 className="xp-role">{item.role}</h3>
-            <p className="xp-org">{item.org}</p>
+          <div className="about-job-titles">
+            <h4 className="about-job-role">{item.role}</h4>
+            <p className="about-job-org">{item.org}</p>
           </div>
 
-          {isActive && <span className="xp-badge">Current</span>}
+          {isActive && <span className="about-job-badge">Current</span>}
         </header>
 
-        {item.summary && <p className="xp-summary">{item.summary}</p>}
+        {item.summary && <p className="about-job-summary">{item.summary}</p>}
 
         {item.tags?.length > 0 && (
-          <ul className="xp-tags" aria-label="Skills used">
+          <ul className="about-chips" aria-label="Skills used">
             {item.tags.map((tag) => (
               <li key={tag}>{tag}</li>
             ))}
           </ul>
         )}
-
-        {item.href && (
-          <a
-            className="xp-link"
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Open ${item.org}`}
-          >
-            Visit ↗
-          </a>
-        )}
       </article>
-    </motion.li>
+    </li>
   );
 }
 

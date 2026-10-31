@@ -1,16 +1,15 @@
-import { useRef, useState } from 'react'
-import {
-  motion,
-  AnimatePresence,
-  useReducedMotion,
-  useMotionValue,
-  useScroll,
-  useSpring,
-  useTransform,
-} from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import AIAssistant from './AIAssistant'
 import profileCutout from '../assets/profile-cutout.png'
 import '../styles/Hero.css'
+
+/* ---------- EDIT THESE ---------- */
+// Put your PDF in /public and match the filename here.
+const RESUME_URL = '/Dilshan-Kumarasingha-Resume.pdf'
+// Replace with your real email so people can contact you without scrolling.
+const EMAIL = 'dilshan.jkumarasingha@gmail.com'
+/* -------------------------------- */
 
 const iconProps = {
   width: 17,
@@ -44,6 +43,12 @@ const ArrowRightIcon = () => (
   </svg>
 )
 
+const DownloadIcon = () => (
+  <svg {...iconProps} width="16" height="16">
+    <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
+  </svg>
+)
+
 const CheckIcon = () => (
   <svg {...iconProps} width="12" height="12" strokeWidth="3">
     <path d="M5 12.5l4.5 4.5L19 7.5" />
@@ -51,129 +56,63 @@ const CheckIcon = () => (
 )
 
 // Only tools I really use. Add Kubernetes and Terraform when they are in a repo.
+// Chips land quickly (done by ~1.9s) so the pipeline reads as one idea.
 const CHIPS = [
-  { label: 'Build', tool: 'Docker', style: { top: '16%', left: '2%' }, delay: 1.5, float: 0 },
-  { label: 'Test', tool: 'GitHub Actions', style: { top: '5%', right: '-1%' }, delay: 2.1, float: 1.2 },
-  { label: 'Package', tool: 'Docker Compose', style: { top: '47%', left: '-2%' }, delay: 2.7, float: 0.6 },
-  { label: 'Serve', tool: 'nginx', style: { top: '33%', right: '-3%' }, delay: 3.3, float: 1.8 },
-  { label: 'Script', tool: 'Linux · Bash', style: { bottom: '14%', left: '6%' }, delay: 3.9, float: 0.3 },
+  { label: 'Build', tool: 'Docker', style: { top: '16%', left: '2%' }, delay: 0.9, float: 0 },
+  { label: 'Test', tool: 'GitHub Actions', style: { top: '5%', right: '-1%' }, delay: 1.1, float: 1.2 },
+  { label: 'Package', tool: 'Docker Compose', style: { top: '47%', left: '-2%' }, delay: 1.3, float: 0.6 },
+  { label: 'Serve', tool: 'nginx', style: { top: '33%', right: '-3%' }, delay: 1.5, float: 1.8 },
+  { label: 'Script', tool: 'Linux + Bash', style: { bottom: '14%', left: '6%' }, delay: 1.7, float: 0.3 },
 ]
 
-// Name is split so each line can slide up on its own
 const NAME_LINES = ['Dilshan', 'Kumarasingha']
 
 function Hero() {
   const [isAiOpen, setIsAiOpen] = useState(false)
-  const heroRef = useRef(null)
   const reduce = useReducedMotion()
 
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  })
-
-  const photoY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 40])
-  const sceneScale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 1.06])
-  const sceneOpacity = useTransform(scrollYProgress, [0, 0.85], [1, reduce ? 1 : 0.4])
-
-  // Spotlight follows the mouse
-  const spotX = useMotionValue(50)
-  const spotY = useMotionValue(35)
-  const spotXSmooth = useSpring(spotX, { stiffness: 60, damping: 20 })
-  const spotYSmooth = useSpring(spotY, { stiffness: 60, damping: 20 })
-
-  const spotlightBackground = useTransform(
-    [spotXSmooth, spotYSmooth],
-    ([x, y]) =>
-      `radial-gradient(600px circle at ${x}% ${y}%, rgba(255, 255, 255, 0.55), transparent 60%)`
-  )
-
-  const handlePointerMove = (event) => {
-    if (reduce || !heroRef.current) return
-    const rect = heroRef.current.getBoundingClientRect()
-    spotX.set(((event.clientX - rect.left) / rect.width) * 100)
-    spotY.set(((event.clientY - rect.top) / rect.height) * 100)
-  }
-
   const rise = (delay = 0) => ({
-    initial: { opacity: 0, y: reduce ? 0 : 20 },
+    initial: { opacity: 0, y: reduce ? 0 : 16 },
     animate: { opacity: 1, y: 0 },
     transition: {
-      duration: reduce ? 0 : 0.7,
+      duration: reduce ? 0 : 0.6,
       delay: reduce ? 0 : delay,
       ease: [0.16, 1, 0.3, 1],
     },
   })
 
-  const scrollToContact = (event) => {
-    event.preventDefault()
-    const target = document.querySelector('#contact')
+  const scrollTo = (hash) => (event) => {
+    const target = document.querySelector(hash)
     if (!target) return
+    event.preventDefault()
     target.scrollIntoView({
       behavior: reduce ? 'auto' : 'smooth',
       block: 'start',
     })
-    window.history.replaceState(null, '', '#contact')
+    window.history.replaceState(null, '', hash)
   }
 
   return (
-    <section
-      className="hero"
-      id="top"
-      ref={heroRef}
-      onPointerMove={handlePointerMove}
-      aria-labelledby="hero-title"
-    >
+    <section className="hero" id="top" aria-labelledby="hero-title">
       <div className="hero-bg" aria-hidden="true" />
-      <div className="hero-grain" aria-hidden="true" />
 
-      {/* background shapes, just for depth */}
+      {/* two quiet background shapes, nothing more */}
       <div className="hero-shapes" aria-hidden="true">
         <span className="hero-shape hero-shape--ring" />
-        <span className="hero-shape hero-shape--square" />
         <span className="hero-shape hero-shape--dot-grid">
           {Array.from({ length: 24 }, (_, i) => (
             <span key={i} />
           ))}
         </span>
-        <span className="hero-shape hero-shape--line" />
-        <span className="hero-shape hero-shape--triangle" />
       </div>
 
-      {!reduce && (
-        <motion.div
-          className="hero-spotlight"
-          aria-hidden="true"
-          style={{ background: spotlightBackground }}
-        />
-      )}
-
-      {/* black bars at the top and bottom edge */}
-      <motion.span
-        className="hero-bar hero-bar--top"
-        initial={{ scaleY: reduce ? 1 : 0 }}
-        animate={{ scaleY: 1 }}
-        transition={{ duration: reduce ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] }}
-        aria-hidden="true"
-      />
-      <motion.span
-        className="hero-bar hero-bar--bottom"
-        initial={{ scaleY: reduce ? 1 : 0 }}
-        animate={{ scaleY: 1 }}
-        transition={{ duration: reduce ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] }}
-        aria-hidden="true"
-      />
-
-      <motion.div
-        className="hero-scene"
-        style={{ scale: sceneScale, opacity: sceneOpacity }}
-      >
+      <div className="hero-scene">
         <div className="hero-inner">
           {/* left side: text */}
           <div className="hero-copy">
-            <motion.p className="hero-status" {...rise(0.2)}>
-              <span className="hero-status-dot" aria-hidden="true" />
-              Junior Cloud &amp; DevOps Engineer
+            <motion.p className="hero-availability" {...rise(0.1)}>
+              <span className="hero-availability-dot" aria-hidden="true" />
+              Open to junior roles
             </motion.p>
 
             <h1 id="hero-title" className="hero-title" data-cursor="text">
@@ -184,8 +123,8 @@ function Hero() {
                     initial={{ y: reduce ? 0 : '120%' }}
                     animate={{ y: 0 }}
                     transition={{
-                      duration: reduce ? 0 : 0.9,
-                      delay: reduce ? 0 : 0.35 + lineIndex * 0.12,
+                      duration: reduce ? 0 : 0.8,
+                      delay: reduce ? 0 : 0.2 + lineIndex * 0.1,
                       ease: [0.16, 1, 0.3, 1],
                     }}
                   >
@@ -195,35 +134,39 @@ function Hero() {
               ))}
             </h1>
 
-            <motion.p className="hero-lede" {...rise(0.62)}>
-              I build and ship software with Docker, GitHub Actions, Linux and
-              Bash, coming from a C#/.NET and Java backend background.
-              Kubernetes, Terraform and monitoring are what I'm building next.
+            <motion.p className="hero-role" {...rise(0.45)}>
+              Junior Cloud &amp; DevOps Engineer
             </motion.p>
 
-            <motion.div className="hero-actions" {...rise(0.7)}>
+            <motion.p className="hero-lede" {...rise(0.55)}>
+              Backend developer (C#/.NET, Java) turned DevOps engineer. I
+              containerise apps with Docker, automate build and test with
+              GitHub Actions, and serve them on Linux behind nginx. Every
+              project has a public repo and a working pipeline.
+            </motion.p>
+
+            <motion.div className="hero-actions" {...rise(0.65)}>
               <a
-                href="#contact"
+                href="#projects"
                 className="hero-btn hero-btn--primary"
-                onClick={scrollToContact}
+                onClick={scrollTo('#projects')}
                 data-cursor="hover"
-                data-cursor-label="Go"
+                data-cursor-label="View"
               >
-                <span>Get in touch</span>
+                <span>View projects</span>
                 <ArrowRightIcon />
               </a>
 
-              <button
-                type="button"
-                className="hero-btn hero-btn--ghost"
-                onClick={() => setIsAiOpen(true)}
+              <a
+                href={RESUME_URL}
+                className="hero-btn hero-btn--secondary"
+                download
                 data-cursor="hover"
-                data-cursor-label="Ask"
-                aria-haspopup="dialog"
-                aria-expanded={isAiOpen}
+                data-cursor-label="PDF"
               >
-                Ask my assistant
-              </button>
+                <DownloadIcon />
+                <span>Download résumé</span>
+              </a>
 
               <span className="hero-socials">
                 <a
@@ -248,24 +191,48 @@ function Hero() {
                 </a>
               </span>
             </motion.div>
+
+            <motion.p className="hero-links" {...rise(0.75)}>
+              <a href={`mailto:${EMAIL}`} className="hero-link">
+                {EMAIL}
+              </a>
+              <a
+                href="#contact"
+                className="hero-link"
+                onClick={scrollTo('#contact')}
+              >
+                Contact form
+              </a>
+              <button
+                type="button"
+                className="hero-link hero-link--button"
+                onClick={() => setIsAiOpen(true)}
+                aria-haspopup="dialog"
+                aria-expanded={isAiOpen}
+              >
+                Ask my assistant
+              </button>
+            </motion.p>
+
+            <motion.p className="hero-learning" {...rise(0.85)}>
+              Currently learning: Kubernetes, Terraform and monitoring.
+            </motion.p>
           </div>
 
-          {/* right side: photo and tool chips */}
+          {/* right side: photo and pipeline chips */}
           <div className="hero-visual">
             <motion.div
               className="hero-portrait"
-              style={{ y: photoY }}
-              initial={{ opacity: 0, y: reduce ? 0 : 40, scale: reduce ? 1 : 1.05 }}
+              initial={{ opacity: 0, y: reduce ? 0 : 30, scale: reduce ? 1 : 1.04 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{
-                duration: reduce ? 0 : 1.1,
-                delay: reduce ? 0 : 0.3,
+                duration: reduce ? 0 : 0.9,
+                delay: reduce ? 0 : 0.2,
                 ease: [0.16, 1, 0.3, 1],
               }}
               aria-hidden="true"
             >
               <span className="hero-portrait-arch" />
-              <span className="hero-portrait-rim" />
               <img
                 src={profileCutout}
                 alt=""
@@ -279,7 +246,7 @@ function Hero() {
                 className="hero-chip"
                 key={label}
                 style={style}
-                initial={{ opacity: 0, scale: reduce ? 1 : 0.4, y: reduce ? 0 : 10 }}
+                initial={{ opacity: 0, scale: reduce ? 1 : 0.5, y: reduce ? 0 : 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{
                   type: 'spring',
@@ -302,21 +269,7 @@ function Hero() {
             ))}
           </div>
         </div>
-      </motion.div>
-
-      <motion.a
-        href="#about"
-        className="hero-scrollcue"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 1.6 }}
-        aria-label="Scroll to About section"
-      >
-        <span className="hero-scrollcue-track">
-          <span className="hero-scrollcue-dot" />
-        </span>
-        <span className="hero-scrollcue-text">Scroll</span>
-      </motion.a>
+      </div>
 
       <AnimatePresence mode="wait">
         {isAiOpen && <AIAssistant onClose={() => setIsAiOpen(false)} />}
